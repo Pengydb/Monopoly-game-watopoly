@@ -80,10 +80,18 @@ void Board::startGame() {
 }
 
 void Board::setPlayer() {
-    cout << "Enter player's name: ";
     string name;
-    getline(cin, name);
-    cin.ignore();
+    while(true){
+        cout << "Enter player's name: " << endl;
+        getline(cin, name);
+        if (!name.empty()){
+            break;
+        }
+        else{
+            cout << "Invalid name. Player not added." << endl;
+        }
+    }
+    
 
     map<string, PlayerPiece> pieceMap = { // Mapping each string to a PlayerPiece
         {"Goose", PlayerPiece::Goose},
@@ -98,7 +106,7 @@ void Board::setPlayer() {
 
     string input;
     PlayerPiece piece;
-    while (1) {
+    while (true) {
         cout << "Enter player's piece out of:\n"
              << "Goose\n"
              << "GRTBus\n"
@@ -107,7 +115,7 @@ void Board::setPlayer() {
              << "Student\n"
              << "Money\n"
              << "Laptop\n"
-             << "PinkTie"; << endl;
+             << "PinkTie" << endl;
         getline(cin, input);
         if (pieceMap.find(input) != pieceMap.end()) {
             piece = pieceMap[input];
@@ -116,7 +124,7 @@ void Board::setPlayer() {
         } else {
             cout << "Invalid choice. Please try again." << endl;
         }
-    } ;
+    };
 
     Player* newPlayer = new Player(name, piece, 1500, 0, false, false, 0); // considering the constructor for Player is as follows: 
     //Player(name, PlayerPiece, wallet, position, isBankrupt, visitingTims, timsLine) and considering the position of CollectOSAP is 0
