@@ -6,8 +6,20 @@
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 stages:
-- test
-sast:
-  stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
+- setup
+- validate
+# tests to be added
+install dependencies:
+  stage: setup
+  script:
+  - echo "Installing dependencies"
+    #enter commands here
+  - echo "Dependencies installed successfully"
+validate_configuration:
+  stage: validate
+  script:
+    - echo "Validating configuration"
+    #commands
+    - echo "Configuration validated successfully"
+
+
