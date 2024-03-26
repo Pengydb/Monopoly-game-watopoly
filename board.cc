@@ -64,7 +64,7 @@ void Board::startGame() {
     buildings[39] = new AcademicBuilding("DC", 37, 400, 50, false, false, 0, 200, MonopolyBlock::Math);
 
 
-    cout << "Enter the number of players: ";
+    cout << "Enter the number of players: " << endl;;
     int numPlayers;
     cin >> numPlayers;
     cin.ignore();
@@ -74,6 +74,9 @@ void Board::startGame() {
     }
         playerTurn = 0;
         cout << "Game started with " << numPlayers << " players." << endl;
+
+
+        // Check how to update the property ownership array
 }
 
 void Board::setPlayer() {
@@ -104,21 +107,21 @@ void Board::setPlayer() {
              << "Student\n"
              << "Money\n"
              << "Laptop\n"
-             << "PinkTie\n";
+             << "PinkTie"; << endl;
         getline(cin, input);
         if (pieceMap.find(input) != pieceMap.end()) {
             piece = pieceMap[input];
-            cout << "You chose the " << input << " piece.\n";
+            cout << "You chose the " << input << " piece." << endl;
             break;
         } else {
-            cout << "Invalid choice. Please try again.\n";
+            cout << "Invalid choice. Please try again." << endl;
         }
     } ;
 
     Player* newPlayer = new Player(name, piece, 1500, 0, false, false, 0); // considering the constructor for Player is as follows: 
     //Player(name, PlayerPiece, wallet, position, isBankrupt, visitingTims, timsLine) and considering the position of CollectOSAP is 0
     players.push_back(newPlayer);
-    cout << "Player " << name << " added\n" << endl;
+    cout << "Player " << name << " added" << endl;
 }
 
 void Board::movePlayer(Player &p, Tile &t) {
@@ -138,4 +141,6 @@ void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % players.size();
 }
 
-//void Board::playGame() {}       Does this function prompt the player to play the turn so 
+//void Board::playGame() {}       What is the difference between next turn and play game
+
+//void Board::printBoard() {}     What is the purpose of the TextDisplay class?
