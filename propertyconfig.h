@@ -28,6 +28,7 @@ public:
     int getImpCost() const;
 
     int getRent(int stage) const;
+    int getFee() const;
 };
 
 #endif // PROPERTYCONFIG_H
