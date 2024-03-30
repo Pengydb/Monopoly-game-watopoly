@@ -16,7 +16,7 @@ class Tile : public Subject {
     string getName() const;   // returns location field of Tile
     
     virtual void performAction() = 0; // pure virtual, no implimentation, for subclasses
-    virtual ~Tile(); // Default destructor
+    virtual ~Tile() = default; // Default destructor
 };
 
 #endif // TILE_H
