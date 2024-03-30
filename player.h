@@ -31,6 +31,10 @@ public:
     void setPosition(const int pos);
     int getTimsLine();
     void setTimsLine(const int pos);
+    int incTimsLine() const; // increments timsLine by 1
+    bool isVisitingTims() const; // returns visitingTims field;
+    void toggleVisiting(); // Toggles visitingTims to opposite of what it was
+
     std::string getName();
 };
 
