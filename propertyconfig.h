@@ -30,4 +30,4 @@ public:
     int getRent(int stage) const;
 };
 
-#endif 
+#endif // PROPERTYCONFIG_H
