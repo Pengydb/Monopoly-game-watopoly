@@ -49,4 +49,4 @@ class NH : public NonOwnableProperty {
     void performAction() override;
 };
 
-#endif
+#endif // NONOWNABLEPROPERTY_H

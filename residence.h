@@ -7,4 +7,4 @@ class Residence : public OwnableProperty {
   public:
     void performAction() override;
 };
-#endif
+#endif // _RESIDENCE_H

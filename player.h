@@ -8,7 +8,7 @@
 class Player: public Subject {
 private:
     char piece;
-    string name;
+    std::string name;
     int wallet;
     int position;
     bool bankrupt;
@@ -27,7 +27,7 @@ public:
     void setPosition(const int pos);
     int getTimsLine();
     void setTimsLine(const int pos);
-    string getName();
+    std::string getName();
 
     void buyProperty();
     void sellProperty();
@@ -41,4 +41,5 @@ public:
     void trade(Player target, const int cash, OwnableProperty& b); // Cash for Property
 
 };
-#endif
+
+#endif // PLAYER_H

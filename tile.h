@@ -19,5 +19,4 @@ class Tile : public Subject {
     virtual ~Tile(); // Default destructor
 };
 
-
-#endif
+#endif // TILE_H

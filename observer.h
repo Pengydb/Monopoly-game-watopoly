@@ -8,4 +8,5 @@ public:
     virtual ~Observer() = default;
     virtual void notify(Subject& subject) = 0;
 };
-#endif
+
+#endif // OBSERVER_H

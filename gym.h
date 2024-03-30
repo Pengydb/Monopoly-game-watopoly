@@ -11,4 +11,5 @@ class Gym : public OwnableProperty {
     void setMultiplier(int m); // sets multiplyer field to m
 
 };
-#endif
+
+#endif // GYM_H

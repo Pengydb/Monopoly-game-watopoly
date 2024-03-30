@@ -16,4 +16,4 @@ class AcademicBuilding : public OwnableProperty {
     void sellImps(int n); // Deincrements impCount by n times (gives player impCost*(0.5)*n )
 }; 
 
-#endif
+#endif // ACADEMICBUILDING_H

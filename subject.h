@@ -18,4 +18,5 @@ public:
     // add more methods if necessary
 
 };
-#endif
+
+#endif // SUBJECT_H
