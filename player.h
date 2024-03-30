@@ -5,7 +5,6 @@
 #include <ownableproperty.h>
 #include <string>
 
-
 class Player: public Subject {
 private:
     char piece;
