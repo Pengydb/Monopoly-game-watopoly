@@ -20,4 +20,4 @@ string OwnableProperty::getGroup() const { return config->getGroup(); }
 
 void OwnableProperty::toggleMortgage() { mortgaged = !(mortgaged); }
 
-void OwnableProperty::toggleOwnership() { owned = !(owned) }
+void OwnableProperty::toggleOwnership() { owned = !(owned); }
