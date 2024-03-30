@@ -2,15 +2,16 @@
 #define _OWNABLEPROPERTY_H_
 
 #include "tile.h"
-
+#include "propertyconfig.h"
+#include <string>
 class OwnableProperty : public Tile {
-    int cost;        // Cost to buy property
-    int fee;         // Fee charged if player lands on already owned property
     bool owned;      // True if property is owned, false otherwise
     bool mortgaged;  // True if property is mortgaged, false otherwise
+  protected:
+    PropertyConfig* config;
 
   public:
-    OwnableProperty(int cost, int fee, bool ow, bool mort);
+    OwnableProperty(std::string name, int loc, PropertyConfig* config);
     // Performs action when player lands on an ownable property 
     // 1) Prompts player to buy if unowned.
     //    -  If player can't afford or doens't buy, property goes up for auction
@@ -20,13 +21,14 @@ class OwnableProperty : public Tile {
     virtual void performAction() = 0; 
 
     bool isOwned() const; // Returns owned field
+    bool isMortgage() const; // returns mortgage field
     int getCost() const; // Returns cost field
-    int getFee() const; // Returns fee field
-    bool getMortgage() const; // returns mortgage field
+    virtual int getFee() const; // Returns tuition fee for this property
+    std::string getGroup() const; // returns which monopoly this property belongs to
+    
 
     void setCost(const int c); // sets cost field to c
-    void setFee(const int f); // sets fee field to f
     void setMortgage(const bool b); // sets mortgage field to b
 };
 
-#endif
+#endif // OWNABLEPROPERTY_H
