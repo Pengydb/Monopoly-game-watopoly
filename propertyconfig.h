@@ -10,24 +10,28 @@ private:
     std::string group;
     int buyingCost;
     int impCost;
-    std::vector<int> rents; // Indexed by stage of imrpovement, starting from base
+    std::vector<int> fees; // Indexed by stage of imrpovement, starting from base
     
 public:
     PropertyConfig(const std::string& name, const std::string& group, int buyingCost, int impCost, const std::vector<int>& rents);
 
-    void setName(const std::string& name);
+    // Creates a PropertyConfig from a CSV string
+    static PropertyConfig fromCSV(const std::string& csvLine);
+
+    void setName(const std::string& newName);
     std::string getName() const;
 
-    void setGroup(const std::string& group);
+    void setGroup(const std::string& newGroup);
     std::string getGroup() const;
 
-    void setCost(const int cost);
+    void setCost(const int newCost);
     int getCost() const;
 
-    void setImpCost(const int impCost);
+    void setImpCost(const int newImpCost);
     int getImpCost() const;
 
-    int getRent(int stage) const;
+    // Returns fee based on stage of improvement
+    int getFee(int stage) const;
 };
 
 #endif // PROPERTYCONFIG_H
