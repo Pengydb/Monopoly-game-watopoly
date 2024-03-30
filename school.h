@@ -29,18 +29,24 @@ public:
     void addPropertyConfig(const std::string& name, std::shared_ptr<PropertyConfig> config);
 
     // Property transfer methods
-    void transferProperty(const std::weak_ptr<Player>& fromPlayer, const std::weak_ptr<Player>& toPlayer, const std::weak_ptr<OwnableProperty>& property); // Player to Player
-    void transferProperty(const std::weak_ptr<Player>& fromPlayer, const std::weak_ptr<OwnableProperty>& property); // School to Player
-    void transferProperty(const std::weak_ptr<OwnableProperty>& property, const std::weak_ptr<Player>& toPlayer); // Player to school
+    void transferProperty(const std::weak_ptr<Player>& toPlayer, const std::weak_ptr<OwnableProperty>& property); // Player to Player
+    void transferProperty(const std::weak_ptr<OwnableProperty>& property); // Player to school
+    void transferProperty(const std::weak_ptr<OwnableProperty>& property, const std::weak_ptr<Player>& toPlayer); // School to player
 
     // Fund Transfer methods
     void transferFunds(const std::weak_ptr<Player>& fromPlayer, const std::weak_ptr<Player>& toPlayer, int amount);
-    void transferFundsToSchool(const std::weak_ptr<Player>& fromPlayer, int amount);
-    void transferFundsFromSchool(int amount, const std::weak_ptr<Player>& toPlayer);
+    void transferFunds(const std::weak_ptr<Player>& fromPlayer, int amount); // Player to school
+    void transferFunds(int amount, const std::weak_ptr<Player>& toPlayer); // school to Player
 
-    // Player finances
+    // Player utility
     int getLiquidAssets(const std::weak_ptr<Player>& player) const;
     bool checkBankrupt(const std::weak_ptr<Player>& player, int amount) const;
+
+    void buyImprovement(const std::weak_ptr<OwnableProperty>& property);
+    void sellImprovement(const std::weak_ptr<OwnableProperty>& property);
+
+    void mortgageProperty(const std::weak_ptr<OwnableProperty>& property);
+    void unmortgageProperty(const std::weak_ptr<OwnableProperty>& property);
 };  
 
 #endif // SCHOOL_H

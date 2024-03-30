@@ -5,6 +5,7 @@
 #include <ownableproperty.h>
 #include <string>
 
+
 class Player: public Subject {
 private:
     char piece;
@@ -15,8 +16,11 @@ private:
     bool visitingTims;  // true when visting false when in line
     int timsLine; // number of turns in line
     int timsCups;
+    School& school;
 
 public:
+    Player(char piece, const std::string& name, int wallet, int position = 0, bool bankrupt = false, bool visitingTims = true, int timsLine = 0, 
+           int timsCups = 0);
     int countGym();
     int countRest();
     void printAssets();
@@ -28,18 +32,6 @@ public:
     int getTimsLine();
     void setTimsLine(const int pos);
     std::string getName();
-
-    void buyProperty();
-    void sellProperty();
-    void buyImprovement();
-    void sellImprovement();
-    void mortgageProperty();
-    void unmortgageProperty();
-
-    void trade(Player target, OwnableProperty& b1, OwnableProperty& b2); // Property for Property
-    void trade(Player target, OwnableProperty& b, const int cash); // Property for cash
-    void trade(Player target, const int cash, OwnableProperty& b); // Cash for Property
-
 };
 
 #endif // PLAYER_H
