@@ -3,6 +3,7 @@
 
 #include <string>
 #include "subject.h"
+#include "player.h"
 using namespace std;
 
 class Tile : public Subject {
@@ -15,7 +16,7 @@ class Tile : public Subject {
     int getLocation() const;  // returns name field of Tile
     string getName() const;   // returns location field of Tile
     
-    virtual void performAction() = 0; // pure virtual, no implimentation, for subclasses
+    virtual void performAction(Player &p) = 0; // pure virtual, no implimentation, for subclasses
     virtual ~Tile() = default; // Default destructor
 };
 

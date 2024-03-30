@@ -5,6 +5,6 @@
 
 class Residence : public OwnableProperty {
   public:
-    void performAction() override;
+    void performAction(Player &p) override;
 };
 #endif // _RESIDENCE_H
