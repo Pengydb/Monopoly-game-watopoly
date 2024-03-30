@@ -43,7 +43,7 @@ void Tuition::performAction(Player &p) {
     cout << "You have landed on Tuition, enter 1 to pay $" << TUITION;
     cout << " or enter 2 to pay %" << TUITION_PER << " of your total worth" << endl;
     int n;
-    cin << n;
+    cin >> n;
 
     if (n == 1) p.incWallet(-TUITION);
     else p.incWallet(-(TUITION_PER/100)*p.getWallet());
