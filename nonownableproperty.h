@@ -3,6 +3,7 @@
 
 #include "tile.h"
 
+
 class NonOwnableProperty : public Tile {
   public:
     virtual void performAction(Player &p) = 0;
