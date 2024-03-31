@@ -27,7 +27,7 @@ public:
     void isBankrupt();
     int getWallet();
     void setWallet(const int amount);
-    void incWallet(const int amount); // Increments the players wallet by amount
+    void addWallet(const int amount); // adds amount to wallet field
     char getPiece();
     void setPosition(const int pos);
     int getPosition() const; // Returns position field
