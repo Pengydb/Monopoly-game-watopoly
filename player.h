@@ -2,6 +2,7 @@
 #define __PLAYER_H_
 
 #include "subject.h"
+#include "school.h"
 #include <ownableproperty.h>
 #include <string>
 
@@ -29,6 +30,8 @@ public:
     void incWallet(const int amount); // Increments the players wallet by amount
     char getPiece();
     void setPosition(const int pos);
+    int getPosition() const; // Returns position field
+    int movePosition(const int n); // moves player forward or backwards (if n < 0) by n tiles
     int getTimsLine();
     void setTimsLine(const int pos);
     int incTimsLine() const; // increments timsLine by 1
