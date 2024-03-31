@@ -37,6 +37,8 @@ public:
     int incTimsLine() const; // increments timsLine by 1
     bool isVisitingTims() const; // returns visitingTims field;
     void toggleVisiting(); // Toggles visitingTims to opposite of what it was
+    void getTimsCups() const; // returns timsCups field
+    void addTimsCups(const int n); // Adds n to timsCups field
 
     std::string getName();
 };
