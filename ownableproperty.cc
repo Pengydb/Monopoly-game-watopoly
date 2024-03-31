@@ -1,6 +1,6 @@
 #include "ownableproperty.h"
 #include <string>
-#include <memory>
+
 using namespace std;
 
 OwnableProperty::OwnableProperty(string name, int loc, PropertyConfig& config) :

@@ -4,7 +4,7 @@
 #include "tile.h"
 #include "propertyconfig.h"
 #include <string>
-#include <memory>
+
 class OwnableProperty : public Tile {
     bool owned;      // True if property is owned, false otherwise
     bool mortgaged;  // True if property is mortgaged, false otherwise
