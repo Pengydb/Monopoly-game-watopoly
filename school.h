@@ -13,12 +13,14 @@ class School: public Observer {
 private:
     std::map<std::weak_ptr<OwnableProperty>, std::weak_ptr<Player>, std::owner_less<std::weak_ptr<OwnableProperty>>> propertyOwnership;
     std::map<std::string, std::shared_ptr<PropertyConfig>> propertyConfigs;
+    int DCTimsCards; // total number of DCTims Cards that are owned by players
 
 public:
-    School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties);
+    School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties, int cards);
     ~School();
 
     void notify(Subject& s);
+    void getDCTimsCards() const; // returns DCTimsCards field
 
     void holdAuction(const std::weak_ptr<OwnableProperty>& property);
 
