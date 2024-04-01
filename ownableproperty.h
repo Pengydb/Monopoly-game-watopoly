@@ -22,7 +22,7 @@ class OwnableProperty : public Tile {
     virtual void performAction(Player &p, School &s) = 0; 
 
     bool isOwned() const; // Returns owned field
-    bool isMortgage() const; // returns mortgage field
+    bool isMortgaged() const; // returns mortgage field
     int getCost() const; // Returns cost field
     virtual int getFee() const; // Returns tuition fee for this property
     std::string getGroup() const; // returns which monopoly this property belongs to

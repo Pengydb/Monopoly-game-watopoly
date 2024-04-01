@@ -23,8 +23,12 @@ public:
     ~School();
 
     void notify(Subject& s);
-    int getDCTimsCups() const; // returns DCTimsCups field
-    void addDCTimsCups(int n); // adds n to DCTimsCups field
+
+     // Returns DCTimsCups field
+    int getDCTimsCups() const;
+
+    // Adds n to DCTimsCups field. Will not allow to go above 4 or below 0 (throws invalid_argument).
+    void addDCTimsCups(int n); 
 
     void holdAuction(const std::string& propertyName);
 
@@ -34,16 +38,19 @@ public:
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
-    // Property transfer methods
+    // Transfers property from one player to another
     void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (school has name SCHOOL)
 
-    // Fund Transfer methods
+    // Transfers funds from fromPlayerName to toPlayerName, will check for bankruptucy and seize assets if necessary. (Use SCHOOL as name school)
     void transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
 
-    // Player utility
+    // Counts number of properities of given group that the player owns
     int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
 
+    // Calculates player's total liquid assets from cash and mortgaging all properties and/or selling improvements
     int getLiquidAssets(const std::string& playerName) const;
+
+    // Checks if player has solvency to pay amount
     bool checkBankrupt(const std::string& playerName, int amount) const;
 
     void buyImprovement(const std::string& propertyName);
