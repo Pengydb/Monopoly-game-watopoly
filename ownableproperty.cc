@@ -9,7 +9,7 @@ OwnableProperty::OwnableProperty(string name, PropertyConfig& config) :
 
 bool OwnableProperty::isOwned() const { return owned; }
 
-bool OwnableProperty::isMortgage() const { return mortgaged; }
+bool OwnableProperty::isMortgaged() const { return mortgaged; }
 
 int OwnableProperty::getCost() const { return config.getCost(); }
 

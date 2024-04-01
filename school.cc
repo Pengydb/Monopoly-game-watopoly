@@ -79,26 +79,26 @@ int School::countBlocksOwnedBy(const std::string& playerName, const std::string&
 
 int School::getLiquidAssets(const std::string& playerName) const {
     if (players.find(playerName) == players.end()) {
-        throw std::invalid_argument("Target player name does not exist: " + playerName);
+        throw std::invalid_argument("Target player does not exist: " + playerName);
     }
     int assets = 0;
     assets += players.find(playerName)->second->getWallet();
     for (const auto& [propertyName, ownerName] : propertyOwnership) {
         if (ownerName == playerName) {
             auto iter = properties.find(propertyName);
-            // check if academic building
 
-            // if academic building check if mortgaged
-            // if mortgaged nothing to add to assets
-            // if not mortgaged add to liquid assets potential value for selling enhancments + mortgaging
+            std::shared_ptr<OwnableProperty> property = iter->second;
 
-            //if not academic building check if mortgaged
-            // if mortgaged nothing to add to assets
-            // if not mortgaged add to liquid assets potential value for mortgaging
+            if(!property->isMortgaged()) {
+                assets += property->getCost() * 0.5; // mortgage value is 50%
 
+                auto academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(property);
+                if (academicBuilding) {
+                    assets += academicBuilding->getImpCount() * academicBuilding->getImpCost() * 0.5; // improvements sell for 50%
+                }
+            }
         }
     }
-   
     return assets; 
 }
 
