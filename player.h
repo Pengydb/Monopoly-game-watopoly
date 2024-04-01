@@ -19,8 +19,8 @@ private:
     School& school;
 
 public:
-    Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position = 0, bool bankrupt = false, bool visitingTims = true, int timsLine = 0, 
-           int timsCups = 0);
+    Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position = 0, bool visitingTims = true, 
+           int timsLine = 0, int timsCups = 0);
     int countGym() const; // counts number of gym's owned
     int countRes() const; // counts number of residence's owned
     void printAssets() const;
