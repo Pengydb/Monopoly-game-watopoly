@@ -39,6 +39,9 @@ public:
     void transferFunds(int amount, const std::weak_ptr<Player>& toPlayer); // school to Player
 
     // Player utility
+    int countGymsOwnedBy(const Player& player) const;
+    int countResOwnedBy(const Player& player) const;
+
     int getLiquidAssets(const std::weak_ptr<Player>& player) const;
     bool checkBankrupt(const std::weak_ptr<Player>& player, int amount) const;
 
