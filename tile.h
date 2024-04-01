@@ -7,12 +7,10 @@
 
 class Tile : public Subject {
     std::string name;  // Name of the tile
-    int location; // Position of tile on the board
 
   public:
-    Tile(std::string name, int loc); // Constructor for Tile
+    Tile(std::string name); // Constructor for Tile
 
-    int getLocation() const;  // returns name field of Tile
     std::string getName() const;   // returns location field of Tile
     
     virtual void performAction(Player &p) = 0; // pure virtual, no implimentation, for subclasses

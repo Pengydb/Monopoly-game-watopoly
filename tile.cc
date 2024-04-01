@@ -2,8 +2,6 @@
 #include <string>
 using namespace std;
 
-Tile::Tile(string name, int loc) : name{name}, location{loc} {}
-
-int Tile::getLocation() const { return location; }
+Tile::Tile(string name) : name{name} {}
 
 string Tile::getName() const { return name; }
