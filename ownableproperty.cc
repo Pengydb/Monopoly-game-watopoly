@@ -25,3 +25,5 @@ void OwnableProperty::toggleOwnership() { owned = !(owned); }
 int OwnableProperty::getDepth() const { return 0; }
 
 bool OwnableProperty::isPropertyEnhancement() const { return false; }
+
+const PropertyConfig& OwnableProperty::getConfig() const { return config; }
