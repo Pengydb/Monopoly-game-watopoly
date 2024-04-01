@@ -26,7 +26,7 @@ PropertyConfig::PropertyConfig(const std::string& name, const std::string& group
     }
 }    
 
-PropertyConfig fromCSV(const std::string& csvLine) {
+PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
     std::istringstream readLine(csvLine);
     std::string readValue, name, group;
     int buyingCost, impCost;
