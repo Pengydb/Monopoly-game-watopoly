@@ -16,12 +16,15 @@ private:
     std::map<std::string, std::shared_ptr<Player>> players; // Maps player name to player
     std::map<std::string, std::shared_ptr<OwnableProperty>> properties; // Mpas property name to property
     std::map<std::string, std::string> propertyOwnership; // maps property name to player name
+    int DCTimsCups; // total number of DCTims Cups that are owned by players
     
 public:
-    School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties);
+    School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties, int cards);
     ~School();
 
     void notify(Subject& s);
+    int getDCTimsCups() const; // returns DCTimsCups field
+    void addDCTimsCups(int n); // adds n to DCTimsCups field
 
     void holdAuction(const std::string& propertyName);
 
