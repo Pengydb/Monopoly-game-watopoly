@@ -11,7 +11,7 @@ class AcademicBuilding : public OwnableProperty {
     MonopolyBlock monBlock;
   
   public:
-    void performAction(Player &p) override;
+    void performAction(Player &p, School &s) override;
     void addImps(int n); // Increments impCount by n times (charges player impCost*n )
     void sellImps(int n); // Deincrements impCount by n times (gives player impCost*(0.5)*n )
 }; 
