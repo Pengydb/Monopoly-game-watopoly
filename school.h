@@ -21,6 +21,7 @@ public:
 
     void notify(Subject& s);
     void getDCTimsCards() const; // returns DCTimsCards field
+    void addDCTimsCards(int n); // adds n to DCTimsCards field
 
     void holdAuction(const std::weak_ptr<OwnableProperty>& property);
 
