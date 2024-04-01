@@ -28,25 +28,20 @@ public:
 
     void holdAuction(const std::string& propertyName);
 
-    std::weak_ptr<Player> getPropertyOwner(const std::string& propertyName) const;
+    std::string getPropertyOwner(const std::string& propertyName) const;
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     // Property transfer methods
-    void transferProperty(const std::string& toPlayerName, const std::string& propertyName); // Player to Player
-    void transferProperty(const std::string& propertyName); // Player to school
-    void transferProperty(const std::string& propertyName, const std::string& toPlayerName); // School to player
+    void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (school has name SCHOOL)
 
     // Fund Transfer methods
     void transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
-    void transferFunds(const std::weak_ptr<Player>& fromPlayer, int amount); // Player to school
-    void transferFunds(int amount, const std::weak_ptr<Player>& toPlayer); // school to Player
 
     // Player utility
-    int countGymsOwnedBy(const std::string& playerName) const;
-    int countResOwnedBy(const std::string& playerName) const;
+    int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
 
     int getLiquidAssets(const std::string& playerName) const;
     bool checkBankrupt(const std::string& playerName, int amount) const;
