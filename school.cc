@@ -99,7 +99,7 @@ int School::getLiquidAssets(const std::string& playerName) const {
         }
     }
    
-    return assets; // Placeholder return
+    return assets; 
 }
 
 bool School::checkBankrupt(const std::string& playerName, int amount) const {
