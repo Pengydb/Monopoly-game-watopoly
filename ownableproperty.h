@@ -29,6 +29,9 @@ class OwnableProperty : public Tile {
     
     void toggleMortgage(); // Toggles mortgaged field to opposite of what it was
     void toggleOwnership(); // Toggles owned field to opposite of what it was
+    
+    virtual int getDepth() const; // 0 for default, 1 for monopoly, 2 for 1 house . . .
+    virtual bool isPropertyEnhancement() const;
 };
 
 #endif // OWNABLEPROPERTY_H
