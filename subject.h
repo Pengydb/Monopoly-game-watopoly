@@ -11,10 +11,9 @@ private:
     // other fields if necessary
 
 public:
-    
-    void attach(std::shared_ptr<Observer> o); 
-    void detach(std::shared_ptr<Observer> o);
-    void notifyObservers(); // notify all Observers
+    virtual ~Subject() {}
+    virtual void attach(std::shared_ptr<Observer> o); 
+    virtual void notifyObservers(); // notify all Observers
     // add more methods if necessary
 
 };
