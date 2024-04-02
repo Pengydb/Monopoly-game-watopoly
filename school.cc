@@ -351,5 +351,13 @@ void School::unmortgageProperty(const std::string& propertyName, const std::stri
 }
 
 void School::removePlayer(const std::string& playerName) {
-   
+    auto it = players.find(playerName); // Checks if player is in map, if not it == player.end()
+    if (it != players.end()) {
+        std::cout << playerName << " is not a player" << std::endl;
+    } else {
+        players.erase(playerName);
+        std::cout << playerName << " has gone bankrupt and can no longer continue" << std::endl;
+    }
 }
+
+
