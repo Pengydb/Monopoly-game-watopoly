@@ -58,21 +58,25 @@ void School::transferProperty(const std::string& toPlayerName, const std::string
     propertyOwnership[propertyName] = toPlayerName;
 }
 
-void School::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
-    if (fromPlayerName == toPlayerName) { return; }
+bool School::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
+    if (fromPlayerName == toPlayerName) { return false; }
     if (fromPlayerName != "SCHOOL") {
         if (checkSufficientFunds(fromPlayerName, amount)) {
             players.find(fromPlayerName)->second->addWallet(-amount);
             if (toPlayerName != "SCHOOL") {
                 players.find(toPlayerName)->second->addWallet(amount);
             }
+            std:: cout << "Sucessfully transfeer $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
+            return true;
         }
         else {
-
-            // start bankruptcy procedure
+            std:: cout << fromPlayerName << " lacks suffiecnt funds to transfer." << std::endl;
+            return false;
         }
     }
     players.find(toPlayerName)->second->addWallet(amount);
+    std:: cout << "Sucessfully transfeer $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
+    return true;
 }
 
 int School::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
@@ -125,7 +129,7 @@ bool School::checkSufficientFunds(const std::string& playerName, int amount) con
     if (player->getWallet() < amount) {
         return true;
     }
-    return false; // Placeholder return
+    return false; 
 }
 
 void School::payDebts(const std::string& debotor, const std::string& creditor, int amount) {
@@ -318,6 +322,6 @@ void School::unmortgageProperty(const std::string& propertyName, const std::stri
     std::cout << playerName << " has paid $" << unmortgageCost << " to unmortgage " << propertyName << "." << std::endl;
 }
 
-void School::declareBankrupt(const std::string& playerName) {
-    // Implementation here
+void School::removePlayer(const std::string& playerName) {
+   
 }

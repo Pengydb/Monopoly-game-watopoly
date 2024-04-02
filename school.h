@@ -41,7 +41,7 @@ public:
     // Transfers property from one player to another
     void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (school has name SCHOOL)
 
-    // Transfers funds from fromPlayerName to toPlayerName, will check for bankruptucy and seize assets if necessary. (Use SCHOOL as name school)
+    // Transfers funds from fromPlayerName to toPlayerName, will not work if fromPlayer lacks sufficient funds and a message will be displayed
     void transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
 
     void payDebts(const std::string& debotor, const std::string& creditor, int amount);
@@ -60,7 +60,8 @@ public:
     void mortgageProperty(const std::string& propertyName, const std::string& playerName);
     void unmortgageProperty(const std::string& propertyName, const std::string& playerName);
 
-    void declareBankrupt(const std::string& playerName);
+    // Removes player from school's tracking, to be used after a player has declared bankruptcy and all their assets have been transferred
+    void removePlayer(const std::string& playerName);
 };  
 
 #endif // SCHOOL_H
