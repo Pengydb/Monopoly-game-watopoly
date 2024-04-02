@@ -3,8 +3,8 @@
 
 using namespace std;
 
-OwnableProperty::OwnableProperty(string name, PropertyConfig& config) :
-            Tile{name}, config(config) {}
+OwnableProperty::OwnableProperty(string name, PropertyConfig& config, bool owned, bool mortgaged) :
+            Tile{name}, config{config}, owned{owned}, mortgaged{mortgaged} {}
 
 
 bool OwnableProperty::isOwned() const { return owned; }

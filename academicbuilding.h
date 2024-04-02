@@ -12,7 +12,7 @@ class AcademicBuilding : public OwnableProperty {
     // MonopolyBlock monBlock; getGroup from config
   
   public:
-    AcademicBuilding(std::string name, PropertyConfig& config, int impCount, int impCost);
+    AcademicBuilding(std::string name, PropertyConfig& config, bool owned, bool mortgaged, int impCount, int impCost);
     void performAction(Player &p, School &s) override;
     void addImps(int n); // Increments impCount by n (does not charge player)
     int getImpCost() const;

@@ -12,6 +12,17 @@ const int TUITION_PER = 10;
 const int COOP_FEE = 150;
 const int JAIL_FEE = 50;
 
+NonOwnableProperty::NonOwnableProperty(string name): Tile{name} {}
+CollectOsap::CollectOsap(string name): Tile{name} {}
+DCTims::DCTims(string name): Tile{name} {}
+GoToTims::GoToTims(string name): Tile{name} {}
+GooseNesting::GooseNesting(string name): Tile{name} {}
+Tuition::Tuition(string name): Tile{name} {}
+CoopFee::CoopFee(string name): Tile{name} {}
+SLC::SLC(string name): Tile{name} {}
+NH::NH(string name): Tile{name} {}
+
+
 
 void CollectOsap::performAction(Player &p, School &s) {
     cout << "You have passed Collect Osap, Collect $" << OSAP << endl;

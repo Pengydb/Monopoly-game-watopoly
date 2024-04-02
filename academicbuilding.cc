@@ -3,8 +3,9 @@
 #include <string>
 using namespace std;
 
-AcademicBuilding::AcademicBuilding(string name, PropertyConfig& config, int impCount, int impCost):
-                    OwnableProperty{name, config}, impCount{impCount}, impCost{impCost} {}
+AcademicBuilding::AcademicBuilding(string name, PropertyConfig& config, bool owned, bool mortgaged, 
+                                   int impCount, int impCost):
+                    OwnableProperty{name, config, owned, mortgaged}, impCount{impCount}, impCost{impCost} {}
 
 void AcademicBuilding::performAction(Player &p, School &s) {
     cout << "You have landed on " << this->getName() << endl;

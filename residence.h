@@ -5,6 +5,7 @@
 
 class Residence : public OwnableProperty {
   public:
+    Residence(std::string name, PropertyConfig& config, bool owned, bool mortgaged);
     void performAction(Player &p, School &s) override;
 };
 #endif // _RESIDENCE_H
