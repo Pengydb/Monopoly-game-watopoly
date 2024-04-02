@@ -109,7 +109,9 @@ void Board::setPlayer() {
         break;
     };
     School school;
-    shared_ptr<Player> name = make_shared<Player>(playerPiece, name, 1500, school, 49)
+    const int wallet = 1500;
+    const int boardSize = 49;
+    shared_ptr<Player> name = make_shared<Player>(playerPiece, name, wallet, school, boardSize);
     cout << "Player " << name << " added" << endl;
 }
 
