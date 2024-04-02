@@ -167,7 +167,9 @@ int Board::getTurn() {
     return playerTurn;
 }
 
-void Board::startGame(const std::string &filename)
+
+
+void Board::setupGame(const std::string &filename)
 {
     
     std::ifstream file(filename);
@@ -222,6 +224,12 @@ void Board::startGame(const std::string &filename)
     for (int i = 0; i < numPlayers; ++i) {
         std::shared_ptr<Player> player = setPlayer();
         players.push_back(player);
+    }
+
+    if (numPlayers == 1){
+        std::shared_ptr<Player> player = players[0];
+        std::string name = player->getName();
+        std::cout << "Congratulations! " << name << " has won the game" << std::endl;
     }
 
     const int cards = 15;
@@ -281,6 +289,15 @@ std::shared_ptr<Player> Board::setPlayer()
     return player;
 }
 
+void playGame() {
+    while(true){
+        std::vector<std::string> commands = {"roll","next","trade","improve","mortgage","unmortgage","bankrupt","assets","all","save"};
+        
+    }
+    
+
+}
+
 void Board::movePlayer(Player &p, int roll) {
     int index = p.getPosition();
     index = (index + roll) % 50;
@@ -297,20 +314,23 @@ void Board::removePlayer(Player &player)
             break;
         }
     }
+    school->removePlayer(player.getName());
 }
 
 void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % (players.size() + 1);
 }
 
-// void Board::notify(Subject &s){
-//     for (auto &observer : observers)
-//     {
-//         observer->update(s);
-//     }
-// }
+void Board::notify(Subject &s){
+    for (auto &observer : observers)
+    {
+        observer->notify(s);
+    }
+}
 
-//void Board::printBoard() {}
+void Board::printBoard(TextDisplay &t) {
+    t.printBoard();
+}
 
 
 std::string Board::getTileName(const int n) const {
