@@ -44,6 +44,7 @@ public:
     // Transfers funds from fromPlayerName to toPlayerName, will check for bankruptucy and seize assets if necessary. (Use SCHOOL as name school)
     void transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
 
+    void payDebts(const std::string& debotor, const std::string& creditor, int amount);
     // Counts number of properities of given group that the player owns
     int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
 
@@ -51,10 +52,10 @@ public:
     int getLiquidAssets(const std::string& playerName) const;
 
     // Checks if player has solvency to pay amount
-    bool checkBankrupt(const std::string& playerName, int amount) const;
+    bool checkSufficientFunds(const std::string& playerName, int amount) const;
 
-    void buyImprovement(const std::string& propertyName);
-    void sellImprovement(const std::string& propertyName);
+    void buyImprovement(const std::string& propertyName, const std::string& playerName);
+    void sellImprovement(const std::string& propertyName, const std::string& playerName);
 
     void mortgageProperty(const std::string& propertyName);
     void unmortgageProperty(const std::string& propertyName);

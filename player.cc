@@ -12,12 +12,12 @@ Player::Player(char piece, const std::string& name, int wallet, School& school, 
 }
 
 int Player::countGym() const{
-    return school.countGymsOwnedBy(*this);
+    return school.countBlocksOwnedBy(name, "Gym");
     // potentially removed and just use the school method instead
 }
 
-int Player::countGym() const{
-    return school.countResOwnedBy(*this);
+int Player::countRes() const{
+    return school.countBlocksOwnedBy(name, "Residence");
     // potentially removed and just use the school method instead
 }
 
@@ -83,6 +83,7 @@ std::string Player::getName() const{
     return name;
 }
 
+/**
 void Player::notEnoughCash(School &s) {
     int assets = s.getLiquidAssets(this->getName());
     if (this->getWallet() < 0) {
@@ -103,6 +104,7 @@ void Player::notEnoughCash(School &s) {
                 cout << "You do not own this property" << endl;
                 continue;
             }*/
+            /*
             if (cmd == "improve") { // chose to sell improvements
                 int imps;
                 std::cin >> imps; // Should add checking to make sure imps is an integer > 0
@@ -119,7 +121,7 @@ void Player::notEnoughCash(School &s) {
         } // while
     } // if
 }
-
+*/
 
 int roll() {
     std::vector<int> die{1, 2, 3, 4, 5, 6}; 
