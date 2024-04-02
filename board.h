@@ -17,7 +17,7 @@ class Board : public Observer {
     public:
     void saveGame(); // Saves the current game
     int getTurn(); // Gets the current player's turn
-    void startGame(); // Starts the game
+    void startGame(const std::string &filename); // Starts the game
 
     void setPlayer(); // Creates a player
     void movePlayer(Player &p, Tile &t); // Moves a player to the target tile
