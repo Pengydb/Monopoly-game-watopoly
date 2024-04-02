@@ -311,3 +311,8 @@ void Board::nextTurn() {
 // }
 
 //void Board::printBoard() {}
+
+
+std::string Board::getTileName(const int n) const {
+    return buildings[n]->getName();
+}

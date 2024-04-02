@@ -30,6 +30,9 @@ class Board : public Observer {
     void printBoard(); // Prints the current state of the board
     // void notify(Subject &s);
     void loadGame(const std::string &filename);
+
+    // Returns the name of the tile at position n (assumes 40 >= n >= 0)
+    std::string getTileName(const int n) const; 
 };
 
 #endif // BOARD_H
