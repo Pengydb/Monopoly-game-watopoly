@@ -60,7 +60,7 @@ void Board::startGame(const std::string &filename)
     }
     school = make_shared<School>(players, AcademicBuildings, 43);
     playerTurn = 0;
-    std::cout << "Game started with " << numPlayers << " players." << endl;
+    std::cout << "Game started with " << numPlayers << " players." << std::endl;
 }
 
 std::shared_ptr<Player> Board::setPlayer()
