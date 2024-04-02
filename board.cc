@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include <sstream>
-using namespace std;
 
 // void Board::saveGame() 
 
@@ -16,9 +15,7 @@ void Board::startGame(const std::string &filename)
 {
     
     std::ifstream file(filename);
-    std::vector<std::shared_ptr<Tile>> tiles;
-    std::vector<std::shared_ptr<Tile>> AcademicBuildings;
-    std::vector<std::shared_ptr<Player>> players;
+    std::vector<std::shared_ptr<OwnableProperty>> AcademicBuildings;
 
     std::string line;
     while (getline(file, line))
@@ -31,67 +28,67 @@ void Board::startGame(const std::string &filename)
         if (buildingType == "AB")
         {
             std::shared_ptr<AcademicBuilding> tile = nullptr;
-            tiles.push_back(tile);
+            buildings.push_back(tile);
             AcademicBuildings.push_back(tile);
         }
         else if (buildingType == "R")
         {
             std::shared_ptr<Residence> tile = nullptr;
-            tiles.push_back(tile);
+            buildings.push_back(tile);
         }
         else if (buildingType == "GYM")
         {
             std::shared_ptr<Gym> tile = nullptr;
-            tiles.push_back(tile);
+            buildings.push_back(tile);
         }
         else if (buildingType == "NOP")
         {
             std::shared_ptr<NonOwnableProperty> tile = nullptr;
-            tiles.push_back(tile);
+            buildings.push_back(tile);
         }
     }
     file.close();
-    
 
-    cout << "Enter the number of players: " << endl;;
+    std::cout << "Enter the number of players: " << std::endl;
     int numPlayers;
-    cin >> numPlayers;
-    cin.ignore();
+    std::cin >> numPlayers;
+    std::cin.ignore();
 
     for (int i = 0; i < numPlayers; ++i) {
-        shared_ptr<Player> player = setPlayer();
+        std::shared_ptr<Player> player = setPlayer();
         players.push_back(player);
     }
-        playerTurn = 0;
-        cout << "Game started with " << numPlayers << " players." << endl;
+    school = make_shared<School>(players, AcademicBuildings, 43);
+    playerTurn = 0;
+    std::cout << "Game started with " << numPlayers << " players." << endl;
 }
 
-shared_ptr<Player> Board::setPlayer()
+std::shared_ptr<Player> Board::setPlayer()
 {
-    string name;
+    std::string name;
     while(true){
-        cout << "Enter player's name: " << endl;
-        getline(cin, name);
+        std::cout << "Enter player's name: " << std::endl;
+        std::getline(std::cin, name);
         if (!name.empty()){
             break;
         }
         else{
-            cout << "Invalid name. Player not added." << endl;
+            std::cout << "Invalid name. Player not added." << std::endl;
         }
     }
 
     char playerPiece;
     while (true) {
-        cout << "Enter player's piece out of:\n"
-             << "G (Goose)\n"
-             << "B (GRTBus)\n"
-             << "D (TimHortonsDoughnut)\n"
-             << "P (Professor)\n"
-             << "S (Student)\n"
-             << "$ (Money)\n"
-             << "L (Laptop)\n"
-             << "T (PinkTie)" << endl;
-        cin >> playerPiece;
+        std::cout << "Enter player's piece out of:\n"
+                  << "G (Goose)\n"
+                  << "B (GRTBus)\n"
+                  << "D (TimHortonsDoughnut)\n"
+                  << "P (Professor)\n"
+                  << "S (Student)\n"
+                  << "$ (Money)\n"
+                  << "L (Laptop)\n"
+                  << "T (PinkTie)" << std::endl;
+        std::cin >> playerPiece;
         switch(playerPiece) {
         case 'G':
         case 'B':
@@ -101,28 +98,32 @@ shared_ptr<Player> Board::setPlayer()
         case '$':
         case 'L':
         case 'T':
-            cout << "You chose the " << playerPiece << " piece." << endl;
+            std::cout << "You chose the " << playerPiece << " piece." << std::endl;
             break;
         default:
-            cout << "Invalid choice. Please try again." << endl;
+            std::cout << "Invalid choice. Please try again." << std::endl;
             continue;
         }
         break;
     };
-    shared_ptr<School> school = nullptr;
     const int wallet = 1500;
     const int boardSize = 49;
-    shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, school, boardSize);
+    std::shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, *school, boardSize);
     return player;
 }
 
-void Board::movePlayer(Player &p, Tile &t) {
-    p.setPosition(t.getLocation());
+void Board::movePlayer(Player &p, int roll) {
+    int index = p.getPosition();
+    index = (index + roll) % 50;
+    p.setPosition(index);
 }
 
-void Board::removePlayer(Player &player) {
-    for (auto it = players.begin(); it != players.end(); ++it) {
-        if (*it == &player) {
+void Board::removePlayer(Player &player)
+{
+    for (auto it = players.begin(); it != players.end(); ++it)
+    {
+        if (it->get() == &player)
+        {
             players.erase(it);
             break;
         }
@@ -130,9 +131,7 @@ void Board::removePlayer(Player &player) {
 }
 
 void Board::nextTurn() {
-    playerTurn = (playerTurn + 1) % players.size();
+    playerTurn = (playerTurn + 1) % (players.size() + 1);
 }
 
-//void Board::playGame() {}       What is the difference between next turn and play game
-
-//void Board::printBoard() {}     What is the purpose of the TextDisplay class?
+//void Board::printBoard() {}
