@@ -22,7 +22,7 @@ private:
 
 public:
     Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position = 0, bool visitingTims = true, 
-           int timsLine = 0, int timsCups = 0);
+           int timsLine = 0, int timsCups = 0, int gyms, int res);
     int getGyms() const; // Returns gyms field
     int getRes() const; // Returns res field
     void addGyms(const int n); // Adds n to the gyms field

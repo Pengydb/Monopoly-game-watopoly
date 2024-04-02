@@ -7,19 +7,10 @@
 #include <random>
 
 Player::Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position, bool visitingTims, 
-        int timsLine, int timsCups) : piece(piece), name(name), wallet(wallet), school(school), boardSize(boardSize), position(position), 
-                                      visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups) {
-}
+        int timsLine, int timsCups, int gyms, int res) : 
+        piece(piece), name(name), wallet(wallet), school(school), boardSize(boardSize), position(position), 
+        visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res) {}
 
-int Player::countGym() const{
-    return school.countBlocksOwnedBy(name, "Gym");
-    // potentially removed and just use the school method instead
-}
-
-int Player::countRes() const{
-    return school.countBlocksOwnedBy(name, "Residence");
-    // potentially removed and just use the school method instead
-}
 
 int Player::getWallet() const{
     return wallet;
