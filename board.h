@@ -4,8 +4,14 @@
 #include <vector>
 #include "observer.h"
 #include "tile.h"
+#include "academicbuilding.h"
+#include "nonownableproperty.h"
+#include "academicbuilding.h"
+#include "gym.h"
+#include "residence.h"
 #include "player.h"
 #include "school.h"
+
 using namespace std;
 
 class Board : public Observer {
