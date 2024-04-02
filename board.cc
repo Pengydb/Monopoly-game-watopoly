@@ -79,7 +79,7 @@ void Board::setPlayer() {
         }
     }
 
-    string playerPiece;
+    char playerPiece;
     while (true) {
         cout << "Enter player's piece out of:\n"
              << "G (Goose)\n"
@@ -90,7 +90,7 @@ void Board::setPlayer() {
              << "$ (Money)\n"
              << "L (Laptop)\n"
              << "T (PinkTie)" << endl;
-        getline(cin, playerPiece);
+        cin >> playerPiece;
         switch(playerPiece) {
         case 'G':
         case 'B':
@@ -116,7 +116,7 @@ void Board::setPlayer() {
 }
 
 void Board::movePlayer(Player &p, Tile &t) {
-    player.setPosition(tile.getLocation());
+    p.setPosition(t.getLocation());
 }
 
 void Board::removePlayer(Player &player) {
