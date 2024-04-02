@@ -13,14 +13,14 @@ const int COOP_FEE = 150;
 const int JAIL_FEE = 50;
 
 NonOwnableProperty::NonOwnableProperty(string name): Tile{name} {}
-CollectOsap::CollectOsap(string name): Tile{name} {}
-DCTims::DCTims(string name): Tile{name} {}
-GoToTims::GoToTims(string name): Tile{name} {}
-GooseNesting::GooseNesting(string name): Tile{name} {}
-Tuition::Tuition(string name): Tile{name} {}
-CoopFee::CoopFee(string name): Tile{name} {}
-SLC::SLC(string name): Tile{name} {}
-NH::NH(string name): Tile{name} {}
+CollectOsap::CollectOsap(string name): NonOwnableProperty{name} {}
+DCTims::DCTims(string name): NonOwnableProperty{name} {}
+GoToTims::GoToTims(string name): NonOwnableProperty{name} {}
+GooseNesting::GooseNesting(string name): NonOwnableProperty{name} {}
+Tuition::Tuition(string name): NonOwnableProperty{name} {}
+CoopFee::CoopFee(string name): NonOwnableProperty{name} {}
+SLC::SLC(string name): NonOwnableProperty{name} {}
+NH::NH(string name): NonOwnableProperty{name} {}
 
 
 
