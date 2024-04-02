@@ -25,7 +25,7 @@ class Board : public Observer {
     int getTurn(); // Gets the current player's turn
     void startGame(const std::string &filename); // Starts the game
 
-    void setPlayer(); // Creates a player
+    shared_ptr<Player> setPlayer(); // Creates a player
     void movePlayer(Player &p, Tile &t); // Moves a player to the target tile
     void removePlayer(Player &p); // removes a player from the board
     void nextTurn(); // moves the game to the next turn

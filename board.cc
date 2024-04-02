@@ -18,6 +18,7 @@ void Board::startGame(const std::string &filename)
     std::ifstream file(filename);
     std::vector<std::shared_ptr<Tile>> tiles;
     std::vector<std::shared_ptr<Tile>> AcademicBuildings;
+    std::vector<std::shared_ptr<Player>> players;
 
     std::string line;
     while (getline(file, line))
@@ -58,13 +59,15 @@ void Board::startGame(const std::string &filename)
     cin.ignore();
 
     for (int i = 0; i < numPlayers; ++i) {
-        setPlayer();
+        shared_ptr<Player> player = setPlayer();
+        players.push_back(player);
     }
         playerTurn = 0;
         cout << "Game started with " << numPlayers << " players." << endl;
 }
 
-void Board::setPlayer() {
+shared_ptr<Player> Board::setPlayer()
+{
     string name;
     while(true){
         cout << "Enter player's name: " << endl;
@@ -109,8 +112,8 @@ void Board::setPlayer() {
     shared_ptr<School> school = nullptr;
     const int wallet = 1500;
     const int boardSize = 49;
-    shared_ptr<Player> name = make_shared<Player>(playerPiece, name, wallet, school, boardSize);
-    cout << "Player " << name << " added" << endl;
+    shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, school, boardSize);
+    return player;
 }
 
 void Board::movePlayer(Player &p, Tile &t) {
