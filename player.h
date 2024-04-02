@@ -39,6 +39,7 @@ public:
     int getTimsCups() const; // returns timsCups field
     void addTimsCups(const int n); // Adds n to timsCups field
     std::string getName() const;
+    int roll() const; // Returns a random num between 1 and 6
 
     // Will continue to prompt player to sell improvements or mortgage their properties
     // Until their wallet is > 0 (assumes p.getWallet() < 0)

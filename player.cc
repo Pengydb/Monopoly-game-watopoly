@@ -2,6 +2,9 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <vector>
+#include <algorithm>
+#include <random>
 
 Player::Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position, bool visitingTims, 
         int timsLine, int timsCups) : piece(piece), name(name), wallet(wallet), school(school), boardSize(boardSize), position(position), 
@@ -115,4 +118,13 @@ void Player::notEnoughCash(School &s) {
             }
         } // while
     } // if
+}
+
+
+int roll() {
+    std::vector<int> die{1, 2, 3, 4, 5, 6}; 
+    std::random_device rd;
+    std::mt19937 seed(rd());
+    std::shuffle(die.begin(), die.end(), seed); // Shuffles elements in die
+    return die[0];
 }

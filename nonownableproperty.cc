@@ -15,7 +15,7 @@ const int JAIL_FEE = 50;
 
 void CollectOsap::performAction(Player &p, School &s) {
     cout << "You have passed Collect Osap, Collect $" << OSAP << endl;
-    p.addWallet(OSAP);
+    s.transferFunds("SCHOOL", p.getName(), OSAP);
 }
 
 void DCTims::performAction(Player &p, School &s) {
@@ -24,9 +24,12 @@ void DCTims::performAction(Player &p, School &s) {
         return;
     } 
 
+    p.incTimsLine();
+
     cout << "You are in the DCTims line, roll doubles, pay $" << JAIL_FEE;
     cout << ", wait 5 turns, or use a Tims Cup to be free!" << endl;
-    cout << "This is your " << p.getTimsLine() << " turn";
+    cout << "This is your " << p.getTimsLine() << " turn" << endl;
+
 
     if (p.getTimsCups() > 0) {
         cout << "You have a Tims Cup! Do you want to use it? (y/n)" << endl;
@@ -38,7 +41,7 @@ void DCTims::performAction(Player &p, School &s) {
                 p.toggleVisiting();
                 p.setTimsLine(0);
                 s.addDCTimsCups(-1);
-                break;
+                return;
             } else if (ans == "n") {
                 cout << "You remain in the line" << endl;
                 break;
@@ -53,9 +56,10 @@ void DCTims::performAction(Player &p, School &s) {
             cin >> ans;
             if (ans == "y") {
                 cout << "You are free from the line!" << endl;
+                s.transferFunds("SCHOOL", p.getName(), JAIL_FEE);
                 p.toggleVisiting();
                 p.setTimsLine(0);
-                break;
+                return;
             } else if (ans == "n") {
                 cout << "You remain in the line" << endl;
                 break;
@@ -63,13 +67,21 @@ void DCTims::performAction(Player &p, School &s) {
         }
     }
 
-    if (p.getTimsLine() == 5 /*|| p.roll() == "doubles"*/) { 
-        cout << "You are free from the line!" << endl;
+    if (p.getTimsLine() == 3) {
+        cout << "You have stayed in the Tims line for too long either pay $" << JAIL_FEE;
+        cout << ", or use a DCTims Cup" << endl;
+        
+        if (p.getTimsCups() == 0) {
+            cout << "You don't have any TimsCups so you will pay the fee" << endl;
+            s.transferFunds("SCHOOL", p.getName(), JAIL_FEE);
+        } else {
+            p.addTimsCups(-1);
+        }
+
         p.toggleVisiting();
         p.setTimsLine(0);
-    } else {
-        p.incTimsLine();
-    }
+        return;
+    } 
 }
 
 void GoToTims::performAction(Player &p, School &s) {
@@ -88,13 +100,13 @@ void Tuition::performAction(Player &p, School &s) {
     int n;
     cin >> n;
 
-    if (n == 1) p.addWallet(-TUITION);
-    else p.addWallet(-(TUITION_PER/100)*p.getWallet());
+    if (n == 1) s.transferFunds("SCHOOL", p.getName(), -TUITION);
+    else s.transferFunds("SCHOOL", p.getName(), -(TUITION_PER/100)*p.getWallet());
 }
 
 void CoopFee::performAction(Player &p, School &s) {
     cout << "You have landed on Coop Fee, pay $" << COOP_FEE << "top the School" << endl;
-    p.addWallet(-COOP_FEE);
+    s.transferFunds("SCHOOL", p.getName(), (-COOP_FEE));
 }
 
 
@@ -165,47 +177,12 @@ void NH::performAction(Player &p, School &s) {
     
     // May have to sell/mortgage assests, or declare bankrupcy if p.wallet goes less than 0
     switch(n) { // switch case that matches NH prob. table given in Watopoly.pdf
-        case 1:
-        case 2: p.addWallet(-100);
-        case 3: p.addWallet(-50);
-        case 4: p.addWallet(25);
-        case 5: p.addWallet(50);
-        case 6: p.addWallet(100);
-        case 7: p.addWallet(200);
+        case 1: s.transferFunds("SCHOOL", p.getName(), -200);
+        case 2: s.transferFunds("SCHOOL", p.getName(), -100);
+        case 3: s.transferFunds("SCHOOL", p.getName(), -50);
+        case 4: s.transferFunds("SCHOOL", p.getName(), 25);
+        case 5: s.transferFunds("SCHOOL", p.getName(),50);
+        case 6: s.transferFunds("SCHOOL", p.getName(), 100);
+        case 7: s.transferFunds("SCHOOL", p.getName(), 200);
     }
-
-    int assets = s.getLiquidAssets(p.getName());
-    if (p.getWallet() < 0) {
-        cout << "You do not have enough cash to pay the fee" << endl;
-        if (assets + p.getWallet() < 0) {
-            cout << "You do not have enough assets to pay the fee, you are BANKRUPT" << endl;
-            //s.declareBankrupcy(p.getName());
-            return;
-        }
-        cout << "To get enough cash you will have to sell improvements or mortage your properties." << endl;
-        cout << "Enter: \"sell <property> n\" to sell n improvements on <property>" << endl;
-        cout << "Enter: \"mortgage <property> \" to mortagage <property>";
-        cout << " (Note that all improvements on <property> will be sold before it gets mortgaged)" << endl;
-        while(true) { // Can pay if they sell assets
-            string cmd, prop;
-            cin >> cmd >> prop;
-            /*if (!s.isOwner(p.getName(), prop)) {
-                cout << "You do not own this property" << endl;
-                continue;
-            }*/
-            if (cmd == "improve") { // chose to sell improvements
-                int imps;
-                cin >> imps; // Should add checking to make sure imps is an integer > 0
-                s.sellImprovement(prop, imps);
-            } else if (cmd == "mortgage") { // chose to mortgage property
-                s.mortgageProperty(prop);
-            } 
-
-            if (p.getWallet() < 0) {
-                cout << "You still don't have enough to pay fee, mortgage or sell improvements" << endl;
-            } else {
-                break;
-            }
-        } // while
-    } // if
 }

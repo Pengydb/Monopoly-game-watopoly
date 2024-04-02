@@ -4,6 +4,7 @@
 #include <string>
 #include "subject.h"
 #include "player.h"
+#include "school.h"
 
 class Tile : public Subject {
     std::string name;  // Name of the tile
@@ -12,8 +13,8 @@ class Tile : public Subject {
     Tile(std::string name); // Constructor for Tile
 
     std::string getName() const;   // returns location field of Tile
-    
-    virtual void performAction(Player &p) = 0; // pure virtual, no implimentation, for subclasses
+
+    virtual void performAction(Player &p, School &s) = 0; // pure virtual, no implimentation, for subclasses
     virtual ~Tile() = default; // Default destructor
 };
 
