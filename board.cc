@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <sstream>
 using namespace std;
 
 // void Board::saveGame() 
@@ -11,8 +12,45 @@ int Board::getTurn() {
     return playerTurn;
 }
 
-void Board::startGame(const std::string &filename){
+void Board::startGame(const std::string &filename)
+{
+    
+    std::ifstream file(filename);
     std::vector<std::shared_ptr<Tile>> tiles;
+    std::vector<std::shared_ptr<Tile>> AcademicBuildings;
+
+    std::string line;
+    while (getline(file, line))
+    {
+        std::string buildingType, buildingName;
+        std::istringstream iss(line);
+        std::getline(iss, buildingType, ',');
+        std::getline(iss, buildingName);
+
+        if (buildingType == "AB")
+        {
+            std::shared_ptr<AcademicBuilding> tile = nullptr;
+            tiles.push_back(tile);
+            AcademicBuildings.push_back(tile);
+        }
+        else if (buildingType == "R")
+        {
+            std::shared_ptr<Residence> tile = nullptr;
+            tiles.push_back(tile);
+        }
+        else if (buildingType == "GYM")
+        {
+            std::shared_ptr<Gym> tile = nullptr;
+            tiles.push_back(tile);
+        }
+        else if (buildingType == "NOP")
+        {
+            std::shared_ptr<NonOwnableProperty> tile = nullptr;
+            tiles.push_back(tile);
+        }
+    }
+    file.close();
+    
 
     cout << "Enter the number of players: " << endl;;
     int numPlayers;
