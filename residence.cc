@@ -3,6 +3,8 @@
 #include <string>
 using namespace std;
 
+Residence::Residence(string name, PropertyConfig& config, bool owned, bool mortgaged) :
+            OwnableProperty{name, config, owned, mortgaged} {}
 
 void Residence::performAction(Player &p, School &s) {
     cout << "You have landed on " << this->getName() << endl;

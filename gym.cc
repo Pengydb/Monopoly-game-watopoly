@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+Gym::Gym(string name, PropertyConfig& config, bool owned, bool mortgaged) :
+            OwnableProperty{name, config, owned, mortgaged} {}
+
 void Gym::performAction(Player &p, School &s) {
     cout << "You have landed on " << this->getName() << endl;
 
