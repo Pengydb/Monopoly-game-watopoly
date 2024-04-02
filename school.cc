@@ -88,7 +88,7 @@ int School::countBlocksOwnedBy(const std::string& playerName, const std::string&
             }
         }
     }
-    return count; // Placeholder return
+    return count; 
 }
 
 int School::getLiquidAssets(const std::string& playerName) const {
@@ -150,81 +150,81 @@ void School::payDebts(const std::string& debotor, const std::string& creditor, i
 void School::buyImprovement(const std::string& propertyName, const std::string& playerName) {
 
     if (playerName == "SCHOOL") {
-        std::cout << "School cannot upgrade properties\n";
+        std::cout << "School cannot upgrade properties." << std::endl;
         return;
     }
 
     auto playerIt = players.find(playerName);
     if (playerIt == players.end()) {
-        throw std::invalid_argument("Target player does not exist: " + playerName);
+       std::cout << "Target player does not exist: " + playerName << "." << std::endl;
     }
 
     auto propertyIt = properties.find(propertyName);
      if (propertyIt == properties.end()) {
-        throw std::invalid_argument("Property does not exist: " + propertyName);
+        std::cout << "Property does not exist: " + propertyName << "." << std::endl;
     }
 
     std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(propertyIt->second);
     if (!academicBuilding) {
-        std::cout << propertyName << " is not an Academic Building and cannot be improved.\n";
+        std::cout << propertyName << " is not an Academic Building and cannot be improved." << std::endl;
         return;
     }
 
     if (playerName != propertyOwnership[propertyName]) {
-        std:: cout << playerName << ", does not own " << propertyName << "\n";
+        std:: cout << playerName << ", does not own " << propertyName << "." << std::endl;
         return;
     }
 
     if(!academicBuilding->getMonopoly()) {
-        std::cout << playerName << ", does not have a monopoly of type " << academicBuilding->getGroup() << "\n";
+        std::cout << playerName << ", does not have a monopoly of type " << academicBuilding->getGroup() << "." << std::endl;
         return;
     }
     
     if (academicBuilding->getImpCount() == 5) {
-        std::cout << propertyName << " is already at max improvement level.\n";
+        std::cout << propertyName << " is already at max improvement level." << std::endl;
         return;
     }
 
     int upgradeCost = academicBuilding->getImpCost();
     if (!checkSufficientFunds(playerName, upgradeCost)) {
-        std:: cout << playerName << ", lacks sufficient funds to improve " << propertyName << "\n";
+        std:: cout << playerName << ", lacks sufficient funds to improve " << propertyName << "." << std::endl;
         return;
     }
 
     transferFunds(playerName, "SCHOOL", upgradeCost);
     academicBuilding->addImps(1);
-    std::cout << "Improvement purchased for " << propertyName << " by " << playerName << ".\n";
+    std::cout << "Improvement for " << propertyName << " purchased by " << playerName << " for $" << upgradeCost << "." << std::endl;
 }
 
 void School::sellImprovement(const std::string& propertyName, const std::string& playerName) {
     if (playerName == "SCHOOL") {
-        std::cout << "School owned properties do not possess improvements to sell\n";
+        std::cout << "School owned properties do not possess improvements to sell." << std::endl;
         return;
     }
 
     auto playerIt = players.find(playerName);
     if (playerIt == players.end()) {
-        throw std::invalid_argument("Target player does not exist: " + playerName);
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
     }
 
     auto propertyIt = properties.find(propertyName);
      if (propertyIt == properties.end()) {
-        throw std::invalid_argument("Property does not exist: " + propertyName);
+        std::cout << "Property does not exist: " + propertyName << "." << std::endl;
     }
 
     std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(propertyIt->second);
     if (!academicBuilding) {
-        std::cout << propertyName << " is not an Academic Building and lacks improvements to sell.\n";
+        std::cout << propertyName << " is not an Academic Building and lacks improvements to sell." << std::endl;
         return;
     }
 
     if (playerName != propertyOwnership[propertyName]) {
-        std:: cout << playerName << ", does not own " << propertyName << "\n";
+        std:: cout << playerName << ", does not own " << propertyName << "." << std::endl;
         return;
     }
 
     if (academicBuilding->getImpCount() == 0) {
-        std::cout << propertyName << " does not have improvements to sell.\n";
+        std::cout << propertyName << " does not have improvements to sell." << std::endl;
         return;
     }
 
@@ -233,15 +233,89 @@ void School::sellImprovement(const std::string& propertyName, const std::string&
 
     transferFunds("SCHOOL", playerName, sellingValue);
     academicBuilding->addImps(-1);
-    std::cout << "Improvement sold for " << propertyName << " by " << playerName << ".\n";
+    std::cout << "Improvement for " << propertyName << " sold by " << playerName << " for $" << sellingValue << "." << std::endl;
 }
 
-void School::mortgageProperty(const std::string& propertyName) {
-    // Implementation here
+void School::mortgageProperty(const std::string& propertyName, const std::string& playerName) {
+    if (playerName == "SCHOOL") {
+        std::cout << "School cannot mortgage a property" << std::endl;
+        return;
+    }
+
+    auto playerIt = players.find(playerName);
+    if (playerIt == players.end()) {
+        std::cout << "Player does not exist: " << playerName << std::endl;
+        return;
+    }
+    
+    auto propertyIt = properties.find(propertyName);
+     if (propertyIt == properties.end()) {
+        std::cout << "Property does not exist: " << propertyName << std::endl;
+        return;
+    }
+
+    if (playerName != propertyOwnership[propertyName]) {
+        std:: cout << playerName << ", does not own " << propertyName << "." << std::endl;
+        return;   
+    }
+
+    std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(propertyIt->second);
+    if (academicBuilding && academicBuilding->getImpCount() > 0) {
+        std::cout << propertyName << " cannot be mortgaged because it has improvements. Must sell improvements first before mortaging." << std::endl;
+        return;
+    }
+
+    if (propertyIt->second->isMortgaged()) {
+        std::cout << propertyName << " is already mortaged." << std::endl;
+        return;
+    }
+
+    int mortgageValue = propertyIt->second->getCost() * 0.5;
+    transferFunds("SCHOOL", playerName, mortgageValue);
+    propertyIt->second->toggleMortgage();
+
+    std::cout << playerName << " has mortgaged " << propertyName << " for $" << mortgageValue << "." << std::endl;
 }
 
-void School::unmortgageProperty(const std::string& propertyName) {
-    // Implementation here
+void School::unmortgageProperty(const std::string& propertyName, const std::string& playerName) {
+    if (playerName == "SCHOOL") {
+        std::cout << "School cannot mortgage a property" << std::endl;
+        return;
+    }
+
+    auto playerIt = players.find(playerName);
+    if (playerIt == players.end()) {
+        std::cout << "Player does not exist: " << playerName << std::endl;
+        return;
+    }
+    
+    auto propertyIt = properties.find(propertyName);
+     if (propertyIt == properties.end()) {
+        std::cout << "Property does not exist: " << propertyName << std::endl;
+        return;
+    }
+
+    if (playerName != propertyOwnership[propertyName]) {
+        std:: cout << playerName << ", does not own " << propertyName << "." << std::endl;
+        return;   
+    }
+
+    if (!propertyIt->second->isMortgaged()) {
+        std::cout << propertyName << " is not mortgaged and cannot be unmortgaged." << std::endl;
+        return;
+    }    
+
+    int unmortgageCost = propertyIt->second->getCost() * 0.6;
+
+    if (!checkSufficientFunds(playerName, unmortgageCost)) {
+        std::cout << playerName << ", lacks sufficient funds to unmortgage " << propertyName << "." << std::endl;
+        return;
+    }
+
+    transferFunds(playerName, "SCHOOL", unmortgageCost);
+    propertyIt->second->toggleMortgage();
+
+    std::cout << playerName << " has paid $" << unmortgageCost << " to unmortgage " << propertyName << "." << std::endl;
 }
 
 void School::declareBankrupt(const std::string& playerName) {

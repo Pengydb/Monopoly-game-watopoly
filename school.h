@@ -57,8 +57,8 @@ public:
     void buyImprovement(const std::string& propertyName, const std::string& playerName);
     void sellImprovement(const std::string& propertyName, const std::string& playerName);
 
-    void mortgageProperty(const std::string& propertyName);
-    void unmortgageProperty(const std::string& propertyName);
+    void mortgageProperty(const std::string& propertyName, const std::string& playerName);
+    void unmortgageProperty(const std::string& propertyName, const std::string& playerName);
 
     void declareBankrupt(const std::string& playerName);
 };  
