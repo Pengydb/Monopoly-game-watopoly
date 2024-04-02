@@ -11,46 +11,8 @@ int Board::getTurn() {
     return playerTurn;
 }
 
-void Board::startGame() {
-    shared_ptr<AcademicBuilding> AL = nullptr;
-    shared_ptr<AcademicBuilding> ML = nullptr;
-    shared_ptr<AcademicBuilding> ECH = nullptr;
-    shared_ptr<AcademicBuilding> PAS = nullptr;
-    shared_ptr<AcademicBuilding> HH = nullptr;
-    shared_ptr<AcademicBuilding> RCH = nullptr;
-    shared_ptr<AcademicBuilding> DWE = nullptr;
-    shared_ptr<AcademicBuilding> CPH = nullptr;
-    shared_ptr<AcademicBuilding> LHI = nullptr;
-    shared_ptr<AcademicBuilding> BMH = nullptr;
-    shared_ptr<AcademicBuilding> OPT = nullptr;
-    shared_ptr<AcademicBuilding> EV1 = nullptr;
-    shared_ptr<AcademicBuilding> EV2 = nullptr;
-    shared_ptr<AcademicBuilding> EV3 = nullptr;
-    shared_ptr<AcademicBuilding> PHYS = nullptr;
-    shared_ptr<AcademicBuilding> B1 = nullptr;
-    shared_ptr<AcademicBuilding> B2 = nullptr;
-    shared_ptr<AcademicBuilding> EIT = nullptr;
-    shared_ptr<AcademicBuilding> ESC = nullptr;
-    shared_ptr<AcademicBuilding> C2 = nullptr;
-    shared_ptr<AcademicBuilding> MC = nullptr;
-    shared_ptr<AcademicBuilding> DC = nullptr;
-
-    shared_ptr<Residence> MKV = nullptr;
-    shared_ptr<Residence> UWP = nullptr;
-    shared_ptr<Residence> V1 = nullptr;
-    shared_ptr<Residence> REV = nullptr;
-
-    shared_ptr<Gym> PAC = nullptr;
-    shared_ptr<Gym> CIF = nullptr;
-
-    shared_ptr<NonOwnableProperty> OSAP = nullptr;
-    shared_ptr<NonOwnableProperty> DCTims = nullptr;
-    shared_ptr<NonOwnableProperty> GoToTims = nullptr;
-    shared_ptr<NonOwnableProperty> GooseNesting = nullptr;
-    shared_ptr<NonOwnableProperty> Tuition = nullptr;
-    shared_ptr<NonOwnableProperty> CoopFee = nullptr;
-    shared_ptr<NonOwnableProperty> SLC = nullptr;
-    shared_ptr<NonOwnableProperty> NH = nullptr;
+void Board::startGame(const std::string &filename){
+    std::vector<std::shared_ptr<Tile>> tiles;
 
     cout << "Enter the number of players: " << endl;;
     int numPlayers;
@@ -62,8 +24,6 @@ void Board::startGame() {
     }
         playerTurn = 0;
         cout << "Game started with " << numPlayers << " players." << endl;
-
-
 }
 
 void Board::setPlayer() {
@@ -108,7 +68,7 @@ void Board::setPlayer() {
         }
         break;
     };
-    School school;
+    shared_ptr<School> school = nullptr;
     const int wallet = 1500;
     const int boardSize = 49;
     shared_ptr<Player> name = make_shared<Player>(playerPiece, name, wallet, school, boardSize);
