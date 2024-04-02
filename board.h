@@ -25,9 +25,11 @@ class Board : public Observer {
 
     std::shared_ptr<Player> setPlayer(); // Creates a player
     void movePlayer(Player &p, int roll); // Moves a player to the target tile
-    void removePlayer(Player &p); // removes a player from the board
     void nextTurn(); // moves the game to the next turn
+    void removePlayer(Player &p); // removes a player from the board
     void printBoard(); // Prints the current state of the board
+    // void notify(Subject &s);
+    void loadGame(const std::string &filename);
 };
 
 #endif // BOARD_H

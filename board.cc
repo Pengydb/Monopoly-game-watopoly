@@ -5,7 +5,69 @@
 #include <string>
 #include <sstream>
 
-// void Board::saveGame() 
+void Board::saveGame() {
+    std::string filename = "savegame.txt";
+    std::ofstream file(filename);
+    if (!file.is_open())
+    {
+        throw std::invalid_argument("Error opening file " + filename);
+    }
+
+    for (const auto &player : players)
+    {
+        file << "Player: " << player->getName() << "," << player->getPiece() << "," << player->getWallet() << "," << player->getPosition() << "," << player->isVisitingTims() << "," << player->getTimsLine() << "," << player->getTimsCups() << std::endl;
+    }
+
+    for (const auto &tile : buildings)
+    {
+        if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile))
+        {
+            if (ab->isOwned()){
+                file << "AcademicBuilding: " << ab->getName() << "," << school->getPropertyOwner(ab->getName()) << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
+            }
+            else {
+                file << "AcademicBuilding: " << ab->getName() << "," << "false" << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
+            }
+        }
+        else if (auto r = std::dynamic_pointer_cast<Residence>(tile))
+        {
+            if (r->isOwned()){
+                file << "Residence: " << r->getName() << "," << school->getPropertyOwner(r->getName()) << "," << r->isMortgaged() << std::endl;
+            }
+            else {
+                file << "Residence: " << r->getName() << "," << "false" << "," << r->isMortgaged() << std::endl;
+            }
+            
+        }
+        else if (auto g = std::dynamic_pointer_cast<Gym>(tile))
+        {
+            if (g->isOwned())
+            {
+                file << "Gym: " << g->getName() << "," << school->getPropertyOwner(g->getName()) << "," << g->isMortgaged() << std::endl;
+            }
+            else
+            {
+                file << "Gym: " << g->getName() << "," << "false" << "," << g->isMortgaged() << std::endl;
+            }
+        }
+        else
+        {
+            throw std::invalid_argument("Unknown tile type.");
+        }
+        
+    }
+
+    file << "Current turn:" << playerTurn << std::endl;
+    file.close();
+    std::cout << "Game saved to " << filename << std::endl;
+}
+
+
+void Board::loadGame(const std::string &filename)
+{
+    
+}
+
 
 int Board::getTurn() {
     return playerTurn;
@@ -15,6 +77,10 @@ void Board::startGame(const std::string &filename)
 {
     
     std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        throw std::invalid_argument("Error opening file " + filename);
+    }
     std::vector<std::shared_ptr<OwnableProperty>> AcademicBuildings;
 
     std::string line;
@@ -46,6 +112,11 @@ void Board::startGame(const std::string &filename)
             std::shared_ptr<NonOwnableProperty> tile = nullptr;
             buildings.push_back(tile);
         }
+        else
+        {
+            throw std::invalid_argument("Unknown building type: " + buildingType);
+        }
+        
     }
     file.close();
 
@@ -58,7 +129,9 @@ void Board::startGame(const std::string &filename)
         std::shared_ptr<Player> player = setPlayer();
         players.push_back(player);
     }
-    school = make_shared<School>(players, AcademicBuildings, 43);
+
+    const int cards = 15;
+    school = make_shared<School>(players, AcademicBuildings, cards);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
 }
@@ -73,8 +146,9 @@ std::shared_ptr<Player> Board::setPlayer()
             break;
         }
         else{
-            std::cout << "Invalid name. Player not added." << std::endl;
+            throw std::invalid_argument("Invalid name. Player not added.");
         }
+        
     }
 
     char playerPiece;
@@ -101,8 +175,9 @@ std::shared_ptr<Player> Board::setPlayer()
             std::cout << "You chose the " << playerPiece << " piece." << std::endl;
             break;
         default:
-            std::cout << "Invalid choice. Please try again." << std::endl;
+            throw std::invalid_argument("Invalid choice. Please try again.");
             continue;
+            
         }
         break;
     };
@@ -133,5 +208,12 @@ void Board::removePlayer(Player &player)
 void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % (players.size() + 1);
 }
+
+// void Board::notify(Subject &s){
+//     for (auto &observer : observers)
+//     {
+//         observer->update(s);
+//     }
+// }
 
 //void Board::printBoard() {}
