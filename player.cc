@@ -83,6 +83,11 @@ std::string Player::getName() const{
     return name;
 }
 
+int Player::getGyms() const { return gyms; }
+int Player::getRes() const { return res; }
+void Player::addGyms(const int n) { gyms + n; }
+void Player::addRes(const int n) { res + n; }
+
 /**
 void Player::notEnoughCash(School &s) {
     int assets = s.getLiquidAssets(this->getName());

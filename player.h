@@ -16,13 +16,17 @@ private:
     bool visitingTims;  // true when visting false when in line
     int timsLine; // number of turns in line
     int timsCups;
+    int gyms; // Number of gyms the player owns
+    int res; // Number of residences the player owns
     School& school;
 
 public:
     Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position = 0, bool visitingTims = true, 
            int timsLine = 0, int timsCups = 0);
-    int countGym() const; // counts number of gym's owned
-    int countRes() const; // counts number of residence's owned
+    int getGyms() const; // Returns gyms field
+    int getRes() const; // Returns res field
+    void addGyms(const int n); // Adds n to the gyms field
+    void addRes(const int n); // Adds n to the res field
     void printAssets() const;
     int getWallet() const;
     void setWallet(const int amount);
