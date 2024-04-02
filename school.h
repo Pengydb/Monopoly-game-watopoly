@@ -35,14 +35,24 @@ public:
     std::string getPropertyOwner(const std::string& propertyName) const;
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
+    void initilizePropertyConfigs(const std::string &filename);
+
+
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     // Transfers property from one player to another
     void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (school has name SCHOOL)
 
+    // Updates monopoly status for all properties within group
+    void updateMonopoly(const std::string& monopolyGroup);
+
+    // transfers all assets from debtor to creditor, if creditor is school holds auction for each property
+    void seizeAssets(const std::string& debotor, const std::string& creditor);
+
+
     // Transfers funds from fromPlayerName to toPlayerName, will not work if fromPlayer lacks sufficient funds and a message will be displayed
-    void transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
+    bool transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
 
     void payDebts(const std::string& debotor, const std::string& creditor, int amount);
     // Counts number of properities of given group that the player owns

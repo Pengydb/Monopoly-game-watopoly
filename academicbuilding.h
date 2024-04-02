@@ -18,6 +18,7 @@ class AcademicBuilding : public OwnableProperty {
     int getImpCost() const;
     bool getMonopoly() const;
     void toggleMonopoly();
+    void setMonopoly(bool status);
     int getImpCount() const;
     void sellImps(int n); // Deincrements impCount by n times (gives player impCost*(0.5)*n )
 }; 

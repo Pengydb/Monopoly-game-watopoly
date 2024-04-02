@@ -56,6 +56,7 @@ void School::transferProperty(const std::string& toPlayerName, const std::string
         throw std::invalid_argument("Target player name does not exist: " + toPlayerName);
     }
     propertyOwnership[propertyName] = toPlayerName;
+    
 }
 
 bool School::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
@@ -77,6 +78,30 @@ bool School::transferFunds(const std::string& fromPlayerName, const std::string&
     players.find(toPlayerName)->second->addWallet(amount);
     std:: cout << "Sucessfully transfeer $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
     return true;
+}
+
+void School::updateMonopoly(const std::string& monopolyGroup) {
+    std::string monopolyOwner = "";
+    bool isMonopoly = true;
+    std::vector<std::shared_ptr<AcademicBuilding>> groupProperties;
+    for(const auto& [propertyName, proprtyConfig] : propertyConfigs) {
+        if (proprtyConfig->getGroup() == monopolyGroup) {
+            std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(properties[propertyName]);
+            if (academicBuilding) {
+                groupProperties.emplace_back(academicBuilding);
+                auto& propertyOwner = propertyOwnership[propertyName];
+
+                if (monopolyOwner.empty() && propertyOwner != "SCHOOL") {
+                    monopolyOwner = propertyOwner;
+                } else if (propertyOwner == "SCHOOL" || propertyOwner != monopolyOwner) {
+                    isMonopoly = false;
+                }
+            }
+        }
+    }
+    for (const auto& property: groupProperties) {
+        property->setMonopoly(isMonopoly);
+    }
 }
 
 int School::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
@@ -280,6 +305,9 @@ void School::mortgageProperty(const std::string& propertyName, const std::string
 
     std::cout << playerName << " has mortgaged " << propertyName << " for $" << mortgageValue << "." << std::endl;
 }
+
+
+
 
 void School::unmortgageProperty(const std::string& propertyName, const std::string& playerName) {
     if (playerName == "SCHOOL") {
