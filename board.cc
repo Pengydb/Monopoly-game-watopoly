@@ -685,11 +685,8 @@ void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % players.size();
 }
 
-void Board::notify(Subject &s){
-    for (auto &observer : observers)
-    {
-        observer->notify(s);
-    }
+void Board::notify(Player &p){
+    buildings[p.getPosition()]->performAction(p, *bank);
 }
 
 void Board::printBoard(TextDisplay &t) {

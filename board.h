@@ -19,7 +19,7 @@ class Board : public Observer {
     std::shared_ptr<Bank> bank; // Instance of the bank
     int playerTurn; // Stores the current player's turn
 
-    public:
+  public:
     void saveGame(); // Saves the current game
     void loadGame(const std::string &filename); // Loads the game
     int getTurn(); // Gets the current player's turn
@@ -40,7 +40,7 @@ class Board : public Observer {
     int getPropCost(const int n) const;
 
     void nextTurn(); // moves the game to the next turn
-    void notify(Subject &s); // Notifies the subjects of any changes
+    void notify(Player &p); // Notifies the subjects of any changes
     void printBoard(TextDisplay &t); // Prints the current state of the board
 
 };
