@@ -1,7 +1,7 @@
 #include "tile.h"
 #include <string>
-using namespace std;
 
-Tile::Tile(string name) : name{name} {}
+Tile::Tile(std::string name, int loc) : name{name}, location{loc} {}
 
-string Tile::getName() const { return name; }
+std::string Tile::getName() const { return name; }
+int Tile::getLocation() const { return location; }

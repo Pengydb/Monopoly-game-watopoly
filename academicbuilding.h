@@ -12,15 +12,15 @@ class AcademicBuilding : public OwnableProperty {
     // MonopolyBlock monBlock; getGroup from config
   
   public:
-    AcademicBuilding(std::string name, PropertyConfig& config, bool owned, bool mortgaged, int impCount, int impCost);
+    AcademicBuilding(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged, int impCount, int impCost);
     void performAction(Player &p, School &s) override;
-    void addImps(int n); // Increments impCount by n (does not charge player)
+    void addImps(const int n); // Adds n to the impCount (does not charge player)
     int getImpCost() const;
     bool getMonopoly() const;
     void toggleMonopoly();
     void setMonopoly(bool status);
     int getImpCount() const;
-    void sellImps(int n); // Deincrements impCount by n times (gives player impCost*(0.5)*n )
+    void sellImps(School &s, Player &p, int n); // Deincrements impCount by n times (gives player impCost*(0.5)*n )
 }; 
 
 #endif // ACADEMICBUILDING_H
