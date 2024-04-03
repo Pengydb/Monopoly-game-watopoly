@@ -251,7 +251,6 @@ void Board::setupGame(const std::string &filename)
     bank->initBank(players, AcademicBuildings);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
-    playGame();
 }
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece)
