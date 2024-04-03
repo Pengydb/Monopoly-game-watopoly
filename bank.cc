@@ -501,7 +501,7 @@ void Bank::holdAuction(const std::string &propertyName){
         while (true){
             std::string input;
             int tempBid = 0; // Stores Current bid
-            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter withdraw to leave the auction)" << std::endl;
+            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter cancel to not bid yet or enter withdraw to leave the auction)" << std::endl;
             std::getline(std::cin, input);
             std::istringstream iss(input);
             if (iss >> tempBid){ // Checks whether the input entered is a number or a string
@@ -529,6 +529,10 @@ void Bank::holdAuction(const std::string &propertyName){
                     auto it = std::find(names.begin(), names.end(), bidder);
                         names.erase(it);
                     std::cout << bidder << " has withdrawn from the auction" << std::endl;
+                    break;
+                }
+                else if (input == "cancel"){
+                    std::cout << "You have cancelled your bet, however you are still in the auction" << std::endl;
                     break;
                 }
             }
