@@ -367,6 +367,7 @@ void School::removePlayer(const std::string& playerName) {
     if (it != players.end()) {
         std::cout << playerName << " is not a player" << std::endl;
     } else {
+        this->addDCTimsCups( -(players[playerName]->getTimsCups()) ); // Updates total owned Tims Cups 
         players.erase(playerName);
         std::cout << playerName << " has gone bankrupt and can no longer continue" << std::endl;
     }
