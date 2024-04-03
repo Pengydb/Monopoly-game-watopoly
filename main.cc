@@ -2,7 +2,7 @@
 #include "player.h"
 #include "tile.h"
 #include "textdisplay.h"
-#include "school.h"
+#include "bank.h"
 #include <iostream>
 #include <string>
 
