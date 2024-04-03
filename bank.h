@@ -55,7 +55,7 @@ public:
     // Updates monopoly status for all properties within group
     void updateMonopoly(const std::string& monopolyGroup);
 
-    // Transfers all assets from debtor to creditor, if creditor is bank holds auction for each property
+    // Transfers all assets (cash, timcups, properties) from debtor to creditor, if creditor is the bank an auction is held for each property. 
     void seizeAssets(const std::string& debtor, const std::string& creditor);
 
     // Transfers funds from fromPlayerName to toPlayerName, will not work if fromPlayer lacks sufficient funds and a message will be displayed

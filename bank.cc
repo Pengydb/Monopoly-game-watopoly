@@ -29,7 +29,7 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     auto iter = propertyOwnership.find(propertyName);
     if (iter == propertyOwnership.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
-        return;
+        return "";
     }
     return iter->second; 
 }
