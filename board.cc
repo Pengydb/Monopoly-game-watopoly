@@ -356,7 +356,7 @@ void Board::playGame() {
             }
 
             // Blocks player from rolling if they have to pay a fee (this is if player rolls doubles and can roll again)
-            if (curPlayer->hasToPay()) { 
+            if (curPlayer->hasToPay()) {
                 std::cout << "You must pay a fee of $" << curPlayer->getFee() << " before ending your turn" << std::endl;
                 continue;
             }
@@ -406,9 +406,11 @@ void Board::playGame() {
             }
 
             if (!curPlayer->isVisitingTims()) { // Paying Jail Fee
-                if (bank->transferFunds(curPlayer->getName(), "BANK", 50) {
-                    std::cout << "Successfully paid fee" << std::endl;
+                if (bank->transferFunds(curPlayer->getName(), "BANK", 50)) {
+                    std::cout << "Successfully paid DCTims fee" << std::endl;
+                    std::cout << "You have left the DCTims line" << std::endl;
                     curPlayer->toggleVisiting();
+                    if (curPlayer->hasToPay()) curPlayer->toggleHasToPay();
                 } else {
                     std::cout << "Failed to pay fee: mortgage properties or sell improvements to raise enough cash to pay the fee" << std::endl;
                     std::cout << "You currently have: $" << curPlayer->getWallet() << " and need to pay $50 to get out of the DCTims line" << std::endl;
@@ -416,10 +418,9 @@ void Board::playGame() {
             }
 
             if (curPlayer->hasToPay()) { // Paying property/tuition/NH fee
-                if (bank->transferFunds(curPlayer->getName(), "BANK", curPlayer->getFee())) {
+                if (bank->transferFunds(curPlayer->getName(), curPlayer->getFeeOwner(), curPlayer->getFee())) {
                     std::cout << "Successfully paid fee" << std::endl;
                     curPlayer->toggleHasToPay();
-                    curPlayer->setFee(0);
                 } else {
                     std::cout << "Failed to pay fee: mortgage properties or sell improvements to raise enough cash to pay the fee" << std::endl;
                     std::cout << "You currently have: $" << curPlayer->getWallet() << " and need to pay $" << curPlayer->getFee() << std::endl;
@@ -465,7 +466,7 @@ void Board::playGame() {
             std::cin >> name;
             
             if (!playerExists(name)) {
-                std::cout << "Player " << name << " does not exist" << std::cout;
+                std::cout << "Player " << name << " does not exist" << std::endl;
                 continue;
             }
 
@@ -631,7 +632,7 @@ void Board::playGame() {
         } else if (cmd == "save") {
             // Saves the game into a load file
             this->saveGame();
-            std::cout << "The game has been saved" << std::cout;
+            std::cout << "The game has been saved" << std::endl;
             break;
         } else if (cmd == "help") {
             // Prints out the list of available commands

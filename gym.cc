@@ -9,33 +9,28 @@ Gym::Gym(std::string name, int loc, PropertyConfig& config, bool owned, bool mor
 void Gym::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
 
-    if (this->isOwned()) { // Property is already owned
-        int fee = this->getFee();
-        std::cout << "Roll the dice" << std::endl;
+    if (this->isOwned()) {
+        std::string owner = b.getPropertyOwner(this->getName());
+        std::cout << "This property is owned by " << owner << std::endl;
         
-        while(true) {
-            std::string cmd;
+        std::string cmd;
+        int sum;
+        while (true) {
+            std::cout <<  "roll to calculate your fee" << std::endl;
             std::cin >> cmd;
             if (cmd == "roll") {
-                int r = p.roll() + p.roll();
-                std::cout << "You rolled a sum of " << r << std::endl;
-                fee = fee*r;
-                std::cout << "You are charged $" << fee << std::endl;
-                b.transferFunds("Bank", p.getName(), -fee);
+                sum = p.roll() + p.roll();
+                break;
             }
         }
 
-    } else { // Property is unowned
-        std::cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << std::endl;
-        std::string ans;
-        while (true) {
-            std::cin >> ans;
-            if (ans == "y") { // Player Buys Property
-                b.transferFunds("Bank", p.getName(), -config.getCost());
-                b.transferProperty(p.getName(), this->getName());
-            } else if (ans == "n") { // Property goes up for auction
-                b.holdAuction(this->getName());
-            }
-        }
+        int fee = config.getFee(p.getGyms()) * sum;
+        std::cout << "You are being charged with a fee of $" << fee << std::endl;
+        p.toggleHasToPay();
+        p.setFee(fee);
+        p.setFeeOwner(owner);
+    } else {
+        std::cout << "This property is unowned! You have the option to buy it for $" << config.getCost() << std::endl;
+        p.toggleCanBuy();
     }
 }

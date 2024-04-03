@@ -30,68 +30,22 @@ void CollectOsap::performAction(Player &p, Bank &b) {
 
 void DCTims::performAction(Player &p, Bank &b) {
     if (p.isVisitingTims()) {
-        std::cout << "You are vising DCTims" << std::endl;
+        std::cout << "You are vising " << this->getName() << std::endl;
         return;
     } 
 
     p.incTimsLine();
 
     std::cout << "You are in the DCTims line, roll doubles, pay $" << JAIL_FEE;
-    std::cout << ", wait 5 turns, or use a Tims Cup to be free!" << std::endl;
+    std::cout << ", or use a Roll up the Rim cup to exit the DCTims line" << std::endl;
+    std::cout << "If you are in the line for 3 turns you fill be forced to use a Roll up the Rim cup or pay the fee" << std::endl;
     std::cout << "This is your " << p.getTimsLine() << " turn" << std::endl;
 
-
-    if (p.getTimsCups() > 0) {
-        std::cout << "You have a Tims Cup! Do you want to use it? (y/n)" << std::endl;
-        while (true) {
-            std::string ans;
-            std::cin >> ans;
-            if (ans == "y") {
-                std::cout << "You are free from the line!" << std::endl;
-                p.toggleVisiting();
-                p.setTimsLine(0);
-                b.addDCTimsCups(-1);
-                return;
-            } else if (ans == "n") {
-                std::cout << "You remain in the line" << std::endl;
-                break;
-            }
+        if (p.getTimsLine() == 3) {
+            std::cout << "You have stayed in the DCTims line for too long!" << std::endl;
+            std::cout << "Use a Roll up the Rim cup or pay the fee of $" << JAIL_FEE << std::endl;
+            p.toggleHasToPay();
         }
-    }
-
-    if (p.getWallet() > 50) {
-        std::cout << "You have enough money to escape the line! Do you wish to pay $" << JAIL_FEE << "? (y/n)" << std::endl;
-        while (true) {
-            std::string ans;
-            std::cin >> ans;
-            if (ans == "y") {
-                std::cout << "You are free from the line!" << std::endl;
-                b.transferFunds("Bank", p.getName(), JAIL_FEE);
-                p.toggleVisiting();
-                p.setTimsLine(0);
-                return;
-            } else if (ans == "n") {
-                std::cout << "You remain in the line" << std::endl;
-                break;
-            }
-        }
-    }
-
-    if (p.getTimsLine() == 3) {
-        std::cout << "You have stayed in the Tims line for too long either pay $" << JAIL_FEE;
-        std::cout << ", or use a DCTims Cup" << std::endl;
-        
-        if (p.getTimsCups() == 0) {
-            std::cout << "You don't have any TimsCups so you will pay the fee" << std::endl;
-            b.transferFunds("Bank", p.getName(), JAIL_FEE);
-        } else {
-            p.addTimsCups(-1);
-        }
-
-        p.toggleVisiting();
-        p.setTimsLine(0);
-        return;
-    } 
 }
 
 void GoToTims::performAction(Player &p, Bank &b) {
@@ -105,18 +59,33 @@ void GooseNesting::performAction(Player &p, Bank &b) {
 }
 
 void Tuition::performAction(Player &p, Bank &b) {
-    std::cout << "You have landed on Tuition, enter 1 to pay $" << TUITION;
-    std::cout << " or enter 2 to pay %" << TUITION_PER << " of your total worth" << std::endl;
-    int n;
-    std::cin >> n;
+    std::cout << "You have landed on Tuition, enter 't' to pay $" << TUITION;
+    std::cout << " or enter 'p' to pay %" << TUITION_PER << " of your total worth" << std::endl;
+    std::string opt;
+    int fee;
 
-    if (n == 1) b.transferFunds("BANK", p.getName(), -TUITION);
-    else b.transferFunds("BANK", p.getName(), -(TUITION_PER/100)*p.getWallet());
+    while (true) {
+        std::cin >> opt;
+        if (opt == "t") {
+            fee = TUITION;
+            break;
+        } else if (opt == "p") {
+            fee = (TUITION_PER/100)*p.getWallet();
+            break;
+        }
+    }
+
+    std::cout << "You have choosen to pay a fee of $" << fee << std::endl;
+    p.toggleHasToPay();
+    p.setFeeOwner("BANK");
+    p.setFee(fee);
 }
 
 void CoopFee::performAction(Player &p, Bank &b) {
-    std::cout << "You have landed on Coop Fee, pay $" << COOP_FEE << "top the Bank" << std::endl;
-    b.transferFunds("Bank", p.getName(), (-COOP_FEE));
+    std::cout << "You have landed on Coop Fee, pay $" << COOP_FEE << std::endl;
+    p.toggleHasToPay();
+    p.setFeeOwner("BANK");
+    p.setFee(COOP_FEE);
 }
 
 
@@ -184,15 +153,26 @@ void NH::performAction(Player &p, Bank &b) {
     // Regular Probs.
     std::vector<int> nhProbs{1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7};
     n = genRandNum(nhProbs);
-    
+    int fee = 0;
+    int reward = 0;
     // May have to sell/mortgage assests, or declare bankrupcy if p.wallet goes less than 0
     switch(n) { // switch case that matches NH prob. table given in Watopoly.pdf
-        case 1: b.transferFunds("BANK", p.getName(), -200);
-        case 2: b.transferFunds("BANK", p.getName(), -100);
-        case 3: b.transferFunds("BANK", p.getName(), -50);
-        case 4: b.transferFunds("BANK", p.getName(), 25);
-        case 5: b.transferFunds("BANK", p.getName(),50);
-        case 6: b.transferFunds("BANK", p.getName(), 100);
-        case 7: b.transferFunds("BANK", p.getName(), 200);
+        case 1: fee = 200;
+        case 2: fee = 100;
+        case 3: fee = 50;
+        case 4: reward = 25;
+        case 5: reward = 50;
+        case 6: reward = 100;
+        case 7: reward = 200;
+    }
+
+    if (fee != 0) {
+        std::cout << "You got unlucky and are being charged with a fee of $" << fee << std::endl;
+        p.toggleHasToPay();
+        p.setFeeOwner("BANK");
+        p.setFee(fee);
+    } else {
+        std::cout << "You got lucky and are being given $" << reward << std::endl;
+        b.transferFunds("BANK", p.getName(), reward);
     }
 }

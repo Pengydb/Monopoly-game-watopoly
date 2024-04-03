@@ -11,23 +11,17 @@ AcademicBuilding::AcademicBuilding(std::string name, int loc, PropertyConfig& co
 void AcademicBuilding::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
 
-    if (this->isOwned()) { // Property is already owned
+    if (this->isOwned()) {
+        std::string owner = b.getPropertyOwner(this->getName());
+        std::cout << "This property is owned by " << owner << std::endl;
         int fee = config.getFee(impCount);
-        std::cout << "You are charged a fee of $" << fee << std::endl;
-        b.transferFunds("BANK", p.getName(), -fee);
-
-    } else { // Property is unowned
-        std::cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << std::endl;
-        std::string ans;
-        while (true) {
-            std::cin >> ans;
-            if (ans == "y") { // Player Buys Property
-                b.transferFunds("BANK", p.getName(), -config.getCost());
-                b.transferProperty(p.getName(), this->getName());
-            } else if (ans == "n") { // Property goes up for auction
-                b.holdAuction(this->getName());
-            }
-        }
+        std::cout << "You are being charged with a fee of $" << fee << std::endl;
+        p.toggleHasToPay();
+        p.setFee(fee);
+        p.setFeeOwner(owner);
+    } else {
+        std::cout << "This property is unowned! You have the option to buy it for $" << config.getCost() << std::endl;
+        p.toggleCanBuy();
     }
 }
 
