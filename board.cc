@@ -10,30 +10,31 @@
 void Board::saveGame() {
     std::string filename = "savegame.txt";
     std::ofstream file(filename);
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::invalid_argument("Error opening file " + filename);
         return;
     }
 
-    for (const auto &player : players)
-    {
-        file << "Player: " << player->getName() << "," << player->getPiece() << "," << player->getWallet() << "," << player->getPosition() << "," << player->isVisitingTims() << "," << player->getTimsLine() << "," << player->getTimsCups() << std::endl;
+    for (const auto &player : players) {
+        file << player->getName() << ","
+             << player->getPiece() << ","
+             << player->getTimsCups() << ","
+             << player->getWallet() << ","
+             << player->getPosition() << ","
+             << player->isVisitingTims() << "," 
+             << player->getTimsLine() << std::endl;
     }
 
-    for (const auto &tile : buildings)
-    {
-        if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile))
-        {
-            if (ab->isOwned()){
+    for (const auto &tile : buildings) {
+        if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile)) {
+            if (ab->isOwned()) {
                 file << "AcademicBuilding: " << ab->getName() << "," << bank->getPropertyOwner(ab->getName()) << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
             }
             else {
                 file << "AcademicBuilding: " << ab->getName() << "," << "false" << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
             }
         }
-        else if (auto r = std::dynamic_pointer_cast<Residence>(tile))
-        {
+        else if (auto r = std::dynamic_pointer_cast<Residence>(tile)) {
             if (r->isOwned()){
                 file << "Residence: " << r->getName() << "," << bank->getPropertyOwner(r->getName()) << "," << r->isMortgaged() << std::endl;
             }
@@ -42,19 +43,15 @@ void Board::saveGame() {
             }
             
         }
-        else if (auto g = std::dynamic_pointer_cast<Gym>(tile))
-        {
-            if (g->isOwned())
-            {
+        else if (auto g = std::dynamic_pointer_cast<Gym>(tile)) {
+            if (g->isOwned()) {
                 file << "Gym: " << g->getName() << "," << bank->getPropertyOwner(g->getName()) << "," << g->isMortgaged() << std::endl;
             }
-            else
-            {
+            else {
                 file << "Gym: " << g->getName() << "," << "false" << "," << g->isMortgaged() << std::endl;
             }
         }
-        else
-        {
+        else {
             throw std::invalid_argument("Unknown tile type.");
             return;
         }
@@ -67,11 +64,9 @@ void Board::saveGame() {
 }
 
 
-void Board::loadGame(const std::string &filename)
-{
+void Board::loadGame(const std::string &filename) {
     std::ifstream file(filename);
-    if (!file.is_open())
-    {
+    if (!file.is_open()) {
         throw std::invalid_argument("Error opening file " + filename);
         return;
     }
@@ -81,13 +76,11 @@ void Board::loadGame(const std::string &filename)
     playerTurn = 0;
 
     std::string line;
-    while (std::getline(file, line))
-    {
+    while (std::getline(file, line)) {
         std::stringstream ss(line);
         std::string token;
         std::getline(ss, token, ':');
-        if (token == "Player")
-        {
+        if (token == "Player") {
             std::string name, piece, walletStr, positionStr, timsLineStr, timsCupsStr, visitingTimsStr;
             std::getline(ss, name, ',');
             std::getline(ss, piece, ',');
@@ -107,8 +100,7 @@ void Board::loadGame(const std::string &filename)
             auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *bank, boardSize, position, visitingTims, timsLine, timsCups);
             players.push_back(player);
         }
-        else if (token == "AcademicBuilding")
-        {
+        else if (token == "AcademicBuilding") {
             std::string name, ownerStr, isMortgagedStr;
             int impCount, impCost;
             bool isMortgaged, isOwned;
@@ -127,13 +119,12 @@ void Board::loadGame(const std::string &filename)
             isMortgaged = (isMortgagedStr == "true");
             isOwned = (ownerStr != "false");
             auto academicBuilding = std::make_shared<AcademicBuilding>(name, isOwned, isMortgaged, impCount, impCost);
-            if (isOwned){
+            if (isOwned) {
                 bank->addPropertyOwner(name, ownerStr);
             }
             buildings.push_back(academicBuilding);
         }
-        else if (token == "Residence")
-        {
+        else if (token == "Residence") {
             std::string name, ownerStr, isMortgagedStr;
             bool isMortgaged, isOwned;
             std::getline(ss, name, ',');
@@ -145,8 +136,7 @@ void Board::loadGame(const std::string &filename)
             auto residence = std::make_shared<Residence>(name, isOwned, isMortgaged);
             buildings.push_back(residence);
         }
-        else if (token == "Gym")
-        {
+        else if (token == "Gym") {
             std::string name, ownerStr, isMortgagedStr;
             bool isMortgaged, isOwned;
             std::getline(ss, name, ',');
@@ -158,13 +148,11 @@ void Board::loadGame(const std::string &filename)
             auto gym = std::make_shared<Gym>(name, isOwned, isMortgaged);
             buildings.push_back(gym);
         }
-        else if (token == "Current turn")
-        {
+        else if (token == "Current turn") {
             ss >> playerTurn;
             ss.ignore();
         }
-        else
-        {
+        else {
             throw std::invalid_argument("Unknown token: " + token);
             return;
         }
@@ -179,55 +167,54 @@ int Board::getTurn() {
 
 
 
-void Board::setupGame(const std::string &filename)
-{
+void Board::setupGame(const std::string &TileOrder) {
     
-    std::ifstream file(filename);
-    if (!file.is_open())
-    {
-        throw std::invalid_argument("Error opening file " + filename);
+    std::ifstream file(TileOrder);
+    if (!file.is_open()) {
+        throw std::invalid_argument("Error opening file " + TileOrder);
         return;
     }
     std::vector<std::shared_ptr<OwnableProperty>> AcademicBuildings;
 
     std::string line;
-    while (getline(file, line))
-    {
+    while (getline(file, line)) {
         std::string buildingType, buildingName;
         std::istringstream iss(line);
         std::getline(iss, buildingType, ',');
         std::getline(iss, buildingName);
 
-        if (buildingType == "AB")
-        {
+        if (buildingType == "AB") {
             std::shared_ptr<AcademicBuilding> tile = nullptr;
             buildings.push_back(tile);
             AcademicBuildings.push_back(tile);
         }
-        else if (buildingType == "R")
-        {
+        else if (buildingType == "R") {
             std::shared_ptr<Residence> tile = nullptr;
             buildings.push_back(tile);
         }
-        else if (buildingType == "GYM")
-        {
+        else if (buildingType == "GYM") {
             std::shared_ptr<Gym> tile = nullptr;
             buildings.push_back(tile);
         }
-        else if (buildingType == "NOP")
-        {
+        else if (buildingType == "NOP") {
+            if (buildingName == "SLC") {
+
+            }
             std::shared_ptr<NonOwnableProperty> tile = nullptr;
             buildings.push_back(tile);
         }
-        else
-        {
+        else {
             throw std::invalid_argument("Unknown building type: " + buildingType);
             return;
         }
-        
     }
     file.close();
+    const int cards = 15;
+    bank->initBank(players, AcademicBuildings);
+    
+}
 
+std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
     std::cout << "Enter the number of players: " << std::endl;
     int numPlayers;
     std::cin >> numPlayers;
@@ -241,39 +228,33 @@ void Board::setupGame(const std::string &filename)
         players.push_back(player);
     }
 
-    if (numPlayers == 1){
+    if (numPlayers == 1) {
         std::shared_ptr<Player> player = players[0];
         std::string name = player->getName();
         std::cout << "Congratulations! " << name << " has won the game" << std::endl;
     }
-
-    const int cards = 15;
-    bank->initBank(players, AcademicBuildings);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
-}
 
-std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece)
-{
+
     std::string name;
-    while(true){
+    while(true) {
         std::cout << "Enter player's name: " << std::endl;
         std::getline(std::cin, name);
 
         std::string check = name;
         std::transform(check.begin(), check.end(), check.begin(), ::tolower);
-        if (check == "school"){
+        if (check == "school") {
             throw std::invalid_argument("Invalid name. Player not added.");
             continue;
         }
 
-        if (name.empty()){
+        if (name.empty()) {
             throw std::invalid_argument("Invalid name. Player not added.");
             continue;
         }
 
-        if (nameToPiece.find(name) != nameToPiece.end())
-        {
+        if (nameToPiece.find(name) != nameToPiece.end()) {
             throw std::invalid_argument("Duplicate name. Player not added.");
             continue;
         }
@@ -307,7 +288,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
                     chosen = true; // Piece already chosen
                 }
             }
-            if (chosen){
+            if (chosen) {
                 throw std::invalid_argument("This piece has already been taken. Please try again.");
                 continue;
             }
@@ -672,12 +653,9 @@ void Board::movePlayer(Player &p, int roll) {
     p.setPosition(index);
 }
 
-void Board::removePlayer(Player &player)
-{
-    for (auto it = players.begin(); it != players.end(); ++it)
-    {
-        if (it->get() == &player)
-        {
+void Board::removePlayer(Player &player) {
+    for (auto it = players.begin(); it != players.end(); ++it) {
+        if (it->get() == &player) {
             players.erase(it);
             break;
         }
@@ -689,7 +667,7 @@ void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % players.size();
 }
 
-void Board::notify(Player &p){
+void Board::notify(Player &p) {
     buildings[p.getPosition()]->performAction(p, *bank);
 }
 
