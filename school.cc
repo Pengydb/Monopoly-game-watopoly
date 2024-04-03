@@ -34,7 +34,8 @@ void School::holdAuction(const std::string& propertyName) {
 std::string School::getPropertyOwner(const std::string& propertyName) const {
     auto iter = propertyOwnership.find(propertyName);
     if (iter == propertyOwnership.end()) {
-        throw std::invalid_argument("Property does not exist: " + propertyName);
+        std::cout << "Property does not exist: " + propertyName << "." << std::endl;
+        return;
     }
     return iter->second; 
 }
@@ -50,13 +51,42 @@ void School::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
 
 void School::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
     if (properties.find(propertyName) == properties.end()) {
-        throw std::invalid_argument("Property does not exist: " + propertyName);
+        std::cout << "Property does not exist: " + propertyName << "." << std::endl;
+        return;
     }
     if (players.find(toPlayerName) == players.end()) {
-        throw std::invalid_argument("Target player name does not exist: " + toPlayerName);
+        std::cout << "Target player does not exist: " + toPlayerName << "." << std::endl;
+        return;
     }
+
+    std::string currentOwner = propertyOwnership[propertyName];
+
+    if (currentOwner == toPlayerName) {
+        std::cout << "Cannot transfer property from self to self." << std::endl;
+        return;
+    }
+
+    std::shared_ptr<PropertyConfig> propertyConfig = propertyConfigs[propertyName];
     propertyOwnership[propertyName] = toPlayerName;
-    
+
+    if (propertyConfig->getGroup() == "Gym") {
+            if (toPlayerName != "SCHOOL") {
+                players[toPlayerName]->addGyms(1);
+            }
+            if (currentOwner != "SCHOOL") {
+                players[currentOwner]->addGyms(-1);
+            }
+    } else if (propertyConfig->getGroup() == "Residence") {
+            if (toPlayerName != "SCHOOL") {
+                players[toPlayerName]->addRes(1);
+            }
+            if (currentOwner != "SCHOOL") {
+                players[currentOwner]->addRes(-1);
+            }
+    } else {
+        updateMonopoly(propertyConfig->getGroup());
+    }
+    std::cout << propertyName << " successfully transfered from " << currentOwner << " to " << toPlayerName << "." << std::endl;
 }
 
 bool School::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
@@ -67,11 +97,11 @@ bool School::transferFunds(const std::string& fromPlayerName, const std::string&
             if (toPlayerName != "SCHOOL") {
                 players.find(toPlayerName)->second->addWallet(amount);
             }
-            std:: cout << "Sucessfully transfeer $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
+            std:: cout << "Sucessfully transfered $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
             return true;
         }
         else {
-            std:: cout << fromPlayerName << " lacks suffiecnt funds to transfer." << std::endl;
+            std:: cout << fromPlayerName << " lacks sufficient funds to transfer." << std::endl;
             return false;
         }
     }
@@ -106,7 +136,8 @@ void School::updateMonopoly(const std::string& monopolyGroup) {
 
 int School::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
     if (players.find(playerName) == players.end()) {
-        throw std::invalid_argument("Target player name does not exist: " + playerName);
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return -1;
     }
     int count = 0;
     for (const auto& [propertyName, ownerName] : propertyOwnership) {
@@ -122,7 +153,8 @@ int School::countBlocksOwnedBy(const std::string& playerName, const std::string&
 
 int School::getLiquidAssets(const std::string& playerName) const {
     if (players.find(playerName) == players.end()) {
-        throw std::invalid_argument("Target player does not exist: " + playerName);
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return -1;
     }
     int assets = 0;
     assets += players.find(playerName)->second->getWallet();
@@ -147,7 +179,8 @@ int School::getLiquidAssets(const std::string& playerName) const {
 
 bool School::checkSufficientFunds(const std::string& playerName, int amount) const {
     if (players.find(playerName) == players.end()) {
-        throw std::invalid_argument("Target player does not exist: " + playerName);
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return false;
     }
     std::shared_ptr<Player> player = players.find(playerName)->second;
 
@@ -155,25 +188,6 @@ bool School::checkSufficientFunds(const std::string& playerName, int amount) con
         return true;
     }
     return false; 
-}
-
-void School::payDebts(const std::string& debotor, const std::string& creditor, int amount) {
-    
-    std::cout << debotor << ", you owe" << amount << ".\nDo you want to (1) attempt to liquidate assets or (2) declare bankruptcy?\nEnter 1 or 2: ";
-    std::string in;
-    int choice = 0;
-    
-    while (getline(std::cin, in)) {
-        std::stringstream ss(in);
-        if (ss >> choice) {
-            if (choice == 1 || choice == 2) break;
-        }
-        std::cout << "Invalid input. Please enter 1 to liquidate assets or 2 to declare bankruptcy: ";
-    }
-    if (choice == 1) {
-
-        while (!checkSufficientFunds(debotor, amount));
-    }
 }
 
 void School::buyImprovement(const std::string& propertyName, const std::string& playerName) {
@@ -307,8 +321,6 @@ void School::mortgageProperty(const std::string& propertyName, const std::string
 }
 
 
-
-
 void School::unmortgageProperty(const std::string& propertyName, const std::string& playerName) {
     if (playerName == "SCHOOL") {
         std::cout << "School cannot mortgage a property" << std::endl;
@@ -359,5 +371,3 @@ void School::removePlayer(const std::string& playerName) {
         std::cout << playerName << " has gone bankrupt and can no longer continue" << std::endl;
     }
 }
-
-
