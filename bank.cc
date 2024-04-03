@@ -1,29 +1,29 @@
-#include "school.h"
+#include "bank.h"
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
 #include <string>
 
-School::School() : DCTimsCups(0) {
-    players["SCHOOL"] = nullptr;
+Bank::Bank() : DCTimsCups(0) {
+    players["BANK"] = nullptr;
 }
 
-int School::getDCTimsCups() const {
+int Bank::getDCTimsCups() const {
     return DCTimsCups;
 }
 
-void School::addDCTimsCups(int n) {
+void Bank::addDCTimsCups(int n) {
     if (DCTimsCups + n > 4 || DCTimsCups + n < 0) {
         throw std::invalid_argument("Invalid operation: Attempt to set DC Tims Cups outside of valid range.");
     }
     DCTimsCups += n;
 }
 
-void School::holdAuction(const std::string& propertyName) {
+void Bank::holdAuction(const std::string& propertyName) {
     // Implementation here
 }
 
-std::string School::getPropertyOwner(const std::string& propertyName) const {
+std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     auto iter = propertyOwnership.find(propertyName);
     if (iter == propertyOwnership.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
@@ -32,16 +32,16 @@ std::string School::getPropertyOwner(const std::string& propertyName) const {
     return iter->second; 
 }
 
-std::weak_ptr<PropertyConfig> School::getPropertyConfig(const std::string& propertyName) {
+std::weak_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propertyName) {
     // Implementation here
     return std::weak_ptr<PropertyConfig>(); // Placeholder return
 }
 
-void School::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
+void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;
 }
 
-void School::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
+void Bank::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
     if (properties.find(propertyName) == properties.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
         return;
@@ -62,17 +62,17 @@ void School::transferProperty(const std::string& toPlayerName, const std::string
     propertyOwnership[propertyName] = toPlayerName;
 
     if (propertyConfig->getGroup() == "Gym") {
-            if (toPlayerName != "SCHOOL") {
+            if (toPlayerName != "BANK") {
                 players[toPlayerName]->addGyms(1);
             }
-            if (currentOwner != "SCHOOL") {
+            if (currentOwner != "BANK") {
                 players[currentOwner]->addGyms(-1);
             }
     } else if (propertyConfig->getGroup() == "Residence") {
-            if (toPlayerName != "SCHOOL") {
+            if (toPlayerName != "BANK") {
                 players[toPlayerName]->addRes(1);
             }
-            if (currentOwner != "SCHOOL") {
+            if (currentOwner != "BANK") {
                 players[currentOwner]->addRes(-1);
             }
     } else {
@@ -81,12 +81,12 @@ void School::transferProperty(const std::string& toPlayerName, const std::string
     std::cout << propertyName << " successfully transfered from " << currentOwner << " to " << toPlayerName << "." << std::endl;
 }
 
-bool School::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
+bool Bank::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
     if (fromPlayerName == toPlayerName) { return false; }
-    if (fromPlayerName != "SCHOOL") {
+    if (fromPlayerName != "BANK") {
         if (checkSufficientFunds(fromPlayerName, amount)) {
             players.find(fromPlayerName)->second->addWallet(-amount);
-            if (toPlayerName != "SCHOOL") {
+            if (toPlayerName != "BANK") {
                 players.find(toPlayerName)->second->addWallet(amount);
             }
             std:: cout << "Sucessfully transfered $" << amount << " from " << fromPlayerName << " to " << toPlayerName << "." << std::endl;
@@ -102,7 +102,7 @@ bool School::transferFunds(const std::string& fromPlayerName, const std::string&
     return true;
 }
 
-void School::updateMonopoly(const std::string& monopolyGroup) {
+void Bank::updateMonopoly(const std::string& monopolyGroup) {
     std::string monopolyOwner = "";
     bool isMonopoly = true;
     std::vector<std::shared_ptr<AcademicBuilding>> groupProperties;
@@ -113,9 +113,9 @@ void School::updateMonopoly(const std::string& monopolyGroup) {
                 groupProperties.emplace_back(academicBuilding);
                 auto& propertyOwner = propertyOwnership[propertyName];
 
-                if (monopolyOwner.empty() && propertyOwner != "SCHOOL") {
+                if (monopolyOwner.empty() && propertyOwner != "BANK") {
                     monopolyOwner = propertyOwner;
-                } else if (propertyOwner == "SCHOOL" || propertyOwner != monopolyOwner) {
+                } else if (propertyOwner == "BANK" || propertyOwner != monopolyOwner) {
                     isMonopoly = false;
                 }
             }
@@ -126,7 +126,7 @@ void School::updateMonopoly(const std::string& monopolyGroup) {
     }
 }
 
-int School::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
+int Bank::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
     if (players.find(playerName) == players.end()) {
         std::cout << "Target player does not exist: " + playerName << "." << std::endl;
         return -1;
@@ -143,7 +143,7 @@ int School::countBlocksOwnedBy(const std::string& playerName, const std::string&
     return count; 
 }
 
-int School::getLiquidAssets(const std::string& playerName) const {
+int Bank::getLiquidAssets(const std::string& playerName) const {
     if (players.find(playerName) == players.end()) {
         std::cout << "Target player does not exist: " + playerName << "." << std::endl;
         return -1;
@@ -169,7 +169,7 @@ int School::getLiquidAssets(const std::string& playerName) const {
     return assets; 
 }
 
-bool School::checkSufficientFunds(const std::string& playerName, int amount) const {
+bool Bank::checkSufficientFunds(const std::string& playerName, int amount) const {
     if (players.find(playerName) == players.end()) {
         std::cout << "Target player does not exist: " + playerName << "." << std::endl;
         return false;
@@ -182,10 +182,10 @@ bool School::checkSufficientFunds(const std::string& playerName, int amount) con
     return false; 
 }
 
-void School::buyImprovement(const std::string& propertyName, const std::string& playerName) {
+void Bank::buyImprovement(const std::string& propertyName, const std::string& playerName) {
 
-    if (playerName == "SCHOOL") {
-        std::cout << "School cannot upgrade properties." << std::endl;
+    if (playerName == "BANK") {
+        std::cout << "Bank cannot upgrade properties." << std::endl;
         return;
     }
 
@@ -226,14 +226,14 @@ void School::buyImprovement(const std::string& propertyName, const std::string& 
         return;
     }
 
-    transferFunds(playerName, "SCHOOL", upgradeCost);
+    transferFunds(playerName, "BANK", upgradeCost);
     academicBuilding->addImps(1);
     std::cout << "Improvement for " << propertyName << " purchased by " << playerName << " for $" << upgradeCost << "." << std::endl;
 }
 
-void School::sellImprovement(const std::string& propertyName, const std::string& playerName) {
-    if (playerName == "SCHOOL") {
-        std::cout << "School owned properties do not possess improvements to sell." << std::endl;
+void Bank::sellImprovement(const std::string& propertyName, const std::string& playerName) {
+    if (playerName == "BANK") {
+        std::cout << "Bank owned properties do not possess improvements to sell." << std::endl;
         return;
     }
 
@@ -266,14 +266,14 @@ void School::sellImprovement(const std::string& propertyName, const std::string&
     int upgradeCost = academicBuilding->getImpCost();
     int sellingValue = upgradeCost * 0.5;
 
-    transferFunds("SCHOOL", playerName, sellingValue);
+    transferFunds("BANK", playerName, sellingValue);
     academicBuilding->addImps(-1);
     std::cout << "Improvement for " << propertyName << " sold by " << playerName << " for $" << sellingValue << "." << std::endl;
 }
 
-void School::mortgageProperty(const std::string& propertyName, const std::string& playerName) {
-    if (playerName == "SCHOOL") {
-        std::cout << "School cannot mortgage a property" << std::endl;
+void Bank::mortgageProperty(const std::string& propertyName, const std::string& playerName) {
+    if (playerName == "BANK") {
+        std::cout << "Bank cannot mortgage a property" << std::endl;
         return;
     }
 
@@ -306,16 +306,16 @@ void School::mortgageProperty(const std::string& propertyName, const std::string
     }
 
     int mortgageValue = propertyIt->second->getCost() * 0.5;
-    transferFunds("SCHOOL", playerName, mortgageValue);
+    transferFunds("BANK", playerName, mortgageValue);
     propertyIt->second->toggleMortgage();
 
     std::cout << playerName << " has mortgaged " << propertyName << " for $" << mortgageValue << "." << std::endl;
 }
 
 
-void School::unmortgageProperty(const std::string& propertyName, const std::string& playerName) {
-    if (playerName == "SCHOOL") {
-        std::cout << "School cannot mortgage a property" << std::endl;
+void Bank::unmortgageProperty(const std::string& propertyName, const std::string& playerName) {
+    if (playerName == "BANK") {
+        std::cout << "Bank cannot mortgage a property" << std::endl;
         return;
     }
 
@@ -348,13 +348,13 @@ void School::unmortgageProperty(const std::string& propertyName, const std::stri
         return;
     }
 
-    transferFunds(playerName, "SCHOOL", unmortgageCost);
+    transferFunds(playerName, "BANK", unmortgageCost);
     propertyIt->second->toggleMortgage();
 
     std::cout << playerName << " has paid $" << unmortgageCost << " to unmortgage " << propertyName << "." << std::endl;
 }
 
-void School::removePlayer(const std::string& playerName) {
+void Bank::removePlayer(const std::string& playerName) {
     auto it = players.find(playerName); // Checks if player is in map, if not it == player.end()
     if (it != players.end()) {
         std::cout << playerName << " is not a player" << std::endl;
@@ -365,17 +365,14 @@ void School::removePlayer(const std::string& playerName) {
     }
 }
 
-void School::initSchool(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props)
-{
-    for (const auto &player : p)
-    {
+void Bank::initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props){
+    for (const auto &player : p) {
         players[player->getName()] = player;
     }
 
-    for (const auto &property : props)
-    {
+    for (const auto &property : props) {
         properties[property->getName()] = property;
-        propertyOwnership[property->getName()] = "SCHOOL";
+        propertyOwnership[property->getName()] = "BANK";
     }
     
 }

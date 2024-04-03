@@ -19,7 +19,7 @@ class OwnableProperty : public Tile {
     // 2) Charges player a fee if owned and not mortgaged
     //    -  If player can't afford to pay fee, then they can declare bankrupcy, 
     // try selling any of their assets, or try and trade (if they have property)
-    virtual void performAction(Player &p, School &s) = 0; 
+    virtual void performAction(Player &p, Bank &b) = 0; 
 
     bool isOwned() const; // Returns owned field
     bool isMortgaged() const; // returns mortgage field

@@ -8,13 +8,13 @@ AcademicBuilding::AcademicBuilding(std::string name, int loc, PropertyConfig& co
 
 
 
-void AcademicBuilding::performAction(Player &p, School &s) {
+void AcademicBuilding::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
 
     if (this->isOwned()) { // Property is already owned
         int fee = config.getFee(impCount);
         std::cout << "You are charged a fee of $" << fee << std::endl;
-        s.transferFunds("SCHOOL", p.getName(), -fee);
+        b.transferFunds("BANK", p.getName(), -fee);
 
     } else { // Property is unowned
         std::cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << std::endl;
@@ -22,10 +22,10 @@ void AcademicBuilding::performAction(Player &p, School &s) {
         while (true) {
             std::cin >> ans;
             if (ans == "y") { // Player Buys Property
-                s.transferFunds("SCHOOL", p.getName(), -config.getCost());
-                s.transferProperty(p.getName(), this->getName());
+                b.transferFunds("BANK", p.getName(), -config.getCost());
+                b.transferProperty(p.getName(), this->getName());
             } else if (ans == "n") { // Property goes up for auction
-                s.holdAuction(this->getName());
+                b.holdAuction(this->getName());
             }
         }
     }

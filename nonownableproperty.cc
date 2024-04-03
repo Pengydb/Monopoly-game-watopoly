@@ -23,12 +23,12 @@ NH::NH(std::string name, int loc): NonOwnableProperty{name, loc} {}
 
 
 
-void CollectOsap::performAction(Player &p, School &s) {
+void CollectOsap::performAction(Player &p, Bank &b) {
     std::cout << "You have passed Collect Osap, Collect $" << OSAP << std::endl;
-    s.transferFunds("SCHOOL", p.getName(), OSAP);
+    b.transferFunds("BANK", p.getName(), OSAP);
 }
 
-void DCTims::performAction(Player &p, School &s) {
+void DCTims::performAction(Player &p, Bank &b) {
     if (p.isVisitingTims()) {
         std::cout << "You are vising DCTims" << std::endl;
         return;
@@ -50,7 +50,7 @@ void DCTims::performAction(Player &p, School &s) {
                 std::cout << "You are free from the line!" << std::endl;
                 p.toggleVisiting();
                 p.setTimsLine(0);
-                s.addDCTimsCups(-1);
+                b.addDCTimsCups(-1);
                 return;
             } else if (ans == "n") {
                 std::cout << "You remain in the line" << std::endl;
@@ -66,7 +66,7 @@ void DCTims::performAction(Player &p, School &s) {
             std::cin >> ans;
             if (ans == "y") {
                 std::cout << "You are free from the line!" << std::endl;
-                s.transferFunds("SCHOOL", p.getName(), JAIL_FEE);
+                b.transferFunds("Bank", p.getName(), JAIL_FEE);
                 p.toggleVisiting();
                 p.setTimsLine(0);
                 return;
@@ -83,7 +83,7 @@ void DCTims::performAction(Player &p, School &s) {
         
         if (p.getTimsCups() == 0) {
             std::cout << "You don't have any TimsCups so you will pay the fee" << std::endl;
-            s.transferFunds("SCHOOL", p.getName(), JAIL_FEE);
+            b.transferFunds("Bank", p.getName(), JAIL_FEE);
         } else {
             p.addTimsCups(-1);
         }
@@ -94,29 +94,29 @@ void DCTims::performAction(Player &p, School &s) {
     } 
 }
 
-void GoToTims::performAction(Player &p, School &s) {
+void GoToTims::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on GoToTims, go directly to DCTims, if you pass OSAP do not collect $" << OSAP << std::endl;
     p.setPosition(10);
     p.toggleVisiting();
 }
 
-void GooseNesting::performAction(Player &p, School &s) {
+void GooseNesting::performAction(Player &p, Bank &b) {
     return;
 }
 
-void Tuition::performAction(Player &p, School &s) {
+void Tuition::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on Tuition, enter 1 to pay $" << TUITION;
     std::cout << " or enter 2 to pay %" << TUITION_PER << " of your total worth" << std::endl;
     int n;
     std::cin >> n;
 
-    if (n == 1) s.transferFunds("SCHOOL", p.getName(), -TUITION);
-    else s.transferFunds("SCHOOL", p.getName(), -(TUITION_PER/100)*p.getWallet());
+    if (n == 1) b.transferFunds("BANK", p.getName(), -TUITION);
+    else b.transferFunds("BANK", p.getName(), -(TUITION_PER/100)*p.getWallet());
 }
 
-void CoopFee::performAction(Player &p, School &s) {
-    std::cout << "You have landed on Coop Fee, pay $" << COOP_FEE << "top the School" << std::endl;
-    s.transferFunds("SCHOOL", p.getName(), (-COOP_FEE));
+void CoopFee::performAction(Player &p, Bank &b) {
+    std::cout << "You have landed on Coop Fee, pay $" << COOP_FEE << "top the Bank" << std::endl;
+    b.transferFunds("Bank", p.getName(), (-COOP_FEE));
 }
 
 
@@ -130,18 +130,18 @@ int genRandNum(std::vector<int>& vec) {
     return vec[0]; // returns first element of vec
 }
 
-void SLC::performAction(Player &p, School &s) {
+void SLC::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on SCL" << std::endl;
     int n;
 
-    if (s.getDCTimsCups() < 4) { // Checks if amount of tim cups that all players have is < 4
+    if (b.getDCTimsCups() < 4) { // Checks if amount of tim cups that all players have is < 4
         std::vector<int> timCupProb(100, 0);
         timCupProb[0] = 1;
         n = genRandNum(timCupProb);
 
         if (n == 1) { // Wins a get out of DCTims line
             p.addTimsCups(1);
-            s.addDCTimsCups(1);
+            b.addDCTimsCups(1);
             return;
         }
     } 
@@ -166,17 +166,17 @@ void SLC::performAction(Player &p, School &s) {
 
 
 
-void NH::performAction(Player &p, School &s) {
+void NH::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on NH" << std::endl;
     int n;
 
-    if (s.getDCTimsCups() < 4) { // Checks if amount of tim cups that all players have is < 4
+    if (b.getDCTimsCups() < 4) { // Checks if amount of tim cups that all players have is < 4
         std::vector<int> timCupProb(100, 0);
         timCupProb[0] = 1;
         n = genRandNum(timCupProb);
         if (n == 1) { // Wins a get out of DCTims line
             p.addTimsCups(1);
-            s.addDCTimsCups(1);
+            b.addDCTimsCups(1);
             return;
         }
     } 
@@ -187,12 +187,12 @@ void NH::performAction(Player &p, School &s) {
     
     // May have to sell/mortgage assests, or declare bankrupcy if p.wallet goes less than 0
     switch(n) { // switch case that matches NH prob. table given in Watopoly.pdf
-        case 1: s.transferFunds("SCHOOL", p.getName(), -200);
-        case 2: s.transferFunds("SCHOOL", p.getName(), -100);
-        case 3: s.transferFunds("SCHOOL", p.getName(), -50);
-        case 4: s.transferFunds("SCHOOL", p.getName(), 25);
-        case 5: s.transferFunds("SCHOOL", p.getName(),50);
-        case 6: s.transferFunds("SCHOOL", p.getName(), 100);
-        case 7: s.transferFunds("SCHOOL", p.getName(), 200);
+        case 1: b.transferFunds("BANK", p.getName(), -200);
+        case 2: b.transferFunds("BANK", p.getName(), -100);
+        case 3: b.transferFunds("BANK", p.getName(), -50);
+        case 4: b.transferFunds("BANK", p.getName(), 25);
+        case 5: b.transferFunds("BANK", p.getName(),50);
+        case 6: b.transferFunds("BANK", p.getName(), 100);
+        case 7: b.transferFunds("BANK", p.getName(), 200);
     }
 }
