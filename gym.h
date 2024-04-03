@@ -6,7 +6,7 @@
 
 class Gym : public OwnableProperty {
   public:
-    Gym(std::string name, PropertyConfig& config, bool owned, bool mortgaged);
+    Gym(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged);
     void performAction(Player &p, Bank &b) override; 
 };
 
