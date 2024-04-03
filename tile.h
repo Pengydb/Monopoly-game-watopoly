@@ -8,13 +8,14 @@
 
 class Tile : public Subject {
     std::string name;  // Name of the tile
+    int location; // location of the tile
 
   public:
-    Tile(std::string name); // Constructor for Tile
+    Tile(std::string name, int loc); // Constructor for Tile
 
     std::string getName() const;   // returns name field of Tile
-
-    virtual void performAction(Player &p, Bank &s) = 0; // pure virtual, no implimentation, for subclasses
+    int getLocation() const;
+    virtual void performAction(Player &p, Bank &b) = 0; // pure virtual, no implimentation, for subclasses
     virtual ~Tile() = default; // Default destructor
 };
 

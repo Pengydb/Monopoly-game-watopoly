@@ -1,10 +1,9 @@
 #include "ownableproperty.h"
 #include <string>
 
-using namespace std;
 
-OwnableProperty::OwnableProperty(string name, PropertyConfig& config, bool owned, bool mortgaged) :
-            Tile{name}, config{config}, owned{owned}, mortgaged{mortgaged} {}
+OwnableProperty::OwnableProperty(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged) :
+            Tile{name, loc}, config{config}, owned{owned}, mortgaged{mortgaged} {}
 
 
 bool OwnableProperty::isOwned() const { return owned; }
@@ -15,7 +14,7 @@ int OwnableProperty::getCost() const { return config.getCost(); }
 
 int OwnableProperty::getFee() const { return config.getFee(0); }
 
-string OwnableProperty::getGroup() const { return config.getGroup(); }
+std::string OwnableProperty::getGroup() const { return config.getGroup(); }
 
 void OwnableProperty::toggleMortgage() { mortgaged = !(mortgaged); }
 

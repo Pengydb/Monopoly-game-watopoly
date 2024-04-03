@@ -1,26 +1,25 @@
 #include "residence.h"
 #include <iostream>
 #include <string>
-using namespace std;
 
-Residence::Residence(string name, PropertyConfig& config, bool owned, bool mortgaged) :
-            OwnableProperty{name, config, owned, mortgaged} {}
+Residence::Residence(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged) :
+            OwnableProperty{name, loc, config, owned, mortgaged} {}
 
 void Residence::performAction(Player &p, Bank &b) {
-    cout << "You have landed on " << this->getName() << endl;
+    std::cout << "You have landed on " << this->getName() << std::endl;
 
     if (this->isOwned()) { // Property is already owned
         int fee = this->getFee();
-        cout << "You are charged a fee of $" << fee << endl;
-        b.transferFunds(p.getName(), "BANK", fee);
+        std::cout << "You are charged a fee of $" << fee << std::endl;
+        b.transferFunds("BANK", p.getName(), -fee);
 
     } else { // Property is unowned
-        cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << endl;
-        string ans;
+        std::cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << std::endl;
+        std::string ans;
         while (true) {
-            cin >> ans;
+            std::cin >> ans;
             if (ans == "y") { // Player Buys Property
-                b.transferFunds(p.getName(), "BANK",  config.getCost());
+                b.transferFunds("BANK", p.getName(), -config.getCost());
                 b.transferProperty(p.getName(), this->getName());
             } else if (ans == "n") { // Property goes up for auction
                 b.holdAuction(this->getName());
