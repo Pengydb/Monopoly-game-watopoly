@@ -25,14 +25,14 @@ private:
     std::string feeOwner; // Who the player pays the fee to (BANK if not ownable property fee)
 public:
     Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position = 0, bool visitingTims = true, 
-           int timsLine = 0, int timsCups = 0, int gyms, int res);
+           int timsLine = 0, int timsCups = 0, int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner);
     
     bool canBuy() const; // returns buy field
     bool hasToPay() const; // returns pay field
     void toggleCanBuy(); // toggles buy field
     void toggleHasToPay(); // toggles pay field
     int getFee() const; // returns fee
-    void setFee(const int n); // sets propFee to n
+    void setFee(const int n); // sets fee to n
     void setFeeOwner(std::string owner); // sets feeOwner
     std::string getFeeOwner() const; // returns feeOwner
     
@@ -58,9 +58,6 @@ public:
     std::string getName() const;
     int roll() const; // Returns a random num between 1 and 6
 
-    // Will continue to prompt player to sell improvements or mortgage their properties
-    // Until their wallet is > 0 (assumes p.getWallet() < 0)
-    void notEnoughCash(Bank &s); 
 };
 
 #endif // PLAYER_H

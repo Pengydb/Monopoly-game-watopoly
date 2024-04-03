@@ -7,9 +7,10 @@
 #include <random>
 
 Player::Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position, bool visitingTims, 
-        int timsLine, int timsCups, int gyms, int res) : 
+        int timsLine, int timsCups, int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner) : 
         piece(piece), name(name), wallet(wallet), bank(bank), boardSize(boardSize), position(position), 
-        visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res) {}
+        visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res), 
+        buy(buy), pay(pay), fee(fee), feeOwner(feeOwner) {}
 
 
 int Player::getWallet() const{
@@ -78,51 +79,21 @@ int Player::getGyms() const { return gyms; }
 int Player::getRes() const { return res; }
 void Player::addGyms(const int n) { gyms + n; }
 void Player::addRes(const int n) { res + n; }
+bool Player::canBuy() const { return buy; }
+bool Player::hasToPay() const { return pay; }
+void Player::toggleCanBuy() { buy = !(buy); }
+void Player::toggleHasToPay() { pay = !(pay); }
+int Player::getFee() const { return fee; }
+void Player::setFee(const int n) { fee = n; }
+void Player::setFeeOwner(std::string owner) { feeOwner = owner; }
+std::string Player::getFeeOwner() const { return feeOwner; }
 
-/**
-void Player::notEnoughCash(Bank &s) {
-    int assets = s.getLiquidAssets(this->getName());
-    if (this->getWallet() < 0) {
-        std::cout << "You do not have enough cash to pay the fee" << std::endl;
-        if (assets + this->getWallet() < 0) {
-            std::cout << "You do not have enough assets to pay the fee, you are BANKRUPT" << std::endl;
-            s.declareBankrupcy(this->getName());
-            return;
-        }
-        std::cout << "To get enough cash you will have to sell improvements or mortage your properties." << std::endl;
-        std::cout << "Enter: \"sell <property> n\" to sell n improvements on <property>" << std::endl;
-        std::cout << "Enter: \"mortgage <property> \" to mortagage <property>";
-        std::cout << " (Note that all improvements on <property> will be sold before it gets mortgaged)" << std::endl;
-        while(true) { // Can pay if they sell assets
-            std::string cmd, prop;
-            std::cin >> cmd >> prop;
-            /*if (!s.isOwner(p.getName(), prop)) {
-                cout << "You do not own this property" << endl;
-                continue;
-            }*/
-            /*
-            if (cmd == "improve") { // chose to sell improvements
-                int imps;
-                std::cin >> imps; // Should add checking to make sure imps is an integer > 0
-                s.sellImprovement(prop, imps);
-            } else if (cmd == "mortgage") { // chose to mortgage property
-                s.mortgageProperty(prop);
-            } 
 
-            if (this->getWallet() < 0) {
-                std::cout << "You still don't have enough to pay fee, mortgage or sell improvements" << std::endl;
-            } else {
-                break;
-            }
-        } // while
-    } // if
-}
-*/
-
-int roll() {
+int Player::roll() const {
     std::vector<int> die{1, 2, 3, 4, 5, 6}; 
     std::random_device rd;
     std::mt19937 seed(rd());
     std::shuffle(die.begin(), die.end(), seed); // Shuffles elements in die
     return die[0];
 }
+
