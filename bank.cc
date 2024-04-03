@@ -453,3 +453,88 @@ void Bank::initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::sh
         propertyOwnership[property->getName()] = "BANK";
     }
 }
+
+void Bank::holdAuction(const std::string &propertyName){
+    std::vector<std::string> names;
+    for (const auto &pair : players)
+    {
+        names.push_back(pair.first); // To construct the names vector to store the names of the players
+    }
+    int highestBid = 1; // Starting bid
+    std::string highestBidder = ""; // To store the winning bidder
+    while(true){
+        if (names.size() == 1){
+            highestBidder = names[0];
+            bool check = checkSufficientFunds(highestBidder, highestBid);
+            if (check){
+                std::cout << "Congratulations! " << highestBidder << " has won the auction for $" << highestBid << std::endl;
+                transferFunds(highestBidder, "BANK", highestBid);
+                transferProperty("BANK", highestBidder);
+                std::cout << "The transfer has been complete" << std::endl;
+            }
+            else {
+                std::cout << "No one has won the auction so the property will remain with the Bank" << std::endl;
+            }
+            
+        }
+        std::string bidder = ""; // Current bidder
+        std::cout << "Players: ";
+        for (const auto& name : names){
+            std::cout << name << " ";
+        }
+        std:: cout << "." << std::endl; // To output the list of players currently in the auction
+
+        std::cout << "Please enter the name of the bidder" << std::endl;
+        std::getline(std::cin, bidder); // To enter the name of the bidder
+
+        bool match = false;
+        for (const auto &name : names)
+        {
+            if (bidder == name){
+                match = true; // check if it is a valid player
+            }
+        }
+        if (!match){ // If not the prompted to enter the name again
+            throw std::invalid_argument("Please enter a valid player");
+            continue;
+        }
+        while (true){
+            std::string input;
+            int tempBid = 0; // Stores Current bid
+            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter withdraw to leave the auction)" << std::endl;
+            std::getline(std::cin, input);
+            std::istringstream iss(input);
+            if (iss >> tempBid){ // Checks whether the input entered is a number or a string
+                if (tempBid > highestBid){ // If it is a number then checking if it is a valid bid
+                    bool check = checkSufficientFunds(highestBidder, highestBid); // Checking if the player can pay the bid
+                    if (check){
+                        highestBid = tempBid;
+                        highestBidder = bidder; // If yes then it is the current winning bid and bidder
+                        std::cout << "The current highest bidder is " << highestBidder << "for $" << highestBid << std::endl;
+                        break;
+                    }
+                    else {
+                        std::cout << "You have insufficient funds to cover this bid, please enter a valid bid or withdraw" << std::endl;
+                        continue;
+                    }
+                }
+            }
+            else { // If it is not a bid then checking if it is withdraw
+                std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+                if (input == "withdraw"){ // If it is withdraw then the name is removed from the player list
+                    if (bidder == highestBidder){
+                        std::cout << "You cannot leave the auction as you are currently the highest bidder" << std::endl;
+                        break;
+                    }
+                    auto it = std::find(names.begin(), names.end(), bidder);
+                        names.erase(it);
+                    std::cout << bidder << " has withdrawn from the auction" << std::endl;
+                    break;
+                }
+            }
+            std::cout << "Please enter a valid bid greater than $" << highestBid << " or withdraw" << std::endl;
+        }
+        
+        
+    }
+}
