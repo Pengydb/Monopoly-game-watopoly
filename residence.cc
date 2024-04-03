@@ -12,7 +12,7 @@ void Residence::performAction(Player &p, Bank &b) {
     if (this->isOwned()) { // Property is already owned
         int fee = this->getFee();
         cout << "You are charged a fee of $" << fee << endl;
-        b.transferFunds("BANK", p.getName(), -fee);
+        b.transferFunds(p.getName(), "BANK", fee);
 
     } else { // Property is unowned
         cout << "Do you want to buy " << this->getName() << " for $" << config.getCost() << "? (y/n)" << endl;
@@ -20,7 +20,7 @@ void Residence::performAction(Player &p, Bank &b) {
         while (true) {
             cin >> ans;
             if (ans == "y") { // Player Buys Property
-                b.transferFunds("BANK", p.getName(), -config.getCost());
+                b.transferFunds(p.getName(), "BANK",  config.getCost());
                 b.transferProperty(p.getName(), this->getName());
             } else if (ans == "n") { // Property goes up for auction
                 b.holdAuction(this->getName());
