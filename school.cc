@@ -4,16 +4,8 @@
 #include <sstream>
 #include <string>
 
-School::School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties, int cards) {
-    // Initialization logic here
-}
-
-School::~School() {
-    // Cleanup logic here
-}
-
-void School::notify(Subject& s) {
-    // Implementation here
+School::School() : DCTimsCups(0) {
+    players["SCHOOL"] = nullptr;
 }
 
 int School::getDCTimsCups() const {

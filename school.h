@@ -1,7 +1,6 @@
 #ifndef __SCHOOL_H_
 #define __SCHOOL_H_
 
-#include "observer.h"
 #include "player.h"
 #include "ownableproperty.h"
 #include "academicbuilding.h"
@@ -10,7 +9,7 @@
 #include <memory>
 #include <string>
 
-class School: public Observer {
+class School {
 private:
     std::map<std::string, std::shared_ptr<PropertyConfig>> propertyConfigs; // Property configs
     std::map<std::string, std::shared_ptr<Player>> players; // Maps player name to player
@@ -19,8 +18,9 @@ private:
     int DCTimsCups; // total number of DCTims Cups that are owned by players (get out of jail)
     
 public:
-    School(const std::vector<std::shared_ptr<Player>>& players, const std::vector<std::shared_ptr<OwnableProperty>>& properties, int cards);
-    ~School();
+    School();
+    
+    ~School() = default;
 
     void notify(Subject& s);
 
