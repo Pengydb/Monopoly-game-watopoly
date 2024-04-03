@@ -88,21 +88,21 @@ void Board::loadGame(const std::string &filename)
         std::getline(ss, token, ':');
         if (token == "Player")
         {
-            std::string name, piece;
-            int wallet, position, timsLine, timsCups;
-            bool visitingTims;
+            std::string name, piece, walletStr, positionStr, timsLineStr, timsCupsStr, visitingTimsStr;
             std::getline(ss, name, ',');
             std::getline(ss, piece, ',');
-            ss >> wallet;
-            ss.ignore();
-            ss >> position;
-            ss.ignore();
-            ss >> visitingTims;
-            ss.ignore();
-            ss >> timsLine;
-            ss.ignore();
-            ss >> timsCups;
-            ss.ignore();
+            std::getline(ss, walletStr, ',');
+            std::getline(ss, positionStr, ',');
+            std::getline(ss, visitingTimsStr, ',');
+            std::getline(ss, timsLineStr, ',');
+            std::getline(ss, timsCupsStr, ',');
+
+            // Convert strings to integers
+            int wallet = std::stoi(walletStr);
+            int position = std::stoi(positionStr);
+            bool visitingTims = (visitingTimsStr == "false");
+            int timsLine = std::stoi(timsLineStr);
+            int timsCups = std::stoi(timsCupsStr);
             const int boardSize = 40;
             auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *bank, boardSize, position, visitingTims, timsLine, timsCups);
             players.push_back(player);
@@ -115,11 +115,15 @@ void Board::loadGame(const std::string &filename)
             std::getline(ss, name, ',');
             std::getline(ss, ownerStr, ',');
             std::getline(ss, isMortgagedStr, ',');
-            ss >> impCount;
-            ss.ignore();
-            ss >> impCost;
-            ss.ignore();
+            std::string impCountStr, impCostStr;
+            std::getline(ss, impCountStr, ',');
+            std::getline(ss, impCostStr, ',');
 
+            // Convert strings to integers
+            impCount = std::stoi(impCountStr);
+            impCost = std::stoi(impCostStr);
+
+            // Convert strings to boolean
             isMortgaged = (isMortgagedStr == "true");
             isOwned = (ownerStr != "false");
             auto academicBuilding = std::make_shared<AcademicBuilding>(name, isOwned, isMortgaged, impCount, impCost);
@@ -247,6 +251,7 @@ void Board::setupGame(const std::string &filename)
     bank->initBank(players, AcademicBuildings);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
+    playGame();
 }
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece)
