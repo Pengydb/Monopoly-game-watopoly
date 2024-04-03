@@ -30,18 +30,18 @@ class Board : public Observer {
     std::shared_ptr<Player> setPlayer(); // Creates a player
     void movePlayer(Player &p, int roll); // Moves a player to the target tile
     void removePlayer(Player &p); // removes a player from the board
-<<<<<<< HEAD
+
     void printBoard(); // Prints the current state of the board
     // void notify(Subject &s);
     void loadGame(const std::string &filename);
 
     // Returns the name of the tile at position n (assumes 40 >= n >= 0)
     std::string getTileName(const int n) const; 
-=======
+
     void nextTurn(); // moves the game to the next turn
     void notify(Subject &s); // Notifies the subjects of any changes
     void printBoard(TextDisplay &t); // Prints the current state of the board
->>>>>>> 5a1eade (changes done to board)
+
 };
 
 #endif // BOARD_H

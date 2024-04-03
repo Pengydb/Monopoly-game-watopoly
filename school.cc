@@ -372,3 +372,18 @@ void School::removePlayer(const std::string& playerName) {
         std::cout << playerName << " has gone bankrupt and can no longer continue" << std::endl;
     }
 }
+
+void School::initSchool(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props)
+{
+    for (const auto &player : p)
+    {
+        players[player->getName()] = player;
+    }
+
+    for (const auto &property : props)
+    {
+        properties[property->getName()] = property;
+        propertyOwnership[property->getName()] = "SCHOOL";
+    }
+    
+}
