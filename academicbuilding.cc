@@ -38,7 +38,4 @@ bool AcademicBuilding::getMonopoly() const { return monopoly; }
 void AcademicBuilding::toggleMonopoly() { monopoly = !(monopoly); }
 void AcademicBuilding::setMonopoly(bool status) { monopoly = status; }
 int AcademicBuilding::getImpCount() const { return impCount; }
-void AcademicBuilding::sellImps(Bank &b, Player &p, int n) {
-    impCount -= n;
-    b.transferFunds("SCHOOL", p.getName(), n*impCost*(0.5));
-}
+
