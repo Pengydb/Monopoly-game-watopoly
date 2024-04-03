@@ -43,21 +43,21 @@ void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;
 }
 
-void Bank::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
+bool Bank::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
     if (properties.find(propertyName) == properties.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
-        return;
+        return false;
     }
     if (players.find(toPlayerName) == players.end()) {
         std::cout << "Target player does not exist: " + toPlayerName << "." << std::endl;
-        return;
+        return false;
     }
 
     std::string currentOwner = propertyOwnership[propertyName];
 
     if (currentOwner == toPlayerName) {
         std::cout << "Cannot transfer property from self to self." << std::endl;
-        return;
+        return false;
     }
 
     std::shared_ptr<PropertyConfig> propertyConfig = propertyConfigs[propertyName];
@@ -66,7 +66,8 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
 
     if (property->isMortgaged()) {
         int mortgageTransferFee = property->getCost() * 0.1;
-        std::cout << toPlayerName << " you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be chared a fee of $" << mortgageTransferFee << "." << std::endl;
+        std::cout << toPlayerName <<" you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be"
+                                                                             " chared a fee of $" << mortgageTransferFee << "." << std::endl;
         transferFunds(toPlayerName, "BANK", mortgageTransferFee);
         std::cout << toPlayerName << " do you wish to unmortgage " << propertyName << " now? (Enter: (yes/no)" << std::endl;
 
@@ -82,7 +83,8 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
             std::cout << propertyName << " has been unmortgaged." << std::endl;
             break; 
             } else if (response == "no") {
-                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost 60% of the original cost." << std::endl;
+                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost"
+                                                                                                       " 60% of the original cost." << std::endl;
                 break; 
             } else {
                 std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
@@ -109,6 +111,7 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
     }
 
     std::cout << propertyName << " successfully transfered from " << currentOwner << " to " << toPlayerName << "." << std::endl;
+    return true;
 }
 
 bool Bank::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
