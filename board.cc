@@ -11,6 +11,7 @@ void Board::saveGame() {
     if (!file.is_open())
     {
         throw std::invalid_argument("Error opening file " + filename);
+        return;
     }
 
     for (const auto &player : players)
@@ -53,6 +54,7 @@ void Board::saveGame() {
         else
         {
             throw std::invalid_argument("Unknown tile type.");
+            return;
         }
         
     }
@@ -69,6 +71,7 @@ void Board::loadGame(const std::string &filename)
     if (!file.is_open())
     {
         throw std::invalid_argument("Error opening file " + filename);
+        return;
     }
 
     players.clear();
@@ -157,6 +160,7 @@ void Board::loadGame(const std::string &filename)
         else
         {
             throw std::invalid_argument("Unknown token: " + token);
+            return;
         }
     }
     file.close();
@@ -176,6 +180,7 @@ void Board::setupGame(const std::string &filename)
     if (!file.is_open())
     {
         throw std::invalid_argument("Error opening file " + filename);
+        return;
     }
     std::vector<std::shared_ptr<OwnableProperty>> AcademicBuildings;
 
@@ -211,6 +216,7 @@ void Board::setupGame(const std::string &filename)
         else
         {
             throw std::invalid_argument("Unknown building type: " + buildingType);
+            return;
         }
         
     }
@@ -221,8 +227,11 @@ void Board::setupGame(const std::string &filename)
     std::cin >> numPlayers;
     std::cin.ignore();
 
+    std::map<std::string, char> nameToPiece;
+
     for (int i = 0; i < numPlayers; ++i) {
-        std::shared_ptr<Player> player = setPlayer();
+        std::shared_ptr<Player> player = setPlayer(nameToPiece);
+        nameToPiece[player->getName()] = player->getPiece();
         players.push_back(player);
     }
 
@@ -238,19 +247,30 @@ void Board::setupGame(const std::string &filename)
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
 }
 
-std::shared_ptr<Player> Board::setPlayer()
+std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece)
 {
     std::string name;
     while(true){
         std::cout << "Enter player's name: " << std::endl;
         std::getline(std::cin, name);
-        if (!name.empty()){
-            break;
-        }
-        else{
+
+        std::string check = name;
+        std::transform(check.begin(), check.end(), check.begin(), ::tolower);
+        if (check == "school"){
             throw std::invalid_argument("Invalid name. Player not added.");
+            continue;
         }
-        
+
+        if (name.empty()){
+            throw std::invalid_argument("Invalid name. Player not added.");
+            continue;
+        }
+
+        if (nameToPiece.find(name) != nameToPiece.end())
+        {
+            throw std::invalid_argument("Duplicate name. Player not added.");
+            continue;
+        }
     }
 
     char playerPiece;
@@ -274,6 +294,17 @@ std::shared_ptr<Player> Board::setPlayer()
         case '$':
         case 'L':
         case 'T':
+
+            bool chosen = false;
+            for (const auto& pair : nameToPiece) {
+                if (pair.second == playerPiece) {
+                    chosen = true; // Piece already chosen
+                }
+            }
+            if (chosen){
+                throw std::invalid_argument("This piece has already been taken. Please try again.");
+                continue;
+            }
             std::cout << "You chose the " << playerPiece << " piece." << std::endl;
             break;
         default:

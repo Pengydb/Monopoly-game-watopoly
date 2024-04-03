@@ -27,7 +27,7 @@ class Board : public Observer {
     void setupGame(const std::string &filename); // Starts the game
     void playGame(); // Plays the game
 
-    std::shared_ptr<Player> setPlayer(); // Creates a player
+    std::shared_ptr<Player> setPlayer(std::map<std::string, char> &nameToPiece); // Creates a player
     void movePlayer(Player &p, int roll); // Moves a player to the target tile
     void removePlayer(Player &p); // removes a player from the board
 
