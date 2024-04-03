@@ -1,6 +1,8 @@
 #include "board.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <cctype>
 #include <vector>
 #include <string>
 #include <sstream>

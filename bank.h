@@ -48,13 +48,14 @@ public:
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
-    // Transfers property from one player to another
-    void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (bank has name BANK)
+    /* Transfers property from one player to another returns true if successfull, charges receiver a fee if the property is mortgaged and gives 
+    option to unmortgage now or later. Returns true if successfull with a message to stdout and false with relevent message if failed*/
+    bool transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (bank has name BANK)
 
     // Updates monopoly status for all properties within group
     void updateMonopoly(const std::string& monopolyGroup);
 
-    // Transfers all assets from debtor to creditor, if creditor is bank holds auction for each property
+    // Transfers all assets (cash, timcups, properties) from debtor to creditor, if creditor is the bank an auction is held for each property. 
     void seizeAssets(const std::string& debtor, const std::string& creditor);
 
     // Transfers funds from fromPlayerName to toPlayerName, will not work if fromPlayer lacks sufficient funds and a message will be displayed

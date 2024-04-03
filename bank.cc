@@ -29,7 +29,7 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     auto iter = propertyOwnership.find(propertyName);
     if (iter == propertyOwnership.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
-        return;
+        return "";
     }
     return iter->second; 
 }
@@ -43,21 +43,21 @@ void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;
 }
 
-void Bank::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
+bool Bank::transferProperty(const std::string& toPlayerName, const std::string& propertyName) {
     if (properties.find(propertyName) == properties.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
-        return;
+        return false;
     }
     if (players.find(toPlayerName) == players.end()) {
         std::cout << "Target player does not exist: " + toPlayerName << "." << std::endl;
-        return;
+        return false;
     }
 
     std::string currentOwner = propertyOwnership[propertyName];
 
     if (currentOwner == toPlayerName) {
         std::cout << "Cannot transfer property from self to self." << std::endl;
-        return;
+        return false;
     }
 
     std::shared_ptr<PropertyConfig> propertyConfig = propertyConfigs[propertyName];
@@ -66,7 +66,8 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
 
     if (property->isMortgaged()) {
         int mortgageTransferFee = property->getCost() * 0.1;
-        std::cout << toPlayerName << " you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be chared a fee of $" << mortgageTransferFee << "." << std::endl;
+        std::cout << toPlayerName <<" you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be"
+                                                                             " chared a fee of $" << mortgageTransferFee << "." << std::endl;
         transferFunds(toPlayerName, "BANK", mortgageTransferFee);
         std::cout << toPlayerName << " do you wish to unmortgage " << propertyName << " now? (Enter: (yes/no)" << std::endl;
 
@@ -82,7 +83,8 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
             std::cout << propertyName << " has been unmortgaged." << std::endl;
             break; 
             } else if (response == "no") {
-                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost 60% of the original cost." << std::endl;
+                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost"
+                                                                                                       " 60% of the original cost." << std::endl;
                 break; 
             } else {
                 std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
@@ -109,6 +111,7 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
     }
 
     std::cout << propertyName << " successfully transfered from " << currentOwner << " to " << toPlayerName << "." << std::endl;
+    return true;
 }
 
 bool Bank::transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount) {
@@ -448,5 +451,90 @@ void Bank::initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::sh
     for (const auto &property : props) {
         properties[property->getName()] = property;
         propertyOwnership[property->getName()] = "BANK";
+    }
+}
+
+void Bank::holdAuction(const std::string &propertyName){
+    std::vector<std::string> names;
+    for (const auto &pair : players)
+    {
+        names.push_back(pair.first); // To construct the names vector to store the names of the players
+    }
+    int highestBid = 1; // Starting bid
+    std::string highestBidder = ""; // To store the winning bidder
+    while(true){
+        if (names.size() == 1){
+            highestBidder = names[0];
+            bool check = checkSufficientFunds(highestBidder, highestBid);
+            if (check){
+                std::cout << "Congratulations! " << highestBidder << " has won the auction for $" << highestBid << std::endl;
+                transferFunds(highestBidder, "BANK", highestBid);
+                transferProperty("BANK", highestBidder);
+                std::cout << "The transfer has been complete" << std::endl;
+            }
+            else {
+                std::cout << "No one has won the auction so the property will remain with the Bank" << std::endl;
+            }
+            
+        }
+        std::string bidder = ""; // Current bidder
+        std::cout << "Players: ";
+        for (const auto& name : names){
+            std::cout << name << " ";
+        }
+        std:: cout << "." << std::endl; // To output the list of players currently in the auction
+
+        std::cout << "Please enter the name of the bidder" << std::endl;
+        std::getline(std::cin, bidder); // To enter the name of the bidder
+
+        bool match = false;
+        for (const auto &name : names)
+        {
+            if (bidder == name){
+                match = true; // check if it is a valid player
+            }
+        }
+        if (!match){ // If not the prompted to enter the name again
+            throw std::invalid_argument("Please enter a valid player");
+            continue;
+        }
+        while (true){
+            std::string input;
+            int tempBid = 0; // Stores Current bid
+            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter withdraw to leave the auction)" << std::endl;
+            std::getline(std::cin, input);
+            std::istringstream iss(input);
+            if (iss >> tempBid){ // Checks whether the input entered is a number or a string
+                if (tempBid > highestBid){ // If it is a number then checking if it is a valid bid
+                    bool check = checkSufficientFunds(highestBidder, highestBid); // Checking if the player can pay the bid
+                    if (check){
+                        highestBid = tempBid;
+                        highestBidder = bidder; // If yes then it is the current winning bid and bidder
+                        std::cout << "The current highest bidder is " << highestBidder << "for $" << highestBid << std::endl;
+                        break;
+                    }
+                    else {
+                        std::cout << "You have insufficient funds to cover this bid, please enter a valid bid or withdraw" << std::endl;
+                        continue;
+                    }
+                }
+            }
+            else { // If it is not a bid then checking if it is withdraw
+                std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+                if (input == "withdraw"){ // If it is withdraw then the name is removed from the player list
+                    if (bidder == highestBidder){
+                        std::cout << "You cannot leave the auction as you are currently the highest bidder" << std::endl;
+                        break;
+                    }
+                    auto it = std::find(names.begin(), names.end(), bidder);
+                        names.erase(it);
+                    std::cout << bidder << " has withdrawn from the auction" << std::endl;
+                    break;
+                }
+            }
+            std::cout << "Please enter a valid bid greater than $" << highestBid << " or withdraw" << std::endl;
+        }
+        
+        
     }
 }
