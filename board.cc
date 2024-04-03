@@ -365,24 +365,39 @@ void Board::playGame() {
             int d2 = curPlayer->roll();
             int sum = d1 + d2;
 
-            std::cout << "You rolled a " << d1 << " and a " << d2 << "! Move " << sum << " squares" << std::endl;
+            std::cout << "You rolled a " << d1 << " and a " << d2 << '!' << std::endl;
             if (d1 == d2) { // rolled doubles
-                doubCount++;
-                if (doubCount == 3) {
-                    std::cout << "You rolled some many doubles you decide to take a break in the DCTims line" << std::endl;
-                    curPlayer->setPosition(10);
+                if (curPlayer->isVisitingTims())  {
+                    std::cout << "You rolled doubles and successfully escaped the DCTims line!" << std::endl;
+                    std::cout << "Move " << sum << " squares" << std::endl;
                     curPlayer->toggleVisiting();
-                    doubCount = 0;
-                    hasRolled = true;
-                }
+                } else {
+                    doubCount++;
+                    if (doubCount == 3) {
+                        std::cout << "You rolled so many doubles you decide to take a break in the DCTims line" << std::endl;
+                        curPlayer->setPosition(10);
+                        curPlayer->toggleVisiting();
+                        doubCount = 0;
+                        hasRolled = true;
+                    }
 
-                std::cout << "You rolled doubels! You get to roll again!" << std::endl;
-                std::cout << "But be careful, if you roll 3 doubles in a row you go directly to the DCTims line! ";
-                std::cout << "Current number of doubles rolled: " << doubCount << std::endl;
+                    std::cout << "You rolled doubles! You get to roll again!" << std::endl;
+                    std::cout << "But be careful, if you roll 3 doubles in a row you go directly to the DCTims line! ";
+                    std::cout << "Current number of doubles rolled: " << doubCount << std::endl;
+                }
             } else {
                 hasRolled = true;
                 doubCount = 0;
             }
+
+            if (!curPlayer->isVisitingTims()) {
+                std::cout << "You are in the DCTims line so you won't move" << std::endl;
+                curPlayer->movePosition(0);
+            } else {
+                std::cout << "You move " << sum << " squares" << std::endl;
+                curPlayer->movePosition(sum);
+            }
+            
 
         } else if (cmd == "next") {
             // Moves to the next player's turn. Requires the current player to roll before calling
