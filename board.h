@@ -17,7 +17,6 @@ class Board : public Observer {
     std::vector<std::shared_ptr<Tile>> & buildings; // Stores pointers to buildings on the board
     std::vector<std::shared_ptr<Player>> & players;  // Stores pointers to players on the board
     std::shared_ptr<Bank> bank; // Instance of the bank
-    std::vector<std::shared_ptr<Observer>> observers; // Stores all of the observers
     int playerTurn; // Stores the current player's turn
 
     public:
