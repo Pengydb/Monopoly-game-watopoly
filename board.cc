@@ -98,7 +98,7 @@ void Board::loadGame(const std::string &filename)
             ss.ignore();
             ss >> timsCups;
             ss.ignore();
-            const int boardSize = 49;
+            const int boardSize = 40;
             auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *school, boardSize, position, visitingTims, timsLine, timsCups);
             players.push_back(player);
         }
@@ -233,7 +233,7 @@ void Board::setupGame(const std::string &filename)
     }
 
     const int cards = 15;
-    school = make_shared<School>(players, AcademicBuildings, cards);
+    school->initSchool(players, AcademicBuildings);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
 }
@@ -284,14 +284,23 @@ std::shared_ptr<Player> Board::setPlayer()
         break;
     };
     const int wallet = 1500;
-    const int boardSize = 49;
+    const int boardSize = 40;
     std::shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, *school, boardSize);
     return player;
 }
 
-void playGame() {
-    while(true){
+void Board::playGame() {
+    bool gameEnded = false;
+    while(!gameEnded){
         std::vector<std::string> commands = {"roll","next","trade","improve","mortgage","unmortgage","bankrupt","assets","all","save"};
+        std::shared_ptr<Player> currentPlayer = players[playerTurn];
+        bool canRoll = true;
+        std::string command;
+        std::cout << "Enter command for " << currentPlayer->getName() << ": " << std::endl;
+        std::getline(std::cin, command);
+
+        if (command == "roll"){}
+
         
     }
     
@@ -300,7 +309,8 @@ void playGame() {
 
 void Board::movePlayer(Player &p, int roll) {
     int index = p.getPosition();
-    index = (index + roll) % 50;
+    const int boardSize = 40;
+    index = (index + roll) % boardSize;
     p.setPosition(index);
 }
 
@@ -318,7 +328,7 @@ void Board::removePlayer(Player &player)
 }
 
 void Board::nextTurn() {
-    playerTurn = (playerTurn + 1) % (players.size() + 1);
+    playerTurn = (playerTurn + 1) % players.size();
 }
 
 void Board::notify(Subject &s){
