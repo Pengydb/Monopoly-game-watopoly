@@ -42,7 +42,7 @@ class Board : public Observer {
     void nextTurn(); // moves the game to the next turn
     void notify(Player &p); // Notifies the subjects of any changes
     void printBoard(TextDisplay &t); // Prints the current state of the board
-
+    bool playerExists(std::string name); // Checks if the player with name 'name' is in the game
 };
 
 #endif // BOARD_H

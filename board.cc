@@ -318,7 +318,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     };
     const int wallet = 1500;
     const int boardSize = 40;
-    std::shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
+    std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
     return player;
 }
 
@@ -703,3 +703,9 @@ int Board::getPropCost(const int n) const {
 }
 
 
+bool Board::playerExists(std::string name) {
+    for (const auto &p : players) {
+        if (p->getName() == name) return true;
+    }
+    return false;
+}
