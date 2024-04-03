@@ -2,6 +2,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 #include <string>
 
 Bank::Bank() : DCTimsCups(0) {
@@ -60,6 +62,33 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
 
     std::shared_ptr<PropertyConfig> propertyConfig = propertyConfigs[propertyName];
     propertyOwnership[propertyName] = toPlayerName;
+    std::shared_ptr<OwnableProperty> property = properties[propertyName];
+
+    if (property->isMortgaged()) {
+        int mortgageTransferFee = property->getCost() * 0.1;
+        std::cout << toPlayerName << " you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be chared a fee of $" << mortgageTransferFee << "." << std::endl;
+        transferFunds(toPlayerName, "BANK", mortgageTransferFee);
+        std::cout << toPlayerName << " do you wish to unmortgage " << propertyName << " now? (Enter: (yes/no)" << std::endl;
+
+        std::string response;
+        while (true) {
+            std::cin >> response;
+            std::transform(response.begin(), response.end(), response.begin(), [](unsigned char c){ return std::tolower(c); });
+            if (response == "yes") {
+            int unmortgageCost = property->getCost() * 0.5;
+            std::cout << "Unmortgaging " << propertyName << " will cost $" << unmortgageCost << "." << std::endl;
+            transferFunds(toPlayerName, "BANK", unmortgageCost);
+            property->toggleMortgage();
+            std::cout << propertyName << " has been unmortgaged." << std::endl;
+            break; 
+            } else if (response == "no") {
+                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost 60% of the original cost." << std::endl;
+                break; 
+            } else {
+                std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
+            }
+        }
+    }
 
     if (propertyConfig->getGroup() == "Gym") {
             if (toPlayerName != "BANK") {
@@ -78,6 +107,7 @@ void Bank::transferProperty(const std::string& toPlayerName, const std::string& 
     } else {
         updateMonopoly(propertyConfig->getGroup());
     }
+
     std::cout << propertyName << " successfully transfered from " << currentOwner << " to " << toPlayerName << "." << std::endl;
 }
 
@@ -124,6 +154,51 @@ void Bank::updateMonopoly(const std::string& monopolyGroup) {
     for (const auto& property: groupProperties) {
         property->setMonopoly(isMonopoly);
     }
+}
+
+void Bank::seizeAssets(const std::string& debtor, const std::string& creditor) {
+    auto debtorIt = players.find(debtor);
+    if (debtorIt == players.end()) {
+        std::cout << "Debtor does not exist: " << debtor << "." << std::endl;
+        return;
+    }
+    if (debtorIt->first == "BANK") {
+        std::cout << "Cannot seize assets from the Bank." << std::endl;
+        return;
+    }
+    auto creditorIt = players.find(creditor);
+    if (creditorIt == players.end()) {
+        std::cout << "Creditor does not exist: " << creditor << "." << std::endl;
+        return;
+    }
+
+    std::vector<std::string> propertiesSeized;
+    int cashSeized = players[debtor]->getWallet();
+
+    transferFunds(debtor, creditor, cashSeized);
+
+    for (auto& [propertyName, owner] : propertyOwnership) {
+        if (owner == debtor) {
+            std::shared_ptr<OwnableProperty> property = properties[propertyName];
+            if (creditor == "BANK") {
+                if (property->isMortgaged()) {
+                    property->toggleMortgage();
+                }
+                std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(properties[propertyName]);
+                if (academicBuilding) {
+                    academicBuilding->addImps(-academicBuilding->getImpCount());
+                    academicBuilding->setMonopoly(false);
+                }
+                property->toggleOwnership();
+                propertyOwnership[propertyName] = "BANK";
+                holdAuction(propertyName);
+            }
+        } else {
+            transferProperty(debtor, creditor);
+        }
+    }
+
+    std::cout << "Sucessfully transferred all assets from " << debtor << " to " << creditor << "." << std::endl;
 }
 
 int Bank::countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const {
@@ -374,5 +449,4 @@ void Bank::initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::sh
         properties[property->getName()] = property;
         propertyOwnership[property->getName()] = "BANK";
     }
-    
 }

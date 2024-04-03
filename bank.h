@@ -55,13 +55,10 @@ public:
     void updateMonopoly(const std::string& monopolyGroup);
 
     // Transfers all assets from debtor to creditor, if creditor is bank holds auction for each property
-    void seizeAssets(const std::string& debotor, const std::string& creditor);
-
+    void seizeAssets(const std::string& debtor, const std::string& creditor);
 
     // Transfers funds from fromPlayerName to toPlayerName, will not work if fromPlayer lacks sufficient funds and a message will be displayed
     bool transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
-
-    void payDebts(const std::string& debotor, const std::string& creditor, int amount);
 
     // Counts number of properities of given group that the player owns
     int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
