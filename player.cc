@@ -6,9 +6,9 @@
 #include <algorithm>
 #include <random>
 
-Player::Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position, bool visitingTims, 
+Player::Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position, bool visitingTims, 
         int timsLine, int timsCups, int gyms, int res) : 
-        piece(piece), name(name), wallet(wallet), school(school), boardSize(boardSize), position(position), 
+        piece(piece), name(name), wallet(wallet), bank(bank), boardSize(boardSize), position(position), 
         visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res) {}
 
 
@@ -17,7 +17,7 @@ int Player::getWallet() const{
 }
 
 void Player::printAssets() const{
-    // still needs to be done, this function may just be moved to school
+    // still needs to be done, this function may just be moved to bank
 }
 
 void Player::setWallet(const int amount) {
@@ -25,8 +25,8 @@ void Player::setWallet(const int amount) {
 }
 
 void Player::addWallet(const int amount) {
-    // ideally school's transfer funds will be the only palce where this is directly used
-    // school should handle the logic of bankruptcy scenarios
+    // ideally bank's transfer funds will be the only palce where this is directly used
+    // bank should handle the logic of bankruptcy scenarios
     wallet += amount;
 }
 
@@ -80,7 +80,7 @@ void Player::addGyms(const int n) { gyms + n; }
 void Player::addRes(const int n) { res + n; }
 
 /**
-void Player::notEnoughCash(School &s) {
+void Player::notEnoughCash(Bank &s) {
     int assets = s.getLiquidAssets(this->getName());
     if (this->getWallet() < 0) {
         std::cout << "You do not have enough cash to pay the fee" << std::endl;

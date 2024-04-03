@@ -1,5 +1,5 @@
 #include "gym.h"
-#include "school.h"
+#include "bank.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -7,7 +7,7 @@ using namespace std;
 Gym::Gym(string name, PropertyConfig& config, bool owned, bool mortgaged) :
             OwnableProperty{name, config, owned, mortgaged} {}
 
-void Gym::performAction(Player &p, School &s) {
+void Gym::performAction(Player &p, Bank &b) {
     cout << "You have landed on " << this->getName() << endl;
 
     if (this->isOwned()) { // Property is already owned
@@ -22,7 +22,7 @@ void Gym::performAction(Player &p, School &s) {
                 cout << "You rolled a sum of " << r << endl;
                 fee = fee*r;
                 cout << "You are charged $" << fee << endl;
-                s.transferFunds("SCHOOL", p.getName(), -fee);
+                b.transferFunds("SCHOOL", p.getName(), -fee);
             }
         }
 
@@ -32,10 +32,10 @@ void Gym::performAction(Player &p, School &s) {
         while (true) {
             cin >> ans;
             if (ans == "y") { // Player Buys Property
-                s.transferFunds("SCHOOL", p.getName(), -config.getCost());
-                s.transferProperty(p.getName(), this->getName());
+                b.transferFunds("SCHOOL", p.getName(), -config.getCost());
+                b.transferProperty(p.getName(), this->getName());
             } else if (ans == "n") { // Property goes up for auction
-                s.holdAuction(this->getName());
+                b.holdAuction(this->getName());
             }
         }
     }

@@ -1,5 +1,5 @@
-#ifndef __SCHOOL_H_
-#define __SCHOOL_H_
+#ifndef __BANK_H_
+#define __BANK_H_
 
 #include "player.h"
 #include "ownableproperty.h"
@@ -9,20 +9,24 @@
 #include <memory>
 #include <string>
 
-class School {
+class Bank {
 private:
-    std::map<std::string, std::shared_ptr<PropertyConfig>> propertyConfigs; // Property configs
-    std::map<std::string, std::shared_ptr<Player>> players; // Maps player name to player
-    std::map<std::string, std::shared_ptr<OwnableProperty>> properties; // Mpas property name to property
-    std::map<std::string, std::string> propertyOwnership; // maps property name to player name
-    int DCTimsCups; // total number of DCTims Cups that are owned by players (get out of jail)
+    // Property configs
+    std::map<std::string, std::shared_ptr<PropertyConfig>> propertyConfigs; 
+    // Maps player name to player
+    std::map<std::string, std::shared_ptr<Player>> players; 
+    // Maps property name to property
+    std::map<std::string, std::shared_ptr<OwnableProperty>> properties; 
+    // Maps property name to player name
+    std::map<std::string, std::string> propertyOwnership;
+    // total number of DCTims Cups that are owned by players (get out of jail)
+    int DCTimsCups; 
     
 public:
-    School();
+    Bank();
     
-    ~School() = default;
-
-    void notify(Subject& s);
+    // Default destructor 
+    ~Bank() = default;
 
      // Returns DCTimsCups field
     int getDCTimsCups() const;
@@ -31,7 +35,7 @@ public:
     void addDCTimsCups(int n);
 
     // Initializes the players, properties, and propertyOwnership maps
-    void initSchool(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props);
+    void initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props);
 
     void holdAuction(const std::string& propertyName);
 
@@ -45,12 +49,12 @@ public:
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     // Transfers property from one player to another
-    void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (school has name SCHOOL)
+    void transferProperty(const std::string& toPlayerName, const std::string& propertyName); //  (bank has name BANK)
 
     // Updates monopoly status for all properties within group
     void updateMonopoly(const std::string& monopolyGroup);
 
-    // transfers all assets from debtor to creditor, if creditor is school holds auction for each property
+    // Transfers all assets from debtor to creditor, if creditor is bank holds auction for each property
     void seizeAssets(const std::string& debotor, const std::string& creditor);
 
 
@@ -58,6 +62,7 @@ public:
     bool transferFunds(const std::string& fromPlayerName, const std::string& toPlayerName, int amount);
 
     void payDebts(const std::string& debotor, const std::string& creditor, int amount);
+
     // Counts number of properities of given group that the player owns
     int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
 
@@ -73,8 +78,8 @@ public:
     void mortgageProperty(const std::string& propertyName, const std::string& playerName);
     void unmortgageProperty(const std::string& propertyName, const std::string& playerName);
 
-    // Removes player from school's tracking, to be used after a player has declared bankruptcy and all their assets have been transferred
+    // Removes player from bank's tracking, to be used after a player has declared bankruptcy and all their assets have been transferred
     void removePlayer(const std::string& playerName);
 };  
 
-#endif // SCHOOL_H
+#endif // BANK_H

@@ -2,7 +2,7 @@
 #define __PLAYER_H_
 
 #include "subject.h"
-#include "school.h"
+#include "bank.h"
 #include <ownableproperty.h>
 #include <string>
 
@@ -18,10 +18,10 @@ private:
     int timsCups;
     int gyms; // Number of gyms the player owns
     int res; // Number of residences the player owns
-    School& school;
+    Bank& bank;
 
 public:
-    Player(char piece, const std::string& name, int wallet, School& school, int boardSize, int position = 0, bool visitingTims = true, 
+    Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position = 0, bool visitingTims = true, 
            int timsLine = 0, int timsCups = 0, int gyms, int res);
     int getGyms() const; // Returns gyms field
     int getRes() const; // Returns res field
@@ -47,7 +47,7 @@ public:
 
     // Will continue to prompt player to sell improvements or mortgage their properties
     // Until their wallet is > 0 (assumes p.getWallet() < 0)
-    void notEnoughCash(School &s); 
+    void notEnoughCash(Bank &s); 
 };
 
 #endif // PLAYER_H

@@ -23,7 +23,7 @@ void Board::saveGame() {
         if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile))
         {
             if (ab->isOwned()){
-                file << "AcademicBuilding: " << ab->getName() << "," << school->getPropertyOwner(ab->getName()) << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
+                file << "AcademicBuilding: " << ab->getName() << "," << bank->getPropertyOwner(ab->getName()) << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
             }
             else {
                 file << "AcademicBuilding: " << ab->getName() << "," << "false" << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
@@ -32,7 +32,7 @@ void Board::saveGame() {
         else if (auto r = std::dynamic_pointer_cast<Residence>(tile))
         {
             if (r->isOwned()){
-                file << "Residence: " << r->getName() << "," << school->getPropertyOwner(r->getName()) << "," << r->isMortgaged() << std::endl;
+                file << "Residence: " << r->getName() << "," << bank->getPropertyOwner(r->getName()) << "," << r->isMortgaged() << std::endl;
             }
             else {
                 file << "Residence: " << r->getName() << "," << "false" << "," << r->isMortgaged() << std::endl;
@@ -43,7 +43,7 @@ void Board::saveGame() {
         {
             if (g->isOwned())
             {
-                file << "Gym: " << g->getName() << "," << school->getPropertyOwner(g->getName()) << "," << g->isMortgaged() << std::endl;
+                file << "Gym: " << g->getName() << "," << bank->getPropertyOwner(g->getName()) << "," << g->isMortgaged() << std::endl;
             }
             else
             {
@@ -99,7 +99,7 @@ void Board::loadGame(const std::string &filename)
             ss >> timsCups;
             ss.ignore();
             const int boardSize = 40;
-            auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *school, boardSize, position, visitingTims, timsLine, timsCups);
+            auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *bank, boardSize, position, visitingTims, timsLine, timsCups);
             players.push_back(player);
         }
         else if (token == "AcademicBuilding")
@@ -119,7 +119,7 @@ void Board::loadGame(const std::string &filename)
             isOwned = (ownerStr != "false");
             auto academicBuilding = std::make_shared<AcademicBuilding>(name, isOwned, isMortgaged, impCount, impCost);
             if (isOwned){
-                school->addPropertyOwner(name, ownerStr);
+                bank->addPropertyOwner(name, ownerStr);
             }
             buildings.push_back(academicBuilding);
         }
@@ -233,7 +233,7 @@ void Board::setupGame(const std::string &filename)
     }
 
     const int cards = 15;
-    school->initSchool(players, AcademicBuildings);
+    bank->initBank(players, AcademicBuildings);
     playerTurn = 0;
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
 }
@@ -285,7 +285,7 @@ std::shared_ptr<Player> Board::setPlayer()
     };
     const int wallet = 1500;
     const int boardSize = 40;
-    std::shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, *school, boardSize);
+    std::shared_ptr<Player> player = make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
     return player;
 }
 
@@ -324,7 +324,7 @@ void Board::removePlayer(Player &player)
             break;
         }
     }
-    school->removePlayer(player.getName());
+    bank->removePlayer(player.getName());
 }
 
 void Board::nextTurn() {

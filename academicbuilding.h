@@ -13,7 +13,7 @@ class AcademicBuilding : public OwnableProperty {
   
   public:
     AcademicBuilding(std::string name, PropertyConfig& config, bool owned, bool mortgaged, int impCount, int impCost);
-    void performAction(Player &p, School &s) override;
+    void performAction(Player &p, Bank &b) override;
     void addImps(int n); // Increments impCount by n (does not charge player)
     int getImpCost() const;
     bool getMonopoly() const;
