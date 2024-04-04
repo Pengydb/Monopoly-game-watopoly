@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
         
     if (!filename.empty()) {
         board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
-        board->playGame(false, isTesting);
+        std::string winner = board->playGame(false, isTesting);
+        board->endGame(winner);
     }
         
     else {
@@ -50,7 +51,8 @@ int main(int argc, char *argv[]) {
 
         if (cmd == "start") {
             board->setupBoard("TileOrder.csv", "propertyconfig.csv");
-            board->playGame(true, isTesting);
+            std::string winner = board->playGame(true, isTesting);
+            board->endGame(winner);
         }
         /*else if (cmd == "load") {
             std::cout << "Please enter the name of the file to be loaded including its extension" << std::endl;

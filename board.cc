@@ -253,28 +253,7 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
     std::string name;
-    while(true) {
-        std::cout << "Enter player's name: " << std::endl;
-        std::getline(std::cin, name);
-
-        std::string check = name;
-        std::transform(check.begin(), check.end(), check.begin(), ::tolower);
-        if (check == "bank") {
-            throw std::invalid_argument("Invalid name. Player not added.");
-            continue;
-        }
-
-        if (name.empty()) {
-            throw std::invalid_argument("Invalid name. Player not added.");
-            continue;
-        }
-
-        if (nameToPiece.find(name) != nameToPiece.end()) {
-            throw std::invalid_argument("Duplicate name. Player not added.");
-            continue;
-        }
-    }
-
+    char playerPiece;
     std::map<char, std::string> pieceMap = {
         {'G', "Goose"},
         {'B', "GRTBus"},
@@ -285,30 +264,61 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
         {'L', "Laptop"},
         {'T', "PinkTie"}};
 
-    char playerPiece;
-    while (true)
-    {
-        std::cout << "Enter player's piece out of:" << std::endl;
-        for (const auto &pair : pieceMap)
-        {
-            std::cout << pair.first << " : " << pair.second << std::endl;
-        }
+    while(true) {
+        std::cout << "Enter player's name: " << std::endl;
+        std::getline(std::cin, name);
 
-        std::cin >> playerPiece;
-        std::cin.ignore();
-
-        if (pieceMap.find(playerPiece) != pieceMap.end())
-        {
-            std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
-            pieceMap.erase(playerPiece);
-            break;
-        }
-        else
-        {
-            std::cout << "Invalid choice. Please try again." << std::endl;
+        std::string check = name;
+        std::transform(check.begin(), check.end(), check.begin(), ::tolower);
+        if (check == "bank") {
+            std::cout << "Invalid name. Player not added." << std::endl;
             continue;
         }
-    };
+
+        if (name.empty()) {
+            std::cout << "Invalid name. Player not added." << std::endl;
+            continue;
+        }
+
+        if (nameToPiece.find(name) != nameToPiece.end()) {
+            std::cout << "Duplicate name. Player not added." << std::endl;
+            continue;
+        }
+        while (true)
+        {
+            std::cout << "Enter player's piece out of:" << std::endl;
+            for (const auto &pair : pieceMap)
+            {
+                std::cout << pair.first << " : " << pair.second << std::endl;
+            }
+
+            std::cin >> playerPiece;
+            std::cin.ignore();
+
+            bool found = false;
+            for (const auto &pair : nameToPiece)
+            {
+                if (pair.second == playerPiece)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (found){
+                std::cout << "This choice has already been taken. Please try again" << std::endl;
+                continue;
+            }
+            else if (pieceMap.find(playerPiece) == pieceMap.end()){
+                std::cout << "This is an invalid piece. Please try again" << std::endl;
+                continue;
+            }
+            else {
+                std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
+                break;
+            }
+        };
+        break;
+    }
 
     const int wallet = 1500;
     const int boardSize = 40;
@@ -316,7 +326,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     return player;
 }
 
-void Board::playGame(const bool addPlayers, const bool isTesting) {
+const std::string Board::playGame(const bool addPlayers, const bool isTesting) {
     if (addPlayers) {
         std::cout << "Enter the number of players: " << std::endl;
         int numPlayers;
@@ -336,8 +346,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         if (numPlayers == 1)
         {
             std::shared_ptr<Player> player = players[0];
-            std::string name = player->getName();
-            std::cout << "Congratulations! " << name << " has won the game" << std::endl;
+            return player->getName();
         }
 
         std::cout << "Game started with " << numPlayers << " players." << std::endl;
@@ -366,7 +375,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     int doubCount = 0; // Counts the number of doubles the current player has rolled
     std::shared_ptr<Player> curPlayer = players[playerTurn]; // Current player
     while (true) {
-        
+        print();
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
 
@@ -669,7 +678,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             }
 
         } else if (cmd == "print") {
-            this->print();
+            print();
         } else {
             std::cout << "Unrecognized command : enter \"help\" to see the list of possible commands" << std::endl;
         }
@@ -729,4 +738,8 @@ int Board::playersAtPos(const int n) const {
         if (p->getPosition() == n) num++;
     }
     return num;
+}
+
+void Board::endGame(const std::string &player) {
+    std::cout << "Congratulations! " << player << " has won the game" << std::endl;
 }
