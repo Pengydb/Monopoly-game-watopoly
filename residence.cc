@@ -2,8 +2,7 @@
 #include <iostream>
 #include <string>
 
-Residence::Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned, bool mortgaged) : 
-                    OwnableProperty{name, loc, config, owned, mortgaged} {}
+Residence::Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned, bool mortgaged) : OwnableProperty{name, loc, config, owned, mortgaged} {}
 
 void Residence::performAction(Player &p, Bank &b)
 {
