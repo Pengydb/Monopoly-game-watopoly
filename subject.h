@@ -5,7 +5,7 @@
 #include <memory>
 #include "observer.h"
 
-class Subject {
+class Subject : public std::enable_shared_from_this<Subject> {
 private:
     std::vector<std::shared_ptr<Observer>> observers;
     // other fields if necessary

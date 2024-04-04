@@ -6,6 +6,7 @@ void Subject::attach(std::shared_ptr<Observer> o) {
 
 void Subject::notifyObservers() {
     for(auto o : observers) {
-        if (o) o->notify(std::make_shared<Subject>(this));
+        std::shared_ptr<Subject> sp = shared_from_this();
+        if (o) o->notify(sp);
     }
 }
