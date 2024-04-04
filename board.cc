@@ -128,7 +128,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
 
             std::stringstream ss(line);
             std::string name, ownerStr, impCountStr;
-            int impCount, impCost;
+            int impCount;
             bool isMortgaged, isOwned;
 
             std::getline(ss, name, ',');
