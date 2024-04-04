@@ -64,7 +64,7 @@ public:
     // Returns the players position
     int getPosition() const; 
     // moves player forward or backwards (if n < 0) by n tiles
-    int movePosition(const int n); 
+   void movePosition(const int n); 
     // Returns the number of turns a player has been in the DCTims line
     int getTimsLine() const;
     // Sets the timsLine counter to n

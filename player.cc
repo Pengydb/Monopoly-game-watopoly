@@ -28,7 +28,7 @@ void Player::setPosition(const int pos) { position = pos; }
 
 int Player::getPosition() const { return position; }
 
-int Player::movePosition(const int n) {
+void Player::movePosition(const int n) {
     position = (position + n + boardSize) % boardSize;
     this->notifyObservers();
 }
