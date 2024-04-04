@@ -346,6 +346,7 @@ const std::string Board::playGame(const bool addPlayers, const bool isTesting) {
         if (numPlayers == 1)
         {
             std::shared_ptr<Player> player = players[0];
+            std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
             return player->getName();
         }
 
@@ -738,8 +739,4 @@ int Board::playersAtPos(const int n) const {
         if (p->getPosition() == n) num++;
     }
     return num;
-}
-
-void Board::endGame(const std::string &player) {
-    std::cout << "Congratulations! " << player << " has won the game" << std::endl;
 }
