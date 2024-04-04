@@ -19,3 +19,7 @@ void OwnableProperty::toggleMortgage() { mortgaged = !(mortgaged); }
 void OwnableProperty::toggleOwnership() { owned = !(owned); }
 
 std::shared_ptr<PropertyConfig> OwnableProperty::getConfig() const { return config; }
+
+void OwnableProperty::setConfig(std::shared_ptr<PropertyConfig> newConfig) {
+        config = newConfig;
+ }

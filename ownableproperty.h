@@ -22,16 +22,26 @@ class OwnableProperty : public Tile {
     // try selling any of their assets, or try and trade (if they have property)
    void performAction(Player &p, Bank &b) override = 0;
 
-    bool isOwned() const; // Returns owned field
-    bool isMortgaged() const; // returns mortgage field
-    int getCost() const; // Returns cost field from config
-    virtual int getFee() const; // Returns tuition fee for this property
-    std::string getGroup() const; // returns which monopoly this property belongs to
-    
-    void toggleMortgage(); // Toggles mortgaged field to opposite of what it was
-    void toggleOwnership(); // Toggles owned field to opposite of what it was
+    // Returns owned field
+    bool isOwned() const; 
+    // returns mortgage field
+    bool isMortgaged() const; 
+    // Returns cost field from config
+    int getCost() const;
+    // Returns tuition fee for this property
+    virtual int getFee() const; 
+    // Returns which monopoly this property belongs to
+    std::string getGroup() const;
+    // Toggles mortgaged field to opposite of what it was
+    void toggleMortgage(); 
+    // Toggles owned field to opposite of what it was
+    void toggleOwnership(); 
 
-    std::shared_ptr<PropertyConfig> getConfig() const; // Return shared_ptr to config
+    // Return shared_ptr to config
+    std::shared_ptr<PropertyConfig> getConfig() const; 
+    // Updates config shared_ptr field to newConfig
+    void setConfig(const std::shared_ptr<PropertyConfig> newConfig); // Sets config
+
 };
 
 #endif // OWNABLEPROPERTY_H
