@@ -37,6 +37,8 @@ public:
     // Initializes the players, properties, and propertyOwnership maps
     void initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props);
 
+    void initConfigs(std::string& filename);
+
     void holdAuction(const std::string& propertyName);
 
     std::string getPropertyOwner(const std::string& propertyName) const;
