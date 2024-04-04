@@ -47,7 +47,7 @@ public:
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
     // Initilizes and updates ownable property config map in bank from filename csv, subsequently updates each property's config pointer
-    void initConfigs(const std::string &filename);
+    void initConfigs(const std::string &configFile);
 
     std::shared_ptr<OwnableProperty> getProperty(const std::string& propertyName);
 
