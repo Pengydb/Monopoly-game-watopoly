@@ -8,15 +8,17 @@
 
 int main(int argc, char *argv[]) {
     std::shared_ptr<Board> board = std::make_shared<Board>();
-    std::string command = argv[1];
     bool isTesting = false;
-    if (command == "-load") {
-        std::string filename = argv[2];
-        board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
-        board->playGame(false, isTesting);
-    }
-    else if(command == "-testing") {
-        isTesting = true;
+    if (argc > 1) {
+    std::string command = argv[1];
+        if (command == "-load") {
+            std::string filename = argv[2];
+            board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
+            board->playGame(false, isTesting);
+        }
+        else if(command == "-testing") {
+            isTesting = true;
+        }
     }
     else {
 
