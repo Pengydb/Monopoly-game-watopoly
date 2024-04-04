@@ -163,8 +163,14 @@ int Board::getTurn() {
 
 void removeAllWhitespace(std::string &str)
 {
-    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c)
-                             { return std::isspace(c); }),
+    // Remove leading whitespace and quotation marks
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char c)
+                                        { return !std::isspace(c) && c != '"'; }));
+
+    // Remove trailing whitespace and quotation marks
+    str.erase(std::find_if(str.rbegin(), str.rend(), [](unsigned char c)
+                           { return !std::isspace(c) && c != '"'; })
+                  .base(),
               str.end());
 }
 
@@ -186,6 +192,7 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
         removeAllWhitespace(buildingType);
         std::getline(iss, buildingName);
         removeAllWhitespace(buildingName);
+        
 
         if (buildingType == "AB") {
             std::shared_ptr<AcademicBuilding> tile = std::make_shared<AcademicBuilding>(buildingName, count);
@@ -200,19 +207,19 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
             buildings.push_back(tile);
         }
         else if (buildingType == "NOP") {
-            if (buildingName == "CollectOsap") {
+            if (buildingName == "Collect OSAP") {
                 std::shared_ptr<CollectOsap> tile = std::make_shared<CollectOsap>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "DCTims") {
+            else if (buildingName == "DC Tims Line") {
                 std::shared_ptr<DCTims> tile = std::make_shared<DCTims>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "GoToTims") {
+            else if (buildingName == "Go To Tims") {
                 std::shared_ptr<GoToTims> tile = std::make_shared<GoToTims>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "GooseNesting") {
+            else if (buildingName == "Goose Nesting") {
                 std::shared_ptr<GooseNesting> tile = std::make_shared<GooseNesting>(buildingName, count);
                 buildings.push_back(tile);
             }
@@ -220,7 +227,7 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
                 std::shared_ptr<Tuition> tile = std::make_shared<Tuition>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "CoopFee") {
+            else if (buildingName == "COOP Fee") {
                 std::shared_ptr<CoopFee> tile = std::make_shared<CoopFee>(buildingName, count);
                 buildings.push_back(tile);
             }
@@ -228,14 +235,13 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
                 std::shared_ptr<SLC> tile = std::make_shared<SLC>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "NH") {
+            else if (buildingName == "Needles Hall") {
                 std::shared_ptr<NH> tile = std::make_shared<NH>(buildingName, count);
                 buildings.push_back(tile);
             }
-            
         }
         else {
-            throw std::invalid_argument("Unknown building type: " + buildingType);
+            throw std::invalid_argument("Unknown building type: {" + buildingType + "}");
             return;
         }
         ++count;
