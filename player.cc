@@ -8,12 +8,11 @@
 #include <algorithm>
 #include <random>
 
-Player::Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position, bool visitingTims, 
-        int timsLine, int timsCups, int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner) : 
-        piece(piece), name(name), wallet(wallet), bank(bank), boardSize(boardSize), position(position), 
-        visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res), 
-        buy(buy), pay(pay), fee(fee), feeOwner(feeOwner) {}
-
+Player::Player(char piece, const std::string &name, int wallet, Bank &bank, int position = 0, bool visitingTims = true,
+               int timsLine = 0, int timsCups = 0, int boardSize = 40, int gyms = 0, int res = 0, bool buy = false, bool pay = false, int fee = 0, std::string feeOwner) : 
+                piece(piece), name(name), wallet(wallet), bank(bank), position(position),
+                visitingTims(visitingTims), timsLine(timsLine), timsCups(timsCups), boardSize(boardSize), gyms(gyms), res(res),
+                buy(buy), pay(pay), fee(fee), feeOwner(feeOwner) {}
 
 int Player::getWallet() const { return wallet; }
 

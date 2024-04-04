@@ -2,7 +2,7 @@
 #define _GYM_H_
 
 #include "ownableproperty.h"
-#include "propertyconfig.h"
+
 class Bank;
 
 class Gym : public OwnableProperty {

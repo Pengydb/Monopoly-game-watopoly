@@ -13,7 +13,7 @@ class OwnableProperty : public Tile {
   
 
   public:
-    OwnableProperty(std::string name, int loc, bool owned = false, bool mortgaged = false, std::shared_ptr<PropertyConfig> = nullptr);
+    OwnableProperty(std::string name, int loc, std::shared_ptr<PropertyConfig> = nullptr, bool owned = false, bool mortgaged = false);
     // Performs action when player lands on an ownable property 
     // 1) Prompts player to buy if unowned.
     //    -  If player can't afford or doens't buy, property goes up for auction

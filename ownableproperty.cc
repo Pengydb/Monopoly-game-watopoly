@@ -1,10 +1,8 @@
 #include "ownableproperty.h"
 #include <string>
 
-
-OwnableProperty::OwnableProperty(std::string name, int loc, bool owned, bool mortgaged, std::shared_ptr<PropertyConfig> config) :
-            Tile{name, loc}, owned{owned}, mortgaged{mortgaged}, config(config) {}
-
+OwnableProperty::OwnableProperty(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged) : 
+Tile{name, loc}, owned{owned}, mortgaged{mortgaged}, config(config) {}
 
 bool OwnableProperty::isOwned() const { return owned; }
 

@@ -19,7 +19,7 @@ class Board : public Observer {
     // Stores pointers to players on the board
     std::vector<std::shared_ptr<Player>> players;
     // Instance of the bank
-    std::shared_ptr<Bank> bank;
+    std::shared_ptr<Bank> bank = nullptr;
     // Stores the current player's turn
     int playerTurn;
     // Removes all whitespaces
