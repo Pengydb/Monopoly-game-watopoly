@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     if (command == "-load") {
         std::string filename = argv[2];
         board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
-        board->playGame(false);
+        board->playGame(false, isTesting);
     }
     else if(command == "-testing") {
         isTesting = true;
