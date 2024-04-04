@@ -48,6 +48,18 @@ std::shared_ptr<OwnableProperty> Bank::getProperty(const std::string& propertyNa
     return properties[propertyName];
 }
 
+void Bank::addPropertyOwner(const std::string& propertyName, const std::string& playerName) {
+    if (properties.find(propertyName) == properties.end()) {
+        std::cout << "Property does not exist: " + propertyName << "." << std::endl;
+        return;
+    }
+    if (players.find(playerName) == players.end()) {
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return;
+    }
+    propertyOwnership[propertyName] = playerName;
+}
+
 void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;
 }
@@ -528,7 +540,6 @@ void Bank::initConfigs(const std::string& configFile) {
 
     file.close();
 }
-
 
 void Bank::holdAuction(const std::string &propertyName){
     std::vector<std::string> names;

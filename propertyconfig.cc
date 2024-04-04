@@ -29,7 +29,7 @@ PropertyConfig::PropertyConfig(const std::string& name, const std::string& group
     }
 }    
 
-void removeAllWhitespace(std::string& str) {
+void removeWhitespace(std::string& str) {
     str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c){ return std::isspace(c); }), str.end());
 }
 
@@ -40,10 +40,11 @@ PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
     std::vector<int> fees;
 
     std::getline(readLine, readValue, ',');
-    removeAllWhitespace(readValue);
+    removeWhitespace(readValue);
     name = readValue;
 
     std::getline(readLine, readValue, ',');
+    removeWhitespace(readValue);
     group = readValue;
 
     std::getline(readLine, readValue, ',');

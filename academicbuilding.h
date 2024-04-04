@@ -9,12 +9,11 @@ enum MonopolyBlock { Arts1, Arts2, Eng, Health, Env, Sci1, Sci2, Math };
 
 class AcademicBuilding : public OwnableProperty {
     int impCount; // number of improvements on building
-    int impCost;
     bool monopoly; // true if monopoly
     // MonopolyBlock monBlock; getGroup from config
   
   public:
-    AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned = false, bool mortgaged = false, int impCount = 0, int impCost = 0);
+    AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned = false, bool mortgaged = false, int impCount = 0);
     void performAction(Player &p, Bank &b) override;
     // Increments impCount by n (DO NOT CHARGE PLAYER)
     void addImps(int n); 
