@@ -35,7 +35,7 @@ class Board : public Observer {
         // Starts the game
         void setupBoard(const std::string &TileOrder, const std::string &propertyConfig);
         // Plays the game
-        void playGame();
+        void playGame(const bool addPlayers);
 
         // Creates a player
         std::shared_ptr<Player> setPlayer(std::map<std::string, char> & nameToPiece);
