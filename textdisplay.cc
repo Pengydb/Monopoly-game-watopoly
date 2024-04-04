@@ -89,8 +89,7 @@ void TextDisplay::notify(AcademicBuilding& a) {
 
     }
 
-    if (imps < 4) display[r][c] = 'B';
-    else display[r][c] = 'C';
+    display[r][c] = 'I';
 }
 
 void TextDisplay::printBoard() const {
