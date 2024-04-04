@@ -9,7 +9,7 @@
 #include <memory>
 
 class Board;
-
+class Player;
 class TextDisplay: public Observer {
 private:
     std::string fname; // board text file name
