@@ -36,6 +36,9 @@ std::weak_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propert
     return std::weak_ptr<PropertyConfig>(); // Placeholder return
 }
 
+std::weak_ptr<OwnableProperty> Bank::getProperty(const std::string& propertyName) {
+    return properties[propertyName];
+}
 
 void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;

@@ -3,7 +3,7 @@
 
 
 OwnableProperty::OwnableProperty(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged) :
-            Tile{name, loc}, config{config}, owned{owned}, mortgaged{mortgaged} {}
+            Tile{name, loc}, config{config}, owned{false}, mortgaged{false} {}
 
 
 bool OwnableProperty::isOwned() const { return owned; }

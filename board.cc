@@ -481,6 +481,8 @@ void Board::playGame() {
 
             std::cin >> prop1 >> prop2;
             int cash1, cash2;
+            std::shared_ptr<OwnableProperty> property;
+            std::string group;
             if (std::istringstream iss{prop1}; iss>>cash1) { // Offering cash
                 if (bank->checkSufficientFunds(curPlayer->getName(), cash1)) { // Has sufficient funds
                     if(std::istringstream iss{prop2}; iss>>cash2) { // Trying to trade cash for cash
@@ -493,8 +495,9 @@ void Board::playGame() {
                         } else {
                             // If property has improvements on it or if any property in the monopoly has improvements on it
                             // Then it can't be traded
-                            
-                            if (...) { 
+                            property = bank->getProperty(prop2).lock();
+                            group = property->getGroup();
+                            if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) { 
                                 std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
                                 continue;
                             } else { // Transfers property from curplayer to name
@@ -518,7 +521,9 @@ void Board::playGame() {
                 } else { // Current player owns the property they offered
                     // If property has improvements on it or if any property in the monopoly has improvements on it
                     // Then it can't be traded
-                    if (...) {
+                    property = bank->getProperty(prop1).lock();
+                    group = property->getGroup();
+                    if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) {
                         std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
                         continue;
                     }
@@ -533,7 +538,9 @@ void Board::playGame() {
                             continue;
                         }
                     } else { // Trades property for property
-                        if (...) {
+                        property = bank->getProperty(prop2).lock();
+                        group = property->getGroup();
+                        if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) {
                             std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
                             continue;
                         } 
@@ -560,12 +567,33 @@ void Board::playGame() {
                 continue;
             }
 
-            std::shared_ptr<PropertyConfig> config = bank->getPropertyConfig(prop1).lock();
+          
+            std::shared_ptr<AcademicBuilding> ab = std::dynamic_pointer_cast<AcademicBuilding>(bank->getProperty(prop1).lock());
+            if (ab->getGroup() == "Residence" || ab->getGroup() == "Gym") {
+                std::cout << "You can't add improvements to Residences or Gyms"  << std::endl;
+                continue;
+            }
+
             if (action == "buy") {
-                
+                if (ab->getImpCount() == 5) {
+                    std::cout << "You have the maximum number of improvements for " << prop1 << std::endl;
+                    continue;
+                }
+
+                if (!bank->transferFunds(curPlayer->getName(), "BANK", ab->getImpCost())) {
+                    std::cout << "You don't have sufficient funds to improve your property" << std::endl;
+                    std::cout << "You have $" << curPlayer->getWallet() << std::endl;
+                    std::cout << "You need $" << ab->getImpCost() << " to improve your property" << std::endl;
+                    continue;
+                }
+
+                std::cout << "You added an improvement to " << prop1 << std::endl;
+                ab->addImps(1);
 
             } else if (action == "sell") {
-
+                bank->transferFunds("BANK", curPlayer->getName(), ab->getImpCost()*(0.5));
+                std::cout << "You have sold an improvement from " << prop1 << std::endl;
+                ab->addImps(-1);
             } else {
                 std::cout << "Unrecognized command : enter \"help\" to see the list of possible commands" << std::endl;
             }
@@ -602,7 +630,7 @@ void Board::playGame() {
             if (curPlayer->hasToPay() && this->getTileName(curPlayer->getPosition()) == "TUITION") {
                 std::cout << "You can't look at your assets when paying Tuition" << std::endl;
             } else {
-                curPlayer->printAssets();
+                bank->printAssets(curPlayer->getName());
             }
 
         } else if (cmd == "all") {
@@ -612,7 +640,7 @@ void Board::playGame() {
                 std::cout << "You can't look at your assets when paying Tuition" << std::endl;
             } else {
                 for (auto p : players) {
-                    p->printAssets();
+                    bank->printAssets(p->getName());
                 }
             }
 

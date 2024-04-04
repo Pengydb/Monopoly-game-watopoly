@@ -26,7 +26,10 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
 }
 
 
-void AcademicBuilding::addImps(const int n) { impCount + n; }
+void AcademicBuilding::addImps(const int n) { 
+    impCount + n;
+    this->notifyObservers(); 
+}
 int AcademicBuilding::getImpCost() const { return impCost; }
 bool AcademicBuilding::getMonopoly() const { return monopoly; }
 void AcademicBuilding::toggleMonopoly() { monopoly = !(monopoly); }
