@@ -11,6 +11,7 @@
 Board::Board():
     playerTurn(0) {
         bank = std::make_shared<Bank>();
+        textDisplay = std::make_shared<TextDisplay>("default_board.txt", players, this);
     }
 
 void Board::saveGame() {
@@ -345,6 +346,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
 
         std::cout << "Game started with " << numPlayers << " players." << std::endl;
         bank->initBank(players);
+        
     }
 
     playerTurn = 0;
