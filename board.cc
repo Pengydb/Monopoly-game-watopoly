@@ -504,6 +504,7 @@ void Board::playGame() {
                         } else {
                             // If property has improvements on it or if any property in the monopoly has improvements on it
                             // Then it can't be traded
+                            
                             if (...) { 
                                 std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
                                 continue;
@@ -583,36 +584,13 @@ void Board::playGame() {
         } else if (cmd == "mortgage") {
             // Lets the player mortgage their property
             std::cin >> prop1;
-            if (bank->getPropertyOwner(prop1) != curPlayer->getName()) {
-                std::cout << "You do not own this property" << std::endl;
-                continue;
-            }
-
-            if (...) { // has improvements, so can't mortgage
-                std::cout << "You can't mortgage a property that has improvements" << std::endl;
-                continue;
-            }
-
-            // Mortgage property
-            std::shared_ptr<PropertyConfig> config = bank->getPropertyConfig(prop1).lock();
+            bank->mortgageProperty(prop1, curPlayer->getName());
             
 
         } else if (cmd == "unmortgage") {
             // Lets the player unmortgage their property (must be able to afford it)
             std::cin >> prop1;
-            if (bank->getPropertyOwner(prop1) != curPlayer->getName()) {
-                std::cout << "You do not own this property" << std::endl;
-                continue;
-            }
-
-            int unmortCost = (0.5)*this->getPropCost(curPlayer->getPosition());
-            if (bank->transferFunds(curPlayer->getName(), "BANK", unmortCost)) {
-                std::cout << "You have unmortgaged " << prop1 << std::endl;
-            } else {
-                std::cout << "You lack the funds to unmortgage " << prop1 << std::endl;
-                std::cout << "You have $" << curPlayer->getWallet() << std::endl;
-                std::cout << "It costs $" << unmortCost << std::endl;
-            }
+            bank->unmortgageProperty(prop1, curPlayer->getName());
 
         } else if (cmd == "bankrupt") {
             // Player declares bankrupcy, can only be called if the player is required to pay a fee and can't afford it
@@ -651,6 +629,10 @@ void Board::playGame() {
 
         } else if (cmd == "save") {
             // Saves the game into a load file
+            if (curPlayer->hasToPay()) {
+                std::cout << "Pay your fee before saving the game" << std::endl;
+                continue;
+            }
             this->saveGame();
             std::cout << "The game has been saved" << std::endl;
             break;

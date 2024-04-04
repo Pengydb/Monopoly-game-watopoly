@@ -6,6 +6,7 @@
 #include <cctype>
 #include <string>
 
+
 Bank::Bank() : DCTimsCups(0) {
     players["BANK"] = nullptr;
 }
@@ -38,6 +39,7 @@ std::weak_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propert
     // Implementation here
     return std::weak_ptr<PropertyConfig>(); // Placeholder return
 }
+
 
 void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
     propertyConfigs[config->getName()] = config;
@@ -501,7 +503,7 @@ void Bank::holdAuction(const std::string &propertyName){
         while (true){
             std::string input;
             int tempBid = 0; // Stores Current bid
-            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter cancel to not bid yet or enter withdraw to leave the auction)" << std::endl;
+            std::cout << "Please enter a bid greater than $" << highestBid << " (or enter withdraw to leave the auction)" << std::endl;
             std::getline(std::cin, input);
             std::istringstream iss(input);
             if (iss >> tempBid){ // Checks whether the input entered is a number or a string
@@ -531,14 +533,28 @@ void Bank::holdAuction(const std::string &propertyName){
                     std::cout << bidder << " has withdrawn from the auction" << std::endl;
                     break;
                 }
-                else if (input == "cancel"){
-                    std::cout << "You have cancelled your bet, however you are still in the auction" << std::endl;
-                    break;
-                }
             }
             std::cout << "Please enter a valid bid greater than $" << highestBid << " or withdraw" << std::endl;
         }
         
         
     }
+}
+
+
+int Bank::countImprovements(const std::string& group) const {
+    int imps = 0;
+    int index = 0;
+    int found = false;
+    for (auto p = properties.begin(); p != properties.end(); ++p) {
+        if (p->second->getGroup() == group) {
+            std::shared_ptr<AcademicBuilding> ab = std::dynamic_pointer_cast<AcademicBuilding>(p->second);
+            imps += ab->getImpCount();
+            found = true;
+            index++;
+        }
+        if (found) index++;
+        if (index == 4) break;
+    }
+    return imps;
 }

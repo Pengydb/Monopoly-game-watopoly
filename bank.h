@@ -46,6 +46,7 @@ public:
 
 
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
+
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     /* Transfers property from one player to another returns true if successfull, charges receiver a fee if the property is mortgaged and gives 
@@ -78,6 +79,12 @@ public:
 
     // Removes player from bank's tracking, to be used after a player has declared bankruptcy and all their assets have been transferred
     void removePlayer(const std::string& playerName);
+
+    // Counts the number of improvements that are on a certain group
+    // Uses location (loc) as a starting point to count
+    // Assumes group represents a monopoly block
+    int countImprovements(const std::string& group) const;
+
 };  
 
 #endif // BANK_H
