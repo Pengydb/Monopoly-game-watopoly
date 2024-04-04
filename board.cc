@@ -100,7 +100,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
         bool isVisitingTims;
         std::getline(iss, name, ',');
         std::getline(iss, piece, ',');
-        piece = piece[0];
+      
 
         std::getline(iss, TimsCupsStr, ',');
         TimsCups = std::stoi(TimsCupsStr);
@@ -117,7 +117,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
         std::getline(iss, TimsLineStr, ',');
         TimsLine = std::stoi(TimsLineStr);
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(piece, name, money, *bank, position, isVisitingTims, TimsLine, TimsCups);
+        std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, *bank, position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
 
         --numPlayers;
@@ -188,15 +188,15 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
         removeAllWhitespace(buildingName);
 
         if (buildingType == "AB") {
-            std::shared_ptr<AcademicBuilding> tile = std::make_shared<AcademicBuilding>(buildingName, count, false, false, 0, 0);
+            std::shared_ptr<AcademicBuilding> tile = std::make_shared<AcademicBuilding>(buildingName, count);
             buildings.push_back(tile);
         }
         else if (buildingType == "R") {
-            std::shared_ptr<Residence> tile = std::make_shared<Residence>(buildingName, count, false, false);
+            std::shared_ptr<Residence> tile = std::make_shared<Residence>(buildingName, count);
             buildings.push_back(tile);
         }
         else if (buildingType == "GYM") {
-            std::shared_ptr<Gym> tile = std::make_shared<Gym>(buildingName, count, false, false);
+            std::shared_ptr<Gym> tile = std::make_shared<Gym>(buildingName, count);
             buildings.push_back(tile);
         }
         else if (buildingType == "NOP") {
