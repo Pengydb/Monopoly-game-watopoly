@@ -15,40 +15,52 @@ void Board::saveGame() {
         return;
     }
 
+    file <<  players.size() << std::endl;
+
     for (const auto &player : players) {
         file << player->getName() << ","
              << player->getPiece() << ","
              << player->getTimsCups() << ","
              << player->getWallet() << ","
              << player->getPosition() << ","
-             << player->isVisitingTims() << "," 
+             << !player->isVisitingTims() << "," 
              << player->getTimsLine() << std::endl;
     }
 
     for (const auto &tile : buildings) {
         if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile)) {
             if (ab->isOwned()) {
-                file << "AcademicBuilding: " << ab->getName() << "," << bank->getPropertyOwner(ab->getName()) << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
-            }
-            else {
-                file << "AcademicBuilding: " << ab->getName() << "," << "false" << "," << ab->isMortgaged() << "," << ab->getImpCount() << "," << ab->getImpCost() << std::endl;
+                file << ab->getName() << ","
+                     << bank->getPropertyOwner(ab->getName()) << ","
+                     << ab->getImpCount() << "," << std::endl;
             }
         }
         else if (auto r = std::dynamic_pointer_cast<Residence>(tile)) {
             if (r->isOwned()){
-                file << "Residence: " << r->getName() << "," << bank->getPropertyOwner(r->getName()) << "," << r->isMortgaged() << std::endl;
+                if (r->isMortgaged()) {
+                    file << r->getName() << ","
+                         << bank->getPropertyOwner(r->getName()) << ","
+                         << -1 << std::endl;
+                }
+                else {
+                    file << r->getName() << ","
+                         << bank->getPropertyOwner(r->getName()) << ","
+                         << 0 << std::endl;
+                }
             }
-            else {
-                file << "Residence: " << r->getName() << "," << "false" << "," << r->isMortgaged() << std::endl;
-            }
-            
         }
         else if (auto g = std::dynamic_pointer_cast<Gym>(tile)) {
             if (g->isOwned()) {
-                file << "Gym: " << g->getName() << "," << bank->getPropertyOwner(g->getName()) << "," << g->isMortgaged() << std::endl;
-            }
-            else {
-                file << "Gym: " << g->getName() << "," << "false" << "," << g->isMortgaged() << std::endl;
+                if (g->isMortgaged()){
+                    file << g->getName() << ","
+                         << bank->getPropertyOwner(g->getName()) << ","
+                         << -1 << std::endl;
+                }
+                else {
+                    file << g->getName() << ","
+                         << bank->getPropertyOwner(g->getName()) << ","
+                         << 0 << std::endl;
+                }
             }
         }
         else {
@@ -57,109 +69,79 @@ void Board::saveGame() {
         }
         
     }
-
-    file << "Current turn:" << playerTurn << std::endl;
+    
     file.close();
     std::cout << "Game saved to " << filename << std::endl;
 }
 
-
-void Board::loadGame(const std::string &filename) {
+void Board::loadGame(const std::string &filename, const std::string &propertyConfig)
+{
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::invalid_argument("Error opening file " + filename);
         return;
     }
-
-    players.clear();
-    buildings.clear();
     playerTurn = 0;
-
     std::string line;
-    while (std::getline(file, line)) {
-        std::stringstream ss(line);
-        std::string token;
-        std::getline(ss, token, ':');
-        if (token == "Player") {
-            std::string name, piece, walletStr, positionStr, timsLineStr, timsCupsStr, visitingTimsStr;
-            std::getline(ss, name, ',');
-            std::getline(ss, piece, ',');
-            std::getline(ss, walletStr, ',');
-            std::getline(ss, positionStr, ',');
-            std::getline(ss, visitingTimsStr, ',');
-            std::getline(ss, timsLineStr, ',');
-            std::getline(ss, timsCupsStr, ',');
+    std::getline(file, line);
+    int numPlayers = std::stoi(line);
 
-            // Convert strings to integers
-            int wallet = std::stoi(walletStr);
-            int position = std::stoi(positionStr);
-            bool visitingTims = (visitingTimsStr == "false");
-            int timsLine = std::stoi(timsLineStr);
-            int timsCups = std::stoi(timsCupsStr);
-            const int boardSize = 40;
-            auto player = std::make_shared<Player>(piece[0], name, wallet, boardSize, *bank, boardSize, position, visitingTims, timsLine, timsCups);
-            players.push_back(player);
-        }
-        else if (token == "AcademicBuilding") {
-            std::string name, ownerStr, isMortgagedStr;
+    while (numPlayers != 0) {
+        getline(file, line);
+        std::istringstream iss(line);
+        std::string name, piece, TimsCupsStr, moneyStr, positionStr, isVisitingTimsStr, TimsLineStr;
+        int TimsCups, money, position, TimsLine;
+        bool isVisitingTims;
+        std::getline(iss, name, ',');
+        std::getline(iss, piece, ',');
+        piece = piece[0];
+
+        std::getline(iss, TimsCupsStr, ',');
+        TimsCups = std::stoi(TimsCupsStr);
+
+        std::getline(iss, moneyStr, ',');
+        money = std::stoi(moneyStr);
+
+        std::getline(iss, positionStr, ',');
+        position = std::stoi(positionStr);
+
+        std::getline(iss, isVisitingTimsStr, ',');
+        isVisitingTims = (isVisitingTimsStr == "0");
+
+        std::getline(iss, TimsLineStr, ',');
+        TimsLine = std::stoi(TimsLineStr);
+
+        std::shared_ptr<Player> player = std::make_shared<Player>(piece, name, money, *bank, position, isVisitingTims, TimsLine, TimsCups);
+        players.push_back(player);
+
+        --numPlayers;
+    }
+    bank->initBank(players);
+    int count = 0;
+    while (std::getline(file, line)) {
+
+            std::stringstream ss(line);
+            std::string name, ownerStr, impCountStr;
             int impCount, impCost;
             bool isMortgaged, isOwned;
+
             std::getline(ss, name, ',');
             std::getline(ss, ownerStr, ',');
-            std::getline(ss, isMortgagedStr, ',');
-            std::string impCountStr, impCostStr;
+            bank->addPropertyOwner(name, ownerStr);
             std::getline(ss, impCountStr, ',');
-            std::getline(ss, impCostStr, ',');
-
-            // Convert strings to integers
             impCount = std::stoi(impCountStr);
-            impCost = std::stoi(impCostStr);
 
-            // Convert strings to boolean
-            isMortgaged = (isMortgagedStr == "true");
-            isOwned = (ownerStr != "false");
-            auto academicBuilding = std::make_shared<AcademicBuilding>(name, isOwned, isMortgaged, impCount, impCost);
-            if (isOwned) {
-                bank->addPropertyOwner(name, ownerStr);
-            }
+            isMortgaged = (impCount == -1);
+            isOwned = (ownerStr != "BANK");
+            auto academicBuilding = std::make_shared<AcademicBuilding>(name, count, isOwned, isMortgaged, impCount, impCost);
             buildings.push_back(academicBuilding);
-        }
-        else if (token == "Residence") {
-            std::string name, ownerStr, isMortgagedStr;
-            bool isMortgaged, isOwned;
-            std::getline(ss, name, ',');
-            std::getline(ss, ownerStr, ',');
-            std::getline(ss, isMortgagedStr, ',');
-
-            isMortgaged = (isMortgagedStr == "true");
-            isOwned = (ownerStr != "false");
-            auto residence = std::make_shared<Residence>(name, isOwned, isMortgaged);
-            buildings.push_back(residence);
-        }
-        else if (token == "Gym") {
-            std::string name, ownerStr, isMortgagedStr;
-            bool isMortgaged, isOwned;
-            std::getline(ss, name, ',');
-            std::getline(ss, ownerStr, ',');
-            std::getline(ss, isMortgagedStr, ',');
-
-            isMortgaged = (isMortgagedStr == "true");
-            isOwned = (ownerStr != "false");
-            auto gym = std::make_shared<Gym>(name, isOwned, isMortgaged);
-            buildings.push_back(gym);
-        }
-        else if (token == "Current turn") {
-            ss >> playerTurn;
-            ss.ignore();
-        }
-        else {
-            throw std::invalid_argument("Unknown token: " + token);
-            return;
-        }
+        
+        ++count;
     }
     file.close();
+    bank->initBank(buildings);
+    bank->initilizePropertyConfigs(propertyConfig);
 }
-
 
 int Board::getTurn() {
     return playerTurn;
@@ -172,8 +154,8 @@ void removeAllWhitespace(std::string &str)
               str.end());
 }
 
-void Board::setupGame(const std::string &TileOrder) {
-    
+void Board::setupGame(const std::string &TileOrder, const std::string &propertyConfig) {
+
     std::ifstream file(TileOrder);
     if (!file.is_open()) {
         throw std::invalid_argument("Error opening file " + TileOrder);
@@ -245,6 +227,8 @@ void Board::setupGame(const std::string &TileOrder) {
         ++count;
     }
     file.close();
+    bank->initBank(buildings);
+    bank->initilizePropertyConfigs(propertyConfig);
 }
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
@@ -342,16 +326,8 @@ void Board::playGame() {
     }
     playerTurn = 0;
 
-    std::vector<std::shared_ptr<OwnableProperty>> props;
-    for (const auto &tile : buildings)
-    {
-        if (std::shared_ptr<OwnableProperty> ownable = std::dynamic_pointer_cast<OwnableProperty>(tile))
-        {
-            props.push_back(ownable);
-        }
-    }
     std::cout << "Game started with " << numPlayers << " players." << std::endl;
-    bank->initBank(players, props);
+    bank->initBank(players);
 
     if (players.size() < 1) { std::cout << "Game over" << std::endl; }
 

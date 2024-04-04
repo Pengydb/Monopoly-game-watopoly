@@ -34,11 +34,13 @@ public:
     // Adds n to DCTimsCups field. Will not allow to go above 4 or below 0 (throws invalid_argument).
     void addDCTimsCups(int n);
 
-    // Initializes the players, properties, and propertyOwnership maps
-    void initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::shared_ptr<OwnableProperty>> &props);
-
     void initConfigs(std::string& filename);
-
+    // Initializes the players
+    void initBank(std::vector<std::shared_ptr<Player>> &p);
+    // Initializes the properties, and propertyOwnership maps
+    void initBank(std::vector<std::shared_ptr<Tile>> &buildings);
+    
+    // Hold the auction process
     void holdAuction(const std::string& propertyName);
 
     std::string getPropertyOwner(const std::string& propertyName) const;

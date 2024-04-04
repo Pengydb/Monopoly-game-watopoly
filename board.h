@@ -29,11 +29,11 @@ class Board : public Observer {
         // Saves the current game
         void saveGame();
         // Loads the game
-        void loadGame(const std::string &filename);
+        void loadGame(const std::string &filename, const std::string &propertyConfig);
         // Gets the current player's turn
         int getTurn();
         // Starts the game
-        void setupGame(const std::string &filename);
+        void setupGame(const std::string &TileOrder, const std::string &propertyConfig);
         // Plays the game
         void playGame();
 
@@ -46,8 +46,6 @@ class Board : public Observer {
 
         // Prints the current state of the board
         void printBoard();
-        // Loads a saved game
-        void loadGame(const std::string &filename);
 
         // Returns the name of the tile at position n (assumes 40 >= n >= 0)
         std::string getTileName(const int n) const;
