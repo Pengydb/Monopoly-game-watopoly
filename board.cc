@@ -326,7 +326,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     return player;
 }
 
-const std::string Board::playGame(const bool addPlayers, const bool isTesting) {
+void Board::playGame(const bool addPlayers, const bool isTesting) {
     if (addPlayers) {
         std::cout << "Enter the number of players: " << std::endl;
         int numPlayers;
@@ -343,19 +343,12 @@ const std::string Board::playGame(const bool addPlayers, const bool isTesting) {
             players.push_back(player);
         }
 
-        if (numPlayers == 1)
-        {
-            std::shared_ptr<Player> player = players[0];
-            std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
-            return player->getName();
-        }
-
         std::cout << "Game started with " << numPlayers << " players." << std::endl;
         bank->initBank(players);
     }
 
     playerTurn = 0;
-    if (players.size() < 1) { std::cout << "Game over" << std::endl; }
+    
 
     std::string cmd, name, prop1, prop2; // initial command : player name that may follow : 1st property name that may follow : 2nd property name that may follow
     std::vector<std::string> commands = {"roll : player rolls the dice twice and moves the sum of the two dice"
@@ -376,6 +369,12 @@ const std::string Board::playGame(const bool addPlayers, const bool isTesting) {
     int doubCount = 0; // Counts the number of doubles the current player has rolled
     std::shared_ptr<Player> curPlayer = players[playerTurn]; // Current player
     while (true) {
+        if (players.size() == 1)
+        {
+            std::shared_ptr<Player> player = players[0];
+            std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
+            break;
+        }
         print();
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
