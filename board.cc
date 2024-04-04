@@ -174,7 +174,7 @@ void Board::setupGame(const std::string &TileOrder) {
         throw std::invalid_argument("Error opening file " + TileOrder);
         return;
     }
-    std::vector<std::shared_ptr<OwnableProperty>> AcademicBuildings;
+
 
     std::string line;
     while (getline(file, line)) {
@@ -186,7 +186,6 @@ void Board::setupGame(const std::string &TileOrder) {
         if (buildingType == "AB") {
             std::shared_ptr<AcademicBuilding> tile = nullptr;
             buildings.push_back(tile);
-            AcademicBuildings.push_back(tile);
         }
         else if (buildingType == "R") {
             std::shared_ptr<Residence> tile = nullptr;
@@ -209,8 +208,7 @@ void Board::setupGame(const std::string &TileOrder) {
         }
     }
     file.close();
-    const int cards = 15;
-    bank->initBank(players, AcademicBuildings);
+    
     
 }
 
@@ -234,8 +232,15 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
         std::cout << "Congratulations! " << name << " has won the game" << std::endl;
     }
     playerTurn = 0;
-    std::cout << "Game started with " << numPlayers << " players." << std::endl;
 
+    std::vector<std::shared_ptr<OwnableProperty>> props;
+    for (const auto &tile : buildings) {
+        if (std::shared_ptr<OwnableProperty> ownable = std::dynamic_pointer_cast<OwnableProperty>(tile)) {
+            props.push_back(ownable);
+        }
+    }
+    std::cout << "Game started with " << numPlayers << " players." << std::endl;
+    bank->initBank(players, props);
 
     std::string name;
     while(true) {

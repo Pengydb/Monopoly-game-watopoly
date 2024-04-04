@@ -14,7 +14,7 @@
 #include "textdisplay.h"
 
 class Board : public Observer {
-    // Stores pointers to buildings on the board
+    // Stores pointers to all tiles on the board
     std::vector<std::shared_ptr<Tile>> & buildings;
     // Stores pointers to players on the board
     std::vector<std::shared_ptr<Player>> & players;
