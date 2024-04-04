@@ -16,7 +16,10 @@ int main(int argc, char *argv[])
         board->loadGame(filename);
         board->loadGame(argv[2]);
     }
+    else if(command == "-testing"){
         
+    }
+
         std::cout << "Watopoly: The Univeristy of Waterloo Monopoly!" << std::endl;
         std::cout << "Enter one of the following commands to start playing: \n"
                   << "start - starts a new game \n"

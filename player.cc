@@ -17,10 +17,6 @@ int Player::getWallet() const{
     return wallet;
 }
 
-void Player::printAssets() const{
-    // still needs to be done, this function may just be moved to bank
-}
-
 void Player::setWallet(const int amount) {
     wallet = amount;
 }
@@ -39,9 +35,8 @@ void Player::setPosition(const int pos) {
     position = pos;
 }
 
-int Player::getPosition() const {
-    return position;
-}
+int Player::getPosition() const { return position; }
+
 
 int Player::movePosition(const int n) {
     position = (position + n + boardSize) % boardSize;
@@ -67,13 +62,9 @@ int Player::getTimsCups() const {
     return timsCups;
 }
 
-void Player::addTimsCups(const int n) {
-    timsCups += n;
-}
+void Player::addTimsCups(const int n) { timsCups += n; }
 
-std::string Player::getName() const{
-    return name;
-}
+std::string Player::getName() const{ return name; }
 
 int Player::getGyms() const { return gyms; }
 int Player::getRes() const { return res; }
