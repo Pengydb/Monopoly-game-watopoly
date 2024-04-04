@@ -22,6 +22,8 @@ class Board : public Observer {
     std::shared_ptr<Bank> bank;
     // Stores the current player's turn
     int playerTurn;
+
+    std::shared_ptr<TextDisplay> textDisplay;
     // Removes all whitespaces
     void removeAllWhitespace(std::string &str);
     
