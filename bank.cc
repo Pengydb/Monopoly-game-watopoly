@@ -529,7 +529,6 @@ void Bank::initConfigs(const std::string& configFile) {
     file.close();
 }
 
-
 void Bank::holdAuction(const std::string &propertyName){
     std::vector<std::string> names;
     for (const auto &pair : players)
