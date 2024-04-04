@@ -21,14 +21,6 @@ TextDisplay::TextDisplay(std::string fname, std::vector<std::shared_ptr<Player>>
         display.emplace_back(row);
         row.clear();
     }
-
-    int r = 65;
-    int c = 93;
-    for (auto p : players) {
-        display[r][c];
-        c += 2;
-        if (c >= 100) r++;
-    }
 }
 
 
