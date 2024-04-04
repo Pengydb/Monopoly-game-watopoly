@@ -424,6 +424,7 @@ void Board::playGame() {
                 curPlayer->movePosition(0);
             } else {
                 std::cout << "You move " << sum << " squares" << std::endl;
+                if (curPlayer->getPosition() + sum > 40) buildings[0]->performAction(*curPlayer, *bank); // Passes Collect Osap 
                 curPlayer->movePosition(sum);
             }
             
