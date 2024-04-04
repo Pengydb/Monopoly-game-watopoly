@@ -27,10 +27,19 @@ PropertyConfig::PropertyConfig(const std::string& name, const std::string& group
             throw std::invalid_argument("Fees cannot be negative.");
         }
     }
-}    
+}
 
-void removeWhitespace(std::string& str) {
-    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c){ return std::isspace(c); }), str.end());
+void removeWhitespace(std::string &str)
+{
+    // Remove leading whitespace and quotation marks
+    str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char c)
+                                        { return !std::isspace(c) && c != '"'; }));
+
+    // Remove trailing whitespace and quotation marks
+    str.erase(std::find_if(str.rbegin(), str.rend(), [](unsigned char c)
+                           { return !std::isspace(c) && c != '"'; })
+                  .base(),
+              str.end());
 }
 
 PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
@@ -38,6 +47,7 @@ PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
     std::string readValue, name, group;
     int buyingCost, impCost;
     std::vector<int> fees;
+    std::getline(readLine, readValue, ',');
 
     std::getline(readLine, readValue, ',');
     removeWhitespace(readValue);
@@ -46,11 +56,13 @@ PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
     std::getline(readLine, readValue, ',');
     removeWhitespace(readValue);
     group = readValue;
-
+    
     std::getline(readLine, readValue, ',');
+    removeWhitespace(readValue);
     buyingCost = std::stoi(readValue);
 
     std::getline(readLine, readValue, ',');
+    removeWhitespace(readValue);
     impCost = std::stoi(readValue);
 
     while (std::getline(readLine, readValue, ',')) {
