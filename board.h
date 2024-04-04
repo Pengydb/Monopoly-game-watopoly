@@ -61,7 +61,9 @@ class Board : public Observer {
         // Prints the current state of the board
         void printBoard(TextDisplay & t);
         // Checks if the player with name 'name' is in the game
-        bool playerExists(std::string name);
+        bool playerExists(std::string& name);
+        // Returns the number of players who are at position n on the board
+        int playersAtPos(const int n) const;
     };
 
 #endif // BOARD_H

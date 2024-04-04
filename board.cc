@@ -739,9 +739,18 @@ int Board::getPropCost(const int n) const {
 }
 
 
-bool Board::playerExists(std::string name) {
+bool Board::playerExists(std::string& name) {
     for (const auto &p : players) {
         if (p->getName() == name) return true;
     }
     return false;
+}
+
+
+int Board::playersAtPos(const int n) const {
+    int num = 0;
+    for (const auto &p : players) {
+        if (p->getPosition() == n) num++;
+    }
+    return num;
 }

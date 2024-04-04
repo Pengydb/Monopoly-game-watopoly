@@ -18,8 +18,11 @@ private:
 
 public:
     TextDisplay(Board& board, std::vector<std::shared_ptr<Player>> players, std::string fname);
+    // Notify for when a player moves
     void notify(Player& p);
+    // Notify for when an improvement is sold/added to an academic building
     void notify(AcademicBuilding& a);
+    // Prints the board
     void printBoard() const;
 };
 
