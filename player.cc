@@ -41,6 +41,8 @@ bool Player::isVisitingTims() const { return visitingTims; }
 
 void Player::toggleVisiting() { visitingTims = !visitingTims; }
 
+void Player::incTimsLine() { timsLine += 1; }
+
 int Player::getTimsCups() const { return timsCups; }
 
 void Player::addTimsCups(const int n) { timsCups += n; }
