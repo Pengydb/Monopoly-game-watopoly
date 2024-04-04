@@ -303,7 +303,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 }
 
 
-void Board::playGame() {
+void Board::playGame(bool isTesting) {
     std::cout << "Enter the number of players: " << std::endl;
     int numPlayers;
     std::cin >> numPlayers;
@@ -367,8 +367,14 @@ void Board::playGame() {
                 continue;
             }
 
-            int d1 = curPlayer->roll();
-            int d2 = curPlayer->roll();
+            int d1, d2;
+            if (isTesting) {
+                std::cin >> d1 >> d2;
+            } else {
+                d1 = curPlayer->roll();
+                d2 = curPlayer->roll();
+            }
+            
             int sum = d1 + d2;
 
             std::cout << "You rolled a " << d1 << " and a " << d2 << '!' << std::endl;

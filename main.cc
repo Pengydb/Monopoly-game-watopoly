@@ -9,12 +9,13 @@
 int main(int argc, char *argv[]) {
     std::shared_ptr<Board> board = std::make_shared<Board>();
     std::string command = argv[1];
+    bool isTesting = false;
     if (command == "-load") {
         std::string filename = argv[2];
         board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
     }
     else if(command == "-testing") {
-
+        isTesting = true;
     }
     else {
 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[]) {
 
         if (cmd == "start") {
             board->setupBoard("TileOrder.csv", "propertyconfig.csv");
-            board->playGame();
+            board->playGame(isTesting);
         }
         else if (cmd == "load") {
             std::cout << "Please enter the name of the file to be loaded including its extension" << std::endl;
