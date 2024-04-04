@@ -27,35 +27,62 @@ public:
     Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position = 0, bool visitingTims = true, 
            int timsLine = 0, int timsCups = 0, int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner);
     
-    bool canBuy() const; // returns buy field
-    bool hasToPay() const; // returns pay field
-    void toggleCanBuy(); // toggles buy field
-    void toggleHasToPay(); // toggles pay field
-    int getFee() const; // returns fee
-    void setFee(const int n); // sets fee to n
-    void setFeeOwner(std::string owner); // sets feeOwner
-    std::string getFeeOwner() const; // returns feeOwner
-    
-    int getGyms() const; // Returns gyms field
-    int getRes() const; // Returns res field
-    void addGyms(const int n); // Adds n to the gyms field
-    void addRes(const int n); // Adds n to the res field
+    // returns buy field
+    bool canBuy() const; 
+    // returns pay field
+    bool hasToPay() const; 
+    // toggles buy field
+    void toggleCanBuy(); 
+    // toggles pay field
+    void toggleHasToPay(); 
+    // returns fee
+    int getFee() const; 
+    // sets fee to n
+    void setFee(const int n); 
+    // sets feeOwner
+    void setFeeOwner(std::string owner); 
+    // returns feeOwner
+    std::string getFeeOwner() const; 
+    // Returns number of gyms the player owns
+    int getGyms() const; 
+    // Returns the number of residences the player owns
+    int getRes() const; 
+    // Adds n to the number of gyms the player owns
+    void addGyms(const int n); 
+    // Adds n to the number of residences the player owns
+    void addRes(const int n); 
+    // Returns amount of money the player has
     int getWallet() const;
+    // Sets players wallet to 'amount'
     void setWallet(const int amount);
-    void addWallet(const int amount); // adds amount to wallet field
+    // Adds 'amount' to players wallet
+    void addWallet(const int amount); 
+    // Returns the players piece
     char getPiece() const;
+    // Sets the players position
     void setPosition(const int pos);
-    int getPosition() const; // Returns position field
-    int movePosition(const int n); // moves player forward or backwards (if n < 0) by n tiles
+    // Returns the players position
+    int getPosition() const; 
+    // moves player forward or backwards (if n < 0) by n tiles
+    int movePosition(const int n); 
+    // Returns the number of turns a player has been in the DCTims line
     int getTimsLine() const;
-    void setTimsLine(const int pos);
-    void incTimsLine(); // increments timsLine by 1
-    bool isVisitingTims() const; // returns visitingTims field;
-    void toggleVisiting(); // Toggles visitingTims to opposite of what it was
-    int getTimsCups() const; // returns timsCups field
-    void addTimsCups(const int n); // Adds n to timsCups field
+    // Sets the timsLine counter to n
+    void setTimsLine(const int n);
+    // Increments timsLine by 1
+    void incTimsLine(); 
+    // Returns whether player is visiting DCTims (true) or they are in the tims line (false)
+    bool isVisitingTims() const; 
+    // Toggles visitingTims to opposite of what it was
+    void toggleVisiting(); 
+    // Returns the number of Roll up the Rim cups the player has
+    int getTimsCups() const; 
+    // Adds n to the number of Roll up the Rim cups the player has
+    void addTimsCups(const int n); 
+    // Returns the players mame
     std::string getName() const;
-    int roll() const; // Returns a random num between 1 and 6
+    // Simulates rolling 1 die by return a random number between 1 and 6
+    int roll() const; 
 
 };
 
