@@ -139,14 +139,22 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
 
             isMortgaged = (impCount == -1);
             isOwned = (ownerStr != "BANK");
-            auto academicBuilding = std::make_shared<AcademicBuilding>(name, count, isOwned, isMortgaged, impCount, impCost);
-            buildings.push_back(academicBuilding);
-        
+            auto property = bank->getProperty(name);
+            if (isOwned != property->isOwned()) {
+                property->toggleOwnership();
+            }
+            if (isMortgaged != property->isMortgaged()) {
+                property->toggleMortgage();
+            }
+            if (!isMortgaged) {
+                auto academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(property);
+                if (academicBuilding) {
+                    academicBuilding->addImps(impCount);
+                }
+            }
         ++count;
     }
     file.close();
-    bank->initBank(buildings);
-    bank->initConfigs(propertyConfig);
 }
 
 int Board::getTurn() {

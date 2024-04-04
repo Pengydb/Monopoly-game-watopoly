@@ -484,24 +484,21 @@ void Bank::removePlayer(const std::string& playerName) {
 }
 
 void Bank::initBank(std::vector<std::shared_ptr<Player>> &p) {
-    for (const auto &player : p)
-    {
+    for (const auto &player : p) {
         players[player->getName()] = player;
+        addDCTimsCups(player->getTimsCups());
     }
 }
 
 void Bank::initBank(std::vector<std::shared_ptr<Tile>> &buildings) {
     std::vector<std::shared_ptr<OwnableProperty>> props;
-    for (const auto &tile : buildings)
-    {
-        if (std::shared_ptr<OwnableProperty> ownable = std::dynamic_pointer_cast<OwnableProperty>(tile))
-        {
+    for (const auto &tile : buildings) {
+        if (std::shared_ptr<OwnableProperty> ownable = std::dynamic_pointer_cast<OwnableProperty>(tile)) {
             props.push_back(ownable);
         }
     }
 
-    for (const auto &property : props)
-    {
+    for (const auto &property : props) {
         properties[property->getName()] = property;
         propertyOwnership[property->getName()] = "BANK";
     }
