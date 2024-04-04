@@ -31,7 +31,7 @@ TextDisplay::TextDisplay(Board& board, std::vector<std::shared_ptr<Player>> play
     }
 }
 
-
+/*
 void TextDisplay::notify(Player& p) {
     int pos = p.getPosition();
     int numP = board.playersAtPos(pos); // number of players at this tile
@@ -90,6 +90,69 @@ void TextDisplay::notify(AcademicBuilding& a) {
     }
 
     display[r][c] = 'I';
+} */
+
+void TextDisplay::notify(std::shared_ptr<Subject> s) {
+    int r, c, rinc, cinc;
+    
+    std::shared_ptr<Player> p = std::dynamic_pointer_cast<Player>(s);
+    
+    if (p) {
+        int pos = p->getPosition();
+        int numP = board.playersAtPos(pos); // number of players at this tile
+        return;
+
+        if (numP > 4) {
+            cinc = (numP-4)*2;
+            rinc = 1;
+        } else {
+            cinc = numP*2;
+            rinc = 0;
+        }
+        
+        if (0 <= pos <= 10) { // Bottom Row
+            r = 65 + rinc;
+            c = 92 - pos*10 + cinc;
+            
+        } else if (11 <= pos <= 19) { // Left Side
+            r = 65 - (pos-10)*6 + rinc;
+            c = 2 + cinc;
+
+        } else if (20 <= pos <= 30) { // Top Row
+            r = 5 + rinc;
+            c = 2 + (pos-19)*10 + cinc;
+
+        } else { // Right Side
+            r = 5 + (pos-30)*6 + rinc;
+            c = 92 + cinc;
+        }
+
+        display[r][c] = p->getPiece();
+    }
+
+    std::shared_ptr<AcademicBuilding> ab = std::dynamic_pointer_cast<AcademicBuilding>(s);
+    if (ab) {
+        int loc = ab->getLocation();
+        int imps = ab->getImpCount();
+        if (0 <= loc <= 10) { // Bottom Row
+            r = 62;
+            c = 92 - loc*10 + (imps - 1);
+            
+        } else if (11 <= loc <= 19) { // Left Side
+            r = 62 - (loc-10)*6;
+            c = 2 + (imps - 1);
+
+        } else if (20 <= loc <= 30) { // Top Row
+            r = 2;
+            c = 2 + (loc-19)*10 + (imps - 1);
+
+        } else { // Right Side
+            r = 2 + (loc-30)*6;
+            c = 92 + (imps - 1);
+
+        }
+    }
+
 }
 
 void TextDisplay::printBoard() const {

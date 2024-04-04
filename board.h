@@ -56,7 +56,7 @@ class Board : public Observer {
         // moves the game to the next turn
         void nextTurn();
         // Notifies the subjects of any changes
-        void notify(Player & p);
+        void notify(std::shared_ptr<Subject> s) override;
         // Prints the current state of the board
         void printBoard(TextDisplay & t);
         // Checks if the player with name 'name' is in the game

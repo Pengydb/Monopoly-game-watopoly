@@ -693,8 +693,13 @@ void Board::nextTurn() {
     playerTurn = (playerTurn + 1) % players.size();
 }
 
-void Board::notify(Player &p) {
-    buildings[p.getPosition()]->performAction(p, *bank);
+void Board::notify(std::shared_ptr<Subject> s) {
+    
+    std::shared_ptr<Player> p = std::dynamic_pointer_cast<Player>(s);
+    if (!p) {
+        return;
+    }
+    buildings[p->getPosition()]->performAction(*p, *bank);
 }
 
 void Board::printBoard(TextDisplay &t) {
