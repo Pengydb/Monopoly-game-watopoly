@@ -15,9 +15,9 @@
 
 class Board : public Observer {
     // Stores pointers to all tiles on the board
-    std::vector<std::shared_ptr<Tile>> & buildings;
+    std::vector<std::shared_ptr<Tile>> buildings;
     // Stores pointers to players on the board
-    std::vector<std::shared_ptr<Player>> & players;
+    std::vector<std::shared_ptr<Player>> players;
     // Instance of the bank
     std::shared_ptr<Bank> bank;
     // Stores the current player's turn
@@ -26,6 +26,7 @@ class Board : public Observer {
     void removeAllWhitespace(std::string &str);
     
     public:
+        Board();
         // Saves the current game
         void saveGame();
         // Loads the game

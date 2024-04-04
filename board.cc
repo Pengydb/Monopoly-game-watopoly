@@ -2,10 +2,16 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <memory>
 #include <cctype>
 #include <vector>
 #include <string>
 #include <sstream>
+
+Board::Board():
+    playerTurn(0) {
+        bank = std::make_shared<Bank>();
+    }
 
 void Board::saveGame() {
     std::string filename = "savegame.txt";
