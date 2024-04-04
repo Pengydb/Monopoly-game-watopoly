@@ -146,7 +146,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
     }
     file.close();
     bank->initBank(buildings);
-    bank->initilizePropertyConfigs(propertyConfig);
+    bank->initConfigs(propertyConfig);
 }
 
 int Board::getTurn() {
@@ -234,7 +234,7 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
     }
     file.close();
     bank->initBank(buildings);
-    bank->initilizePropertyConfigs(propertyConfig);
+    bank->initConfigs(propertyConfig);
 }
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {

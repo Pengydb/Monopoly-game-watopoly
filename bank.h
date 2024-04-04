@@ -47,7 +47,7 @@ public:
     std::string getPropertyOwner(const std::string& propertyName) const;
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
-    void initilizePropertyConfigs(const std::string &filename);
+    void initConfigs(const std::string &filename);
 
     std::shared_ptr<OwnableProperty> getProperty(const std::string& propertyName);
 
