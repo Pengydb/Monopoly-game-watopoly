@@ -302,33 +302,34 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     return player;
 }
 
+void Board::playGame(const bool addPlayers, const bool isTesting) {
+    if (addPlayers) {
+        std::cout << "Enter the number of players: " << std::endl;
+        int numPlayers;
+        std::cin >> numPlayers;
+        std::cin.ignore();
 
-void Board::playGame(bool isTesting) {
-    std::cout << "Enter the number of players: " << std::endl;
-    int numPlayers;
-    std::cin >> numPlayers;
-    std::cin.ignore();
+        std::map<std::string, char> nameToPiece;
 
-    std::map<std::string, char> nameToPiece;
+        for (int i = 0; i < numPlayers; ++i)
+        {
+            std::shared_ptr<Player> player = setPlayer(nameToPiece);
+            nameToPiece[player->getName()] = player->getPiece();
+            players.push_back(player);
+        }
 
-    for (int i = 0; i < numPlayers; ++i)
-    {
-        std::shared_ptr<Player> player = setPlayer(nameToPiece);
-        nameToPiece[player->getName()] = player->getPiece();
-        players.push_back(player);
+        if (numPlayers == 1)
+        {
+            std::shared_ptr<Player> player = players[0];
+            std::string name = player->getName();
+            std::cout << "Congratulations! " << name << " has won the game" << std::endl;
+        }
+
+        std::cout << "Game started with " << numPlayers << " players." << std::endl;
+        bank->initBank(players);
     }
 
-    if (numPlayers == 1)
-    {
-        std::shared_ptr<Player> player = players[0];
-        std::string name = player->getName();
-        std::cout << "Congratulations! " << name << " has won the game" << std::endl;
-    }
     playerTurn = 0;
-
-    std::cout << "Game started with " << numPlayers << " players." << std::endl;
-    bank->initBank(players);
-
     if (players.size() < 1) { std::cout << "Game over" << std::endl; }
 
     std::string cmd, name, prop1, prop2; // initial command : player name that may follow : 1st property name that may follow : 2nd property name that may follow

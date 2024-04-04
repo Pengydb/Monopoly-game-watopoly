@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
     if (command == "-load") {
         std::string filename = argv[2];
         board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
+        board->playGame(false);
     }
     else if(command == "-testing") {
         isTesting = true;
@@ -31,7 +32,7 @@ int main(int argc, char *argv[]) {
 
         if (cmd == "start") {
             board->setupBoard("TileOrder.csv", "propertyconfig.csv");
-            board->playGame(isTesting);
+            board->playGame(true, isTesting);
         }
         else if (cmd == "load") {
             std::cout << "Please enter the name of the file to be loaded including its extension" << std::endl;
