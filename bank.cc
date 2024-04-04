@@ -21,10 +21,6 @@ void Bank::addDCTimsCups(int n) {
     DCTimsCups += n;
 }
 
-void Bank::holdAuction(const std::string& propertyName) {
-    // Implementation here
-}
-
 std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     auto iter = propertyOwnership.find(propertyName);
     if (iter == propertyOwnership.end()) {
@@ -219,6 +215,32 @@ int Bank::countBlocksOwnedBy(const std::string& playerName, const std::string& m
         }
     }
     return count; 
+}
+
+void Bank::printAssets(const std::string& playerName) const {
+    if (players.find(playerName) == players.end()) {
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return;
+    }
+
+    std::shared_ptr<Player> player = players.find(playerName)->second;
+    std::cout << playerName << "cash: $" << player->getWallet() << "tims cups: " << player->getTimsCups() << std::endl;
+    for (const auto& [propetyName, ownerName] : propertyOwnership) {
+        if (ownerName == playerName) {
+            std::shared_ptr<OwnableProperty> property = properties.find(propetyName)->second;
+            int improvements = 0;
+            if (property->isMortgaged()) {
+                improvements = -1;
+            } else {
+                auto academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(property);
+                if (academicBuilding) {
+                    improvements = academicBuilding->getImpCount();
+                }
+            }
+
+            std:: cout << propetyName << " " << improvements << std::endl;
+        }
+    }
 }
 
 int Bank::getLiquidAssets(const std::string& playerName) const {
@@ -422,7 +444,9 @@ void Bank::unmortgageProperty(const std::string& propertyName, const std::string
     int unmortgageCost = propertyIt->second->getCost() * 0.6;
 
     if (!checkSufficientFunds(playerName, unmortgageCost)) {
-        std::cout << playerName << ", lacks sufficient funds to unmortgage " << propertyName << "." << std::endl;
+        std::cout << playerName << ", lacks sufficient funds to unmortgage " << propertyName << "." << std::endl; 
+        std::cout << "You have $" << players[playerName] ->getWallet() << "." << std::endl;
+        std::cout << "It costs $" << unmortgageCost << "." << std::endl;
         return;
     }
 

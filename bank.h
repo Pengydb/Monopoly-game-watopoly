@@ -46,6 +46,7 @@ public:
 
 
     std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
+    
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     /* Transfers property from one player to another returns true if successfull, charges receiver a fee if the property is mortgaged and gives 
@@ -63,6 +64,9 @@ public:
 
     // Counts number of properities of given group that the player owns
     int countBlocksOwnedBy(const std::string& playerName, const std::string& monopolyBlock) const;
+
+    // Print's the player's assets
+    void printAssets(const std::string& playerName) const;
 
     // Calculates player's total liquid assets from cash and mortgaging all properties and/or selling improvements
     int getLiquidAssets(const std::string& playerName) const;
