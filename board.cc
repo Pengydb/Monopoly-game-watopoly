@@ -268,48 +268,42 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
             continue;
         }
     }
+    
+    std::map<char, std::string> pieceMap = {
+        {'G', "Goose"},
+        {'B', "GRTBus"},
+        {'D', "TimHortonsDoughnut"},
+        {'P', "Professor"},
+        {'S', "Student"},
+        {'$', "Money"},
+        {'L', "Laptop"},
+        {'T', "PinkTie"}};
 
     char playerPiece;
-    while (true) {
-        std::cout << "Enter player's piece out of:\n"
-                  << "G (Goose)\n"
-                  << "B (GRTBus)\n"
-                  << "D (TimHortonsDoughnut)\n"
-                  << "P (Professor)\n"
-                  << "S (Student)\n"
-                  << "$ (Money)\n"
-                  << "L (Laptop)\n"
-                  << "T (PinkTie)" << std::endl;
-        std::cin >> playerPiece;
-        switch(playerPiece) {
-        case 'G':
-        case 'B':
-        case 'D':
-        case 'P':
-        case 'S':
-        case '$':
-        case 'L':
-        case 'T':
-
-            bool chosen = false;
-            for (const auto& pair : nameToPiece) {
-                if (pair.second == playerPiece) {
-                    chosen = true; // Piece already chosen
-                }
-            }
-            if (chosen) {
-                throw std::invalid_argument("This piece has already been taken. Please try again.");
-                continue;
-            }
-            std::cout << "You chose the " << playerPiece << " piece." << std::endl;
-            break;
-        default:
-            throw std::invalid_argument("Invalid choice. Please try again.");
-            continue;
-            
+    while (true)
+    {
+        std::cout << "Enter player's piece out of:" << std::endl;
+        for (const auto &pair : pieceMap)
+        {
+            std::cout << pair.first << " : " << pair.second << std::endl;
         }
-        break;
+
+        std::cin >> playerPiece;
+        std::cin.ignore();
+
+        if (pieceMap.find(playerPiece) != pieceMap.end())
+        {
+            std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
+            pieceMap.erase(playerPiece);
+            break;
+        }
+        else
+        {
+            std::cout << "Invalid choice. Please try again." << std::endl;
+            continue;
+        }
     };
+
     const int wallet = 1500;
     const int boardSize = 40;
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
