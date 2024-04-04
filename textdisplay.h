@@ -6,8 +6,9 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-#include "board.h"
 #include <memory>
+
+class Board;
 
 class TextDisplay: public Observer {
 private:

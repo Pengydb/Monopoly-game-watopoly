@@ -1,4 +1,7 @@
 #include "academicbuilding.h"
+#include "player.h"
+#include "propertyconfig.h"
+#include "bank.h"
 #include <iostream>
 #include <string>
 
@@ -27,7 +30,7 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
 
 
 void AcademicBuilding::addImps(const int n) { 
-    impCount + n;
+    impCount += n;
     this->notifyObservers(); 
 }
 int AcademicBuilding::getImpCost() const { return config->getImpCost(); }

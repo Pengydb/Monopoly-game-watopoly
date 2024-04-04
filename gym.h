@@ -2,11 +2,12 @@
 #define _GYM_H_
 
 #include "ownableproperty.h"
-#include "bank.h"
+#include "propertyconfig.h"
+class Bank;
 
 class Gym : public OwnableProperty {
   public:
-    Gym(std::string name, int loc, PropertyConfig& config, bool owned, bool mortgaged);
+    Gym(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned = false, bool mortgaged = false);
     void performAction(Player &p, Bank &b) override; 
 };
 

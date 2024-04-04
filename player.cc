@@ -1,4 +1,6 @@
 #include "player.h"
+#include "ownableproperty.h"
+#include "bank.h"
 #include <stdexcept>
 #include <iostream>
 #include <string>

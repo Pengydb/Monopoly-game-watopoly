@@ -2,9 +2,9 @@
 #define __PLAYER_H_
 
 #include "subject.h"
-#include "bank.h"
-#include "ownableproperty.h"
 #include <string>
+
+class Bank;
 
 class Player: public Subject {
 private:
@@ -25,7 +25,7 @@ private:
     std::string feeOwner; // Who the player pays the fee to (BANK if not ownable property fee)
 public:
     Player(char piece, const std::string& name, int wallet, Bank& bank, int boardSize, int position = 0, bool visitingTims = true, 
-           int timsLine = 0, int timsCups = 0, int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner);
+           int timsLine = 0, int timsCups = 0, int gyms = 0, int re = 0, bool buy = false, bool pay = false, int fee = 0, std::string feeOwner = "");
     
     // returns buy field
     bool canBuy() const; 

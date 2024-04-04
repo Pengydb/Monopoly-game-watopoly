@@ -2,7 +2,8 @@
 #define _NONOWNABLEPROPERTY_H_
 
 #include "tile.h"
-#include "bank.h"
+
+class Bank;
 
 
 class NonOwnableProperty : public Tile {

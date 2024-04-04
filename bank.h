@@ -1,14 +1,15 @@
 #ifndef __BANK_H_
 #define __BANK_H_
 
-#include "player.h"
-#include "ownableproperty.h"
-#include "academicbuilding.h"
+
 #include "propertyconfig.h"
 #include <map>
 #include <memory>
 #include <string>
 
+class Tile;
+class Player;
+class OwnableProperty;
 class Bank {
 private:
     // Property configs

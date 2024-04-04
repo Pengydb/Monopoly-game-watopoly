@@ -1,4 +1,11 @@
 #include "bank.h"
+#include "player.h"
+#include "ownableproperty.h"
+#include "academicbuilding.h"
+#include "gym.h"
+#include "residence.h"
+#include "tile.h"
+#include "textdisplay.h"
 #include <stdexcept>
 #include <fstream>
 #include <iostream>

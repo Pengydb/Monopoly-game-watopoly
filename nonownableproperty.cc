@@ -1,4 +1,7 @@
 #include "nonownableproperty.h"
+
+#include "bank.h"
+#include "player.h"
 #include <iostream>
 #include <memory>
 #include <vector>

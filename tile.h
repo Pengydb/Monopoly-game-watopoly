@@ -3,8 +3,9 @@
 
 #include <string>
 #include "subject.h"
-#include "player.h"
-#include "bank.h"
+
+class Player;
+class Bank;
 
 class Tile : public Subject {
     std::string name;  // Name of the tile
