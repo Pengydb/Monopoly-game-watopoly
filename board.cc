@@ -268,7 +268,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
             continue;
         }
     }
-    
+
     std::map<char, std::string> pieceMap = {
         {'G', "Goose"},
         {'B', "GRTBus"},
