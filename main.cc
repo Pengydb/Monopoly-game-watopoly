@@ -6,18 +6,15 @@
 #include <iostream>
 #include <string>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     std::shared_ptr<Board> board = std::make_shared<Board>();
     std::string command = argv[1];
-    if (command == "-load")
-    {
+    if (command == "-load") {
         std::string filename = argv[2];
-        board->loadGame(filename);
-        board->loadGame(argv[2]);
+        board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
     }
-    else if(command == "-testing"){
-        
+    else if(command == "-testing") {
+
     }
 
         std::cout << "Watopoly: The Univeristy of Waterloo Monopoly!" << std::endl;
@@ -30,14 +27,17 @@ int main(int argc, char *argv[])
         std::string cmd;
         std::cin >> cmd;
 
-        if (cmd == "start")
-        {
+        if (cmd == "start") {
+            board->setupBoard("TileOrder.csv", "propertyconfig.csv");
+            board->playGame();
         }
-        else if (cmd == "load")
-        {
+        else if (cmd == "load") {
+            std::cout << "Please enter the name of the file to be loaded including its extension" << std::endl;
+            std::string loadFile;
+            std::getline(std::cin, loadFile);
+            board->loadGame(loadFile, "TileOrder.csv", "propertyconfig.csv");
         }
-        else if (cmd == "exit")
-        {
+        else if (cmd == "exit") {
         }
         else
         {

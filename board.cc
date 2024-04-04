@@ -74,8 +74,8 @@ void Board::saveGame() {
     std::cout << "Game saved to " << filename << std::endl;
 }
 
-void Board::loadGame(const std::string &filename, const std::string &propertyConfig)
-{
+void Board::loadGame(const std::string &filename, const std::string &TileOrder, const std::string &propertyConfig) {
+    setupBoard(TileOrder, propertyConfig);
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::invalid_argument("Error opening file " + filename);
@@ -154,7 +154,7 @@ void removeAllWhitespace(std::string &str)
               str.end());
 }
 
-void Board::setupGame(const std::string &TileOrder, const std::string &propertyConfig) {
+void Board::setupBoard(const std::string &TileOrder, const std::string &propertyConfig) {
 
     std::ifstream file(TileOrder);
     if (!file.is_open()) {

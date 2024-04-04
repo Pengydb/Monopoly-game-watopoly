@@ -29,11 +29,11 @@ class Board : public Observer {
         // Saves the current game
         void saveGame();
         // Loads the game
-        void loadGame(const std::string &filename, const std::string &propertyConfig);
+        void loadGame(const std::string &filename, const std::string &TileOrder, const std::string &propertyConfig);
         // Gets the current player's turn
         int getTurn();
         // Starts the game
-        void setupGame(const std::string &TileOrder, const std::string &propertyConfig);
+        void setupBoard(const std::string &TileOrder, const std::string &propertyConfig);
         // Plays the game
         void playGame();
 
