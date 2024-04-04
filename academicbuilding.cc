@@ -5,9 +5,9 @@
 #include <iostream>
 #include <string>
 
-AcademicBuilding::AcademicBuilding(std::string name, int loc, bool owned, bool mortgaged, 
+AcademicBuilding::AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged, 
                                    int impCount, int impCost):
-                    OwnableProperty{name, loc, owned, mortgaged}, impCount{impCount}, impCost{impCost} {}
+                    OwnableProperty{name, loc, config, owned, mortgaged}, impCount{impCount}, impCost{impCost} {}
 
 
 

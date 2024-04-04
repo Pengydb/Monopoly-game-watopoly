@@ -5,7 +5,7 @@
 
 class Residence : public OwnableProperty {
   public:
-    Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned, bool mortgaged);
+    Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned = false, bool mortgaged = false);
     void performAction(Player &p, Bank &b) override;
 };
 #endif // _RESIDENCE_H

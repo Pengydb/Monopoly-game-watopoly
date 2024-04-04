@@ -1,8 +1,10 @@
 #include "residence.h"
+#include "bank.h"
+#include "player.h"
 #include <iostream>
 #include <string>
 
-Residence::Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned, bool mortgaged) : 
+Residence::Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged) : 
                     OwnableProperty{name, loc, config, owned, mortgaged} {}
 
 void Residence::performAction(Player &p, Bank &b)

@@ -7,7 +7,7 @@
 #include <string>
 
 Gym::Gym(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged) :
-            OwnableProperty{name, loc} {}
+            OwnableProperty{name, loc, config, owned, mortgaged} {}
 
 void Gym::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
