@@ -496,15 +496,13 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             std::string pName = this->getTileName(curPlayer->getPosition());
             int pcost = bank->getPropertyConfig(pName)->getCost();
 
-            std::string pname = this->getTileName(curPlayer->getPosition()); // name of property
-
             if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
-                std::cout << "You have successfully bought " << pname << std::endl;
-                bank->transferProperty(curPlayer->getName(), pname);
+                std::cout << "You have successfully bought " << pName << std::endl;
+                bank->transferProperty(curPlayer->getName(), pName);
             } else {
                 std::cout << "You have insufficient funds to buy this property" << std::endl;
                 std::cout << "Cash in your wallet: $" << curPlayer->getWallet() << std::endl;
-                std::cout << "Cost of " << pname << ": $" << pcost << std::endl;
+                std::cout << "Cost of " << pName << ": $" << pcost << std::endl;
             }
 
         } else if (cmd == "trade") {
