@@ -1,5 +1,6 @@
 #include "bank.h"
 #include <stdexcept>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -482,6 +483,30 @@ void Bank::initBank(std::vector<std::shared_ptr<Player>> &p, std::vector<std::sh
         propertyOwnership[property->getName()] = "BANK";
     }
 }
+
+void Bank::initConfigs(std::string& configFile) {
+    std::ifstream file(configFile);
+    if (!file.is_open()) {
+        std::cout << "Failed to open file: " << configFile << std::endl;
+    }
+    std::string csvLine;
+    std::getline(file, csvLine);
+    while(std::getline(file, csvLine)) {
+        auto config = PropertyConfig::fromCSV(csvLine);
+        std::string propertyName = config.getName();
+        propertyConfigs[propertyName] = std::make_shared<PropertyConfig>(config);
+    }
+    for (auto& [propertyName, property] : properties) {
+        auto configIt = propertyConfigs.find(propertyName);
+        if (configIt != propertyConfigs.end()) {
+            property->setConfig(configIt->second);
+        } else {
+            std::cout << "Warning: No configuration found for property " << propertyName << "." << std::endl;
+        }
+
+    }
+}
+
 
 void Bank::holdAuction(const std::string &propertyName){
     std::vector<std::string> names;

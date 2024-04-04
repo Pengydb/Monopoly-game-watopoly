@@ -1,6 +1,9 @@
 #include "propertyconfig.h"
 #include <stdexcept>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
+#include <string>
 
 PropertyConfig::PropertyConfig(const std::string& name, const std::string& group, int buyingCost, int impCost, const std::vector<int>& fees)
     : name(name), group(group), buyingCost(buyingCost), impCost(impCost), fees(fees) {
@@ -26,14 +29,22 @@ PropertyConfig::PropertyConfig(const std::string& name, const std::string& group
     }
 }    
 
+void removeAllWhitespace(std::string& str) {
+    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c){ return std::isspace(c); }), str.end());
+}
+
 PropertyConfig PropertyConfig::fromCSV(const std::string& csvLine) {
     std::istringstream readLine(csvLine);
     std::string readValue, name, group;
     int buyingCost, impCost;
     std::vector<int> fees;
 
-    std::getline(readLine, name, ',');
-    std::getline(readLine, group, ',');
+    std::getline(readLine, readValue, ',');
+    removeAllWhitespace(readValue);
+    name = readValue;
+
+    std::getline(readLine, readValue, ',');
+    group = readValue;
 
     std::getline(readLine, readValue, ',');
     buyingCost = std::stoi(readValue);
