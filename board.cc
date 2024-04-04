@@ -324,7 +324,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         std::cin.ignore();
 
         std::map<std::string, char> nameToPiece;
-        std::shared_ptr<TextDisplay> textDisplay = std::make_shared<TextDisplay>("defaul_board.txt", players, *this);
+        std::shared_ptr<TextDisplay> textDisplay = std::make_shared<TextDisplay>("default_board.txt", players, *this);
         for (int i = 0; i < numPlayers; ++i)
         {
             std::shared_ptr<Player> player = setPlayer(nameToPiece);
