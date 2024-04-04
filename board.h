@@ -14,35 +14,51 @@
 #include "textdisplay.h"
 
 class Board : public Observer {
-    std::vector<std::shared_ptr<Tile>> & buildings; // Stores pointers to buildings on the board
-    std::vector<std::shared_ptr<Player>> & players;  // Stores pointers to players on the board
-    std::shared_ptr<Bank> bank; // Instance of the bank
-    int playerTurn; // Stores the current player's turn
-
+    // Stores pointers to all tiles on the board
+    std::vector<std::shared_ptr<Tile>> & buildings;
+    // Stores pointers to players on the board
+    std::vector<std::shared_ptr<Player>> & players;
+    // Instance of the bank
+    std::shared_ptr<Bank> bank;
+    // Stores the current player's turn
+    int playerTurn;
   public:
-    void saveGame(); // Saves the current game
-    void loadGame(const std::string &filename); // Loads the game
-    int getTurn(); // Gets the current player's turn
-    void setupGame(const std::string &filename); // Starts the game
-    void playGame(); // Plays the game
+      // Saves the current game
+      void saveGame();
+      // Loads the game
+      void loadGame(const std::string &filename);
+      // Gets the current player's turn
+      int getTurn();
+      // Starts the game
+      void setupGame(const std::string &filename);
+      // Plays the game
+      void playGame();
 
-    std::shared_ptr<Player> setPlayer(std::map<std::string, char> &nameToPiece); // Creates a player
-    void movePlayer(Player &p, int roll); // Moves a player to the target tile
-    void removePlayer(Player &p); // removes a player from the board
+      // Creates a player
+      std::shared_ptr<Player> setPlayer(std::map<std::string, char> &nameToPiece);
+      // Moves a player to the target tile
+      void movePlayer(Player &p, int roll);
+      // removes a player from the board
+      void removePlayer(Player &p);
 
-    void printBoard(); // Prints the current state of the board
-    // void notify(Subject &s);
-    void loadGame(const std::string &filename);
+      // Prints the current state of the board
+      void printBoard(); 
+      // Loads a saved game
+      void loadGame(const std::string &filename);
 
-    // Returns the name of the tile at position n (assumes 40 >= n >= 0)
-    std::string getTileName(const int n) const; 
-    // Returns the cost of the property at position n (assumes n corresponds to the position of an ownable property)
-    int getPropCost(const int n) const;
+      // Returns the name of the tile at position n (assumes 40 >= n >= 0)
+      std::string getTileName(const int n) const;
+      // Returns the cost of the property at position n (assumes n corresponds to the position of an ownable property)
+      int getPropCost(const int n) const;
 
-    void nextTurn(); // moves the game to the next turn
-    void notify(Player &p); // Notifies the subjects of any changes
-    void printBoard(TextDisplay &t); // Prints the current state of the board
-    bool playerExists(std::string name); // Checks if the player with name 'name' is in the game
+      // moves the game to the next turn
+      void nextTurn();
+      // Notifies the subjects of any changes
+      void notify(Player &p);
+      // Prints the current state of the board
+      void printBoard(TextDisplay &t);
+      // Checks if the player with name 'name' is in the game
+      bool playerExists(std::string name);
 };
 
 #endif // BOARD_H
