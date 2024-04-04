@@ -51,9 +51,9 @@ int Player::getGyms() const { return gyms; }
 
 int Player::getRes() const { return res; }
 
-void Player::addGyms(const int n) { gyms + n; }
+void Player::addGyms(const int n) { gyms += n; }
 
-void Player::addRes(const int n) { res + n; }
+void Player::addRes(const int n) { res += n; }
 
 bool Player::canBuy() const { return buy; }
 
