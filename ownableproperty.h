@@ -32,7 +32,6 @@ class OwnableProperty : public Tile {
     void toggleOwnership(); // Toggles owned field to opposite of what it was
 
     std::shared_ptr<PropertyConfig> getConfig() const; // Return shared_ptr to config
-    void setConfig(const std::shared_ptr<PropertyConfig> config); // Sets config
 };
 
 #endif // OWNABLEPROPERTY_H
