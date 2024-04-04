@@ -35,7 +35,6 @@ public:
     // Adds n to DCTimsCups field. Will not allow to go above 4 or below 0 (throws invalid_argument).
     void addDCTimsCups(int n);
 
-    void initConfigs(std::string& filename);
     // Initializes the players
     void initBank(std::vector<std::shared_ptr<Player>> &p);
     // Initializes the properties, and propertyOwnership maps
@@ -47,6 +46,7 @@ public:
     std::string getPropertyOwner(const std::string& propertyName) const;
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
+    // Initilizes and updates ownable property config map in bank from filename csv, subsequently updates each property's config pointer
     void initConfigs(const std::string &filename);
 
     std::shared_ptr<OwnableProperty> getProperty(const std::string& propertyName);
