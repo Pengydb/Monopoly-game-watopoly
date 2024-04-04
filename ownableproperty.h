@@ -24,7 +24,7 @@ class OwnableProperty : public Tile {
 
     bool isOwned() const; // Returns owned field
     bool isMortgaged() const; // returns mortgage field
-    virtual int getCost() const = 0; // pure virtual, no implementation, for ownableproperties // Returns cost field
+    int getCost() const; // Returns cost field from config
     virtual int getFee() const; // Returns tuition fee for this property
     std::string getGroup() const; // returns which monopoly this property belongs to
     
