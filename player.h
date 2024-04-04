@@ -3,7 +3,7 @@
 
 #include "subject.h"
 #include "bank.h"
-#include <ownableproperty.h>
+#include "ownableproperty.h"
 #include <string>
 
 class Player: public Subject {
