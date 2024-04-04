@@ -14,7 +14,7 @@ class AcademicBuilding : public OwnableProperty {
     // MonopolyBlock monBlock; getGroup from config
   
   public:
-    AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> = nullptr, bool owned = false, bool mortgaged = false, int impCount = 0, int impCost = 0);
+    AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> config = nullptr, bool owned = false, bool mortgaged = false, int impCount = 0, int impCost = 0);
     void performAction(Player &p, Bank &b) override;
     // Increments impCount by n (DO NOT CHARGE PLAYER)
     void addImps(int n); 
