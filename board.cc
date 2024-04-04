@@ -165,7 +165,12 @@ int Board::getTurn() {
     return playerTurn;
 }
 
-
+void removeAllWhitespace(std::string &str)
+{
+    str.erase(std::remove_if(str.begin(), str.end(), [](unsigned char c)
+                             { return std::isspace(c); }),
+              str.end());
+}
 
 void Board::setupGame(const std::string &TileOrder) {
     
@@ -174,42 +179,72 @@ void Board::setupGame(const std::string &TileOrder) {
         throw std::invalid_argument("Error opening file " + TileOrder);
         return;
     }
-
-
     std::string line;
+    std::getline(file,line);
+    int count = 0;
     while (getline(file, line)) {
+        
         std::string buildingType, buildingName;
         std::istringstream iss(line);
         std::getline(iss, buildingType, ',');
+        removeAllWhitespace(buildingType);
         std::getline(iss, buildingName);
+        removeAllWhitespace(buildingName);
 
         if (buildingType == "AB") {
-            std::shared_ptr<AcademicBuilding> tile = nullptr;
+            std::shared_ptr<AcademicBuilding> tile = std::make_shared<AcademicBuilding>(buildingName, count, false, false, 0, 0);
             buildings.push_back(tile);
         }
         else if (buildingType == "R") {
-            std::shared_ptr<Residence> tile = nullptr;
+            std::shared_ptr<Residence> tile = std::make_shared<Residence>(buildingName, count, false, false);
             buildings.push_back(tile);
         }
         else if (buildingType == "GYM") {
-            std::shared_ptr<Gym> tile = nullptr;
+            std::shared_ptr<Gym> tile = std::make_shared<Gym>(buildingName, count, false, false);
             buildings.push_back(tile);
         }
         else if (buildingType == "NOP") {
-            if (buildingName == "SLC") {
-
+            if (buildingName == "CollectOsap") {
+                std::shared_ptr<CollectOsap> tile = std::make_shared<CollectOsap>(buildingName, count);
+                buildings.push_back(tile);
             }
-            std::shared_ptr<NonOwnableProperty> tile = nullptr;
-            buildings.push_back(tile);
+            else if (buildingName == "DCTims") {
+                std::shared_ptr<DCTims> tile = std::make_shared<DCTims>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "GoToTims") {
+                std::shared_ptr<GoToTims> tile = std::make_shared<GoToTims>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "GooseNesting") {
+                std::shared_ptr<GooseNesting> tile = std::make_shared<GooseNesting>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "Tuition") {
+                std::shared_ptr<Tuition> tile = std::make_shared<Tuition>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "CoopFee") {
+                std::shared_ptr<CoopFee> tile = std::make_shared<CoopFee>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "SLC") {
+                std::shared_ptr<SLC> tile = std::make_shared<SLC>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            else if (buildingName == "NH") {
+                std::shared_ptr<NH> tile = std::make_shared<NH>(buildingName, count);
+                buildings.push_back(tile);
+            }
+            
         }
         else {
             throw std::invalid_argument("Unknown building type: " + buildingType);
             return;
         }
+        ++count;
     }
     file.close();
-    
-    
 }
 
 std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
@@ -220,7 +255,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 
         std::string check = name;
         std::transform(check.begin(), check.end(), check.begin(), ::tolower);
-        if (check == "school") {
+        if (check == "bank") {
             throw std::invalid_argument("Invalid name. Player not added.");
             continue;
         }
