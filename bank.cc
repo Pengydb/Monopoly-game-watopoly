@@ -507,7 +507,7 @@ void Bank::initBank(std::vector<std::shared_ptr<Tile>> &buildings) {
     }
 }
 
-void Bank::initConfigs(std::string& configFile) {
+void Bank::initConfigs(const std::string& configFile) {
     std::ifstream file(configFile);
     if (!file.is_open()) {
         std::cout << "Failed to open file: " << configFile << std::endl;
@@ -528,6 +528,8 @@ void Bank::initConfigs(std::string& configFile) {
         }
 
     }
+
+    file.close();
 }
 
 
