@@ -39,12 +39,12 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     return iter->second; 
 }
 
-std::weak_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propertyName) {
+std::shared_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propertyName) {
     // Implementation here
-    return std::weak_ptr<PropertyConfig>(); // Placeholder return
+    return propertyConfigs[propertyName];
 }
 
-std::weak_ptr<OwnableProperty> Bank::getProperty(const std::string& propertyName) {
+std::shared_ptr<OwnableProperty> Bank::getProperty(const std::string& propertyName) {
     return properties[propertyName];
 }
 
@@ -188,6 +188,9 @@ void Bank::seizeAssets(const std::string& debtor, const std::string& creditor) {
     int cashSeized = players[debtor]->getWallet();
 
     transferFunds(debtor, creditor, cashSeized);
+
+    creditorIt->second->addTimsCups(debtorIt->second->getTimsCups());
+    debtorIt->second->addTimsCups(-debtorIt->second->getTimsCups());
 
     for (auto& [propertyName, owner] : propertyOwnership) {
         if (owner == debtor) {
@@ -630,3 +633,4 @@ int Bank::countImprovements(const std::string& group) const {
     }
     return imps;
 }
+

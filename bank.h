@@ -49,9 +49,9 @@ public:
 
     void initilizePropertyConfigs(const std::string &filename);
 
-    std::weak_ptr<OwnableProperty> getProperty(const std::string& propertyName);
+    std::shared_ptr<OwnableProperty> getProperty(const std::string& propertyName);
 
-    std::weak_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
+    std::shared_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
     
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
@@ -81,6 +81,7 @@ public:
     bool checkSufficientFunds(const std::string& playerName, int amount) const;
 
     void buyImprovement(const std::string& propertyName, const std::string& playerName);
+    
     void sellImprovement(const std::string& propertyName, const std::string& playerName);
 
     void mortgageProperty(const std::string& propertyName, const std::string& playerName);

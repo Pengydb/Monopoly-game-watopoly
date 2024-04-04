@@ -50,9 +50,7 @@ class Board : public Observer {
 
         // Returns the name of the tile at position n (assumes 40 >= n >= 0)
         std::string getTileName(const int n) const;
-        // Returns the cost of the property at position n (assumes n corresponds to the position of an ownable property)
-        int getPropCost(const int n) const;
-
+        
         // moves the game to the next turn
         void nextTurn();
         // Notifies the subjects of any changes

@@ -261,42 +261,50 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
         }
     }
 
-    std::map<char, std::string> pieceMap = {
-        {'G', "Goose"},
-        {'B', "GRTBus"},
-        {'D', "TimHortonsDoughnut"},
-        {'P', "Professor"},
-        {'S', "Student"},
-        {'$', "Money"},
-        {'L', "Laptop"},
-        {'T', "PinkTie"}};
-
     char playerPiece;
     while (true) {
-        std::cout << "Enter player's piece out of:" << std::endl;
-        for (const auto &pair : pieceMap)
-        {
-            std::cout << pair.first << " : " << pair.second << std::endl;
-        }
-
+        std::cout << "Enter player's piece out of:\n"
+                  << "G (Goose)\n"
+                  << "B (GRTBus)\n"
+                  << "D (TimHortonsDoughnut)\n"
+                  << "P (Professor)\n"
+                  << "S (Student)\n"
+                  << "$ (Money)\n"
+                  << "L (Laptop)\n"
+                  << "T (PinkTie)" << std::endl;
         std::cin >> playerPiece;
-        std::cin.ignore();
+        switch(playerPiece) {
+        case 'G':
+        case 'B':
+        case 'D':
+        case 'P':
+        case 'S':
+        case '$':
+        case 'L':
+        case 'T':
 
-        if (pieceMap.find(playerPiece) != pieceMap.end())
-        {
-            std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
-            pieceMap.erase(playerPiece);
+            bool chosen = false;
+            for (const auto& pair : nameToPiece) {
+                if (pair.second == playerPiece) {
+                    chosen = true; // Piece already chosen
+                }
+            }
+            if (chosen) {
+                throw std::invalid_argument("This piece has already been taken. Please try again.");
+                continue;
+            }
+            std::cout << "You chose the " << playerPiece << " piece." << std::endl;
             break;
-        }
-        else
-        {
-            std::cout << "Invalid choice. Please try again." << std::endl;
+        default:
+            throw std::invalid_argument("Invalid choice. Please try again.");
             continue;
+            
         }
-
+        break;
     };
     const int wallet = 1500;
-    std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank);
+    const int boardSize = 40;
+    std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
     return player;
 }
 
@@ -476,7 +484,9 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 continue;
             }
 
-            int pcost = this->getPropCost(curPlayer->getPosition()); // cost of property
+            std::string pName = this->getTileName(curPlayer->getPosition());
+            int pcost = bank->getPropertyConfig(pName)->getCost();
+
             std::string pname = this->getTileName(curPlayer->getPosition()); // name of property
 
             if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
@@ -513,7 +523,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                         } else {
                             // If property has improvements on it or if any property in the monopoly has improvements on it
                             // Then it can't be traded
-                            property = bank->getProperty(prop2).lock();
+                            property = bank->getProperty(prop2);
                             group = property->getGroup();
                             if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) { 
                                 std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
@@ -539,7 +549,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 } else { // Current player owns the property they offered
                     // If property has improvements on it or if any property in the monopoly has improvements on it
                     // Then it can't be traded
-                    property = bank->getProperty(prop1).lock();
+                    property = bank->getProperty(prop1);
                     group = property->getGroup();
                     if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) {
                         std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
@@ -556,7 +566,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                             continue;
                         }
                     } else { // Trades property for property
-                        property = bank->getProperty(prop2).lock();
+                        property = bank->getProperty(prop2);
                         group = property->getGroup();
                         if (!(group == "Residence" || group == "Gym" || bank->countImprovements(group) == 0)) {
                             std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
@@ -575,43 +585,18 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 }
             }
             
-        } else if (cmd == "improve") {
+        } 
+        else if (cmd == "improve") {
             // Lets the player add/sell improvements on their property
             std::string action;
             std::cin >> prop1 >> action;
 
-            if (bank->getPropertyOwner(prop1) != curPlayer->getName()) {
-                std::cout << "You do not own this property" << std::endl;
-                continue;
-            }
-
-          
-            std::shared_ptr<AcademicBuilding> ab = std::dynamic_pointer_cast<AcademicBuilding>(bank->getProperty(prop1).lock());
-            if (ab->getGroup() == "Residence" || ab->getGroup() == "Gym") {
-                std::cout << "You can't add improvements to Residences or Gyms"  << std::endl;
-                continue;
-            }
-
             if (action == "buy") {
-                if (ab->getImpCount() == 5) {
-                    std::cout << "You have the maximum number of improvements for " << prop1 << std::endl;
-                    continue;
-                }
-
-                if (!bank->transferFunds(curPlayer->getName(), "BANK", ab->getImpCost())) {
-                    std::cout << "You don't have sufficient funds to improve your property" << std::endl;
-                    std::cout << "You have $" << curPlayer->getWallet() << std::endl;
-                    std::cout << "You need $" << ab->getImpCost() << " to improve your property" << std::endl;
-                    continue;
-                }
-
-                std::cout << "You added an improvement to " << prop1 << std::endl;
-                ab->addImps(1);
+                bank->buyImprovement(prop1, curPlayer->getName());
 
             } else if (action == "sell") {
-                bank->transferFunds("BANK", curPlayer->getName(), ab->getImpCost()*(0.5));
-                std::cout << "You have sold an improvement from " << prop1 << std::endl;
-                ab->addImps(-1);
+                bank->sellImprovement(prop1, curPlayer->getName());
+            
             } else {
                 std::cout << "Unrecognized command : enter \"help\" to see the list of possible commands" << std::endl;
             }
@@ -621,7 +606,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             std::cin >> prop1;
             bank->mortgageProperty(prop1, curPlayer->getName());
             
-
         } else if (cmd == "unmortgage") {
             // Lets the player unmortgage their property (must be able to afford it)
             std::cin >> prop1;
@@ -718,11 +702,6 @@ void Board::printBoard(TextDisplay &t) {
 std::string Board::getTileName(const int n) const {
     return buildings[n]->getName();
 }
-
-int Board::getPropCost(const int n) const {
-    return buildings[n]->getCost();
-}
-
 
 bool Board::playerExists(std::string& name) {
     for (const auto &p : players) {

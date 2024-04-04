@@ -16,7 +16,8 @@ class Tile : public Subject {
     virtual ~Tile() = default; // Default destructor
     std::string getName() const;   // returns name field of Tile
     int getLocation() const;
-    virtual void performAction(Player &p, Bank &b) = 0; // pure virtual, no implimentation, for subclasses
+    virtual void performAction(Player &p, Bank &b) = 0;
+     // pure virtual, no implimentation, for subclasses
     virtual int getCost() const = 0; // pure virtual, no implementation, for ownableproperties
     
 };
