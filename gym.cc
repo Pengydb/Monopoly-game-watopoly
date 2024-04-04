@@ -27,7 +27,7 @@ void Gym::performAction(Player &p, Bank &b) {
             }
         }
 
-        int fee = config->getFee(p.getGyms()) * sum;
+        int fee = config->getFee(p.getGyms() - 1) * sum;
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);

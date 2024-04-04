@@ -15,7 +15,7 @@ void Residence::performAction(Player &p, Bank &b)
     {
         std::string owner = b.getPropertyOwner(this->getName());
         std::cout << "This property is owned by " << owner << std::endl;
-        int fee = config->getFee(p.getRes());
+        int fee = config->getFee(p.getRes() - 1);
 
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
