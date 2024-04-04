@@ -24,9 +24,7 @@ class Board : public Observer {
     int playerTurn;
 
     std::shared_ptr<TextDisplay> textDisplay;
-    // Removes all whitespaces
-    void removeAllWhitespace(std::string &str);
-    
+
     public:
         Board();
         // Saves the current game
