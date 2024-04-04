@@ -55,6 +55,7 @@ void GoToTims::performAction(Player &p, Bank &b) {
 }
 
 void GooseNesting::performAction(Player &p, Bank &b) {
+    std::cout << p.getName() << " is attacked by a flock of wild geese!" << std::endl;
     return;
 }
 
