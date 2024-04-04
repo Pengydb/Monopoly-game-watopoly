@@ -6,8 +6,8 @@
 
 
 // Default Board: Tiles 8x7 characters in size
-TextDisplay::TextDisplay(Board& board, std::vector<std::shared_ptr<Player>> players, std::string fname): 
-                         board{board}, players{players}, fname{fname} {
+TextDisplay::TextDisplay(Board &board, std::vector<std::shared_ptr<Player>> players, std::string fname) : fname{fname}, board{board}, players{players}
+{
     std::ifstream file{fname};
     if (!file.is_open())
     {
@@ -134,15 +134,15 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
     if (ab) {
         int loc = ab->getLocation();
         int imps = ab->getImpCount();
-        if (0 <= loc <= 10) { // Bottom Row
+        if (0 <= loc && loc <= 10) { // Bottom Row
             r = 62;
             c = 92 - loc*10 + (imps - 1);
             
-        } else if (11 <= loc <= 19) { // Left Side
+        } else if (11 <= loc && loc <= 19) { // Left Side
             r = 62 - (loc-10)*6;
             c = 2 + (imps - 1);
 
-        } else if (20 <= loc <= 30) { // Top Row
+        } else if (20 <= loc && loc<= 30) { // Top Row
             r = 2;
             c = 2 + (loc-19)*10 + (imps - 1);
 

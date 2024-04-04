@@ -6,8 +6,8 @@
 #include <string>
 
 AcademicBuilding::AcademicBuilding(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged, 
-                                   int impCount, int impCost):
-                    OwnableProperty{name, loc, config, owned, mortgaged}, impCount{impCount}, impCost{impCost} {}
+                                   int impCount):
+                    OwnableProperty{name, loc, config, owned, mortgaged}, impCount{impCount}{}
 
 
 
