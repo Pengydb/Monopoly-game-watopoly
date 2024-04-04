@@ -16,6 +16,7 @@ int main(int argc, char *argv[]) {
     else if(command == "-testing") {
 
     }
+    else {
 
         std::cout << "Watopoly: The Univeristy of Waterloo Monopoly!" << std::endl;
         std::cout << "Enter one of the following commands to start playing: \n"
@@ -39,8 +40,8 @@ int main(int argc, char *argv[]) {
         }
         else if (cmd == "exit") {
         }
-        else
-        {
+        else {
             std::cout << "Unknown command" << std::endl;
         }
     }
+}
