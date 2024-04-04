@@ -40,7 +40,6 @@ public:
     int getRes() const; // Returns res field
     void addGyms(const int n); // Adds n to the gyms field
     void addRes(const int n); // Adds n to the res field
-    void printAssets() const;
     int getWallet() const;
     void setWallet(const int amount);
     void addWallet(const int amount); // adds amount to wallet field
