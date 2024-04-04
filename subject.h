@@ -7,7 +7,7 @@
 
 class Subject {
 private:
-    std::vector<std::weak_ptr<Observer>> observers;
+    std::vector<std::shared_ptr<Observer>> observers;
     // other fields if necessary
 
 public:
