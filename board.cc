@@ -128,7 +128,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
 
             std::stringstream ss(line);
             std::string name, ownerStr, impCountStr;
-            int impCount, impCost;
+            int impCount;
             bool isMortgaged, isOwned;
 
             std::getline(ss, name, ',');
@@ -268,7 +268,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
             continue;
         }
     }
-    
+
     std::map<char, std::string> pieceMap = {
         {'G', "Goose"},
         {'B', "GRTBus"},
