@@ -110,15 +110,15 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
             rinc = 0;
         }
         
-        if (0 <= pos <= 10) { // Bottom Row
+        if (0 <= pos && pos <= 10) { // Bottom Row
             r = 65 + rinc;
             c = 92 - pos*10 + cinc;
             
-        } else if (11 <= pos <= 19) { // Left Side
+        } else if (11 <= pos && pos <= 19) { // Left Side
             r = 65 - (pos-10)*6 + rinc;
             c = 2 + cinc;
 
-        } else if (20 <= pos <= 30) { // Top Row
+        } else if (20 <= pos && pos <= 30) { // Top Row
             r = 5 + rinc;
             c = 2 + (pos-19)*10 + cinc;
 

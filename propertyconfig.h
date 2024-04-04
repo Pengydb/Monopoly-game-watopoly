@@ -10,7 +10,7 @@ private:
     std::string group;
     int buyingCost;
     int impCost;
-    std::vector<int> fees; // Indexed by stage of imrpovement, starting from base
+    std::vector<int> fees; // Indexed by stage of improvement, starting from base 0
     
 public:
     PropertyConfig(const std::string& name, const std::string& group, int buyingCost, int impCost, const std::vector<int>& rents);
