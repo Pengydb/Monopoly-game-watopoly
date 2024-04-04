@@ -588,7 +588,7 @@ void Board::playGame() {
                         } else {
                             std::cout << "You successfully traded " << prop1 << " for " << prop2 << std::endl;
                             bank->transferProperty(curPlayer->getName(), prop2);
-                            bank->transferProperty(name, prop2);
+                            bank->transferProperty(name, prop1);
                         }
                     }
                 }
