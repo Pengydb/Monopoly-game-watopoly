@@ -665,7 +665,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             }
 
         } else if (cmd == "print") {
-            this->printBoard();
+            this->print();
         } else {
             std::cout << "Unrecognized command : enter \"help\" to see the list of possible commands" << std::endl;
         }
@@ -702,8 +702,8 @@ void Board::notify(std::shared_ptr<Subject> s) {
     buildings[p->getPosition()]->performAction(*p, *bank);
 }
 
-void Board::printBoard(TextDisplay &t) {
-    t.printBoard();
+void Board::print() {
+    textDisplay->printBoard();
 }
 
 

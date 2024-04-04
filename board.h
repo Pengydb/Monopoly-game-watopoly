@@ -45,9 +45,6 @@ class Board : public Observer {
         // removes a player from the board
         void removePlayer(Player & p);
 
-        // Prints the current state of the board
-        void printBoard();
-
         // Returns the name of the tile at position n (assumes 40 >= n >= 0)
         std::string getTileName(const int n) const;
         
@@ -56,7 +53,7 @@ class Board : public Observer {
         // Notifies the subjects of any changes
         void notify(std::shared_ptr<Subject> s) override;
         // Prints the current state of the board
-        void printBoard(TextDisplay & t);
+        void print();
         // Checks if the player with name 'name' is in the game
         bool playerExists(std::string& name);
         // Returns the number of players who are at position n on the board
