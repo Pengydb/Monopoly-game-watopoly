@@ -13,12 +13,12 @@ class Player;
 class TextDisplay: public Observer {
 private:
     std::string fname; // board text file name
-    Board& board; // refrence to game board
     std::vector<std::shared_ptr<Player>> players;
+    Board& board; // refrence to game board
     std::vector<std::vector<char>> display; // 2d array for textDisplay
 
 public:
-    TextDisplay(Board& board, std::vector<std::shared_ptr<Player>> players, std::string fname);
+    TextDisplay(std::string fname, std::vector<std::shared_ptr<Player>> players, Board& board);
     // Notify for when a player moves
     void notify(std::shared_ptr<Subject> s) override;
     // Prints the board
