@@ -367,6 +367,7 @@ void Board::playGame() {
                                         ,"all : displays the assests of every player"
                                         ,"save <filename> : saves the current game into a save file"
                                         ,"DCcup : uses a Roll up the Rim cup to get out of the DCTims line (must be in the DCTims line)"
+                                        ,"print : prints the game board"
                                         ,"help : lists all the available commands" };
 
     bool hasRolled = false; // Bool to track whether the current player has rolled or not
@@ -695,6 +696,8 @@ void Board::playGame() {
                 std::cout << c << std::endl;
             }
 
+        } else if (cmd == "print") {
+            this->printBoard();
         } else {
             std::cout << "Unrecognized command : enter \"help\" to see the list of possible commands" << std::endl;
         }
