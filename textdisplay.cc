@@ -6,8 +6,8 @@
 
 
 // Default Board: Tiles 8x7 characters in size
-TextDisplay::TextDisplay(Board& board, std::vector<std::shared_ptr<Player>> players, std::string fname): 
-                         board{board}, players{players}, fname{fname} {
+TextDisplay::TextDisplay(Board& board, std::string fname): 
+                         board{board}, fname{fname} {
     std::ifstream file{fname};
     if (!file.is_open())
     {
