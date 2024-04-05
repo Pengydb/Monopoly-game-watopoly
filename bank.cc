@@ -304,7 +304,7 @@ bool Bank::checkSufficientFunds(const std::string& playerName, int amount) const
     }
     std::shared_ptr<Player> player = players.find(playerName)->second;
 
-    if (player->getWallet() < amount) {
+    if (player->getWallet() > amount) {
         return true;
     }
     return false; 
