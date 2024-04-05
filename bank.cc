@@ -557,16 +557,22 @@ void Bank::initConfigs(const std::string& configFile) {
     file.close();
 }
 
-void Bank::holdAuction(const std::string &propertyName){
+void Bank::holdAuction(const std::string &propertyName) {
     std::vector<std::string> names;
-    for (const auto &pair : players)
-    {
+    for (const auto &pair : players) {
         names.push_back(pair.first); // To construct the names vector to store the names of the players
     }
     names.erase(names.begin());
     int highestBid = 1; // Starting bid
     std::string highestBidder = ""; // To store the winning bidder
+
     while(true){
+
+        if (names.size() == 0) {
+            std::cout << "All participants have withdrawn without valid bids. As such " << propertyName << " will remain with the Bank." << std::endl;
+            break;
+        }
+
         if (names.size() == 1){
             if (highestBidder == names[0]) {
                 bool check = checkSufficientFunds(highestBidder, highestBid);
@@ -577,12 +583,10 @@ void Bank::holdAuction(const std::string &propertyName){
                     std::cout << "The transfer has been complete" << std::endl;
                     break;
                 }
-            } else {
-                std::cout << "No one has won the auction so the property will remain with the Bank" << std::endl;
-                break;
-            }
-            
+            } 
+            continue;
         }
+        
         std::string bidder; // Current bidder
         std::cout << "Players: ";
         for (const auto& name : names){
@@ -594,16 +598,17 @@ void Bank::holdAuction(const std::string &propertyName){
         std::getline(std::cin, bidder); // To enter the name of the bidder
 
         bool match = false;
-        for (const auto &name : names)
-        {
+        for (const auto &name : names) {
             if (bidder == name){
                 match = true; // check if it is a valid player
             }
         }
+
         if (!match){ // If not the prompted to enter the name again
             std::cout << "Please enter a valid player" << std::endl;
             continue;
         }
+
         while (true){
             std::string input;
             int tempBid = 0; // Stores Current bid
@@ -640,6 +645,7 @@ void Bank::holdAuction(const std::string &propertyName){
             }
             std::cout << "Please enter a valid bid greater than $" << highestBid << " or withdraw" << std::endl;
         }
+
     }
 }
 
