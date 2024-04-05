@@ -360,6 +360,11 @@ void Bank::buyImprovement(const std::string& propertyName, const std::string& pl
         std::cout << propertyName << " is already at max improvement level." << std::endl;
         return;
     }
+ 
+    if (academicBuilding->isMortgaged()) {
+         std::cout << propertyName << " is currently mortgaged. You must unmortgage the property befoe purchasing improvements." << std::endl;
+         return;
+    }
 
     int upgradeCost = academicBuilding->getImpCost();
     if (!checkSufficientFunds(playerName, upgradeCost)) {
