@@ -584,7 +584,6 @@ void Bank::holdAuction(const std::string &propertyName) {
                     break;
                 }
             } 
-            continue;
         }
         
         std::string bidder; // Current bidder
