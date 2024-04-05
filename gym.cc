@@ -13,10 +13,10 @@ void Gym::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
 
     if (this->isOwned()) {
-        std::string owner = b.getPropertyOwner(this->getName());
-        std::cout << "This property is owned by " << owner << std::endl;
+        std::string ownerName = b.getPropertyOwner(this->getName());
+        std::cout << "This property is owned by " << ownerName << std::endl;
         
-        if (p.getName() == owner) {
+        if (p.getName() == ownerName) {
             std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
             return;
         }     
@@ -32,11 +32,17 @@ void Gym::performAction(Player &p, Bank &b) {
             }
         }
 
-        int fee = config->getFee(std::max(p.getGyms() - 1, 0)) * sum;
+        
+        std::shared_ptr<Player> owner = b.getPlayer(ownerName);
+        std::cout << ownerName << " has " << owner->getGyms() << " gyms." << std::endl;
+        std::cout << "Base fee $ " << config->getFee(owner->getGyms()) << std::endl;
+        std::cout << "Multiplier from roll " << sum << std::endl;
+    
+        int fee = config->getFee(std::max(owner->getGyms() - 1, 0)) * sum;
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);
-        p.setFeeOwner(owner);
+        p.setFeeOwner(ownerName);
     } else {
         std::cout << "This property is unowned! You have the option to buy it for $" << config->getCost() << std::endl;
         p.toggleCanBuy();

@@ -39,6 +39,15 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     return iter->second; 
 }
 
+  std::shared_ptr<Player> Bank::getPlayer(const std::string& playerName) const {
+    auto playerIt = players.find(playerName);
+    if (playerIt == players.end()) {
+        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+        return;
+    }
+    return playerIt->second;
+  }
+
 std::shared_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propertyName) {
     // Implementation here
     return propertyConfigs[propertyName];

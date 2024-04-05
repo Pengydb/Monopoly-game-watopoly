@@ -29,8 +29,7 @@ PropertyConfig::PropertyConfig(const std::string& name, const std::string& group
     }
 }
 
-void removeWhitespace(std::string &str)
-{
+void removeWhitespace(std::string &str) {
     // Remove leading whitespace and quotation marks
     str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](unsigned char c)
                                         { return !std::isspace(c) && c != '"'; }));

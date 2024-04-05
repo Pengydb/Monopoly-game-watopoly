@@ -44,6 +44,11 @@ public:
     void holdAuction(const std::string& propertyName);
     // Returns the owner of the property
     std::string getPropertyOwner(const std::string& propertyName) const;
+
+    // Returns pointer to player
+    std::shared_ptr<Player> getPlayer(const std::string& playerName) const;
+
+
     // Changes the owner of the property
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
