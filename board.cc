@@ -120,6 +120,9 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
 
         std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, getBoardSize(), position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
+        player->attach(shared_from_this());
+        player->attach(textDisplay);
+        player->notifyObservers();
 
         --numPlayers;
     }
@@ -327,6 +330,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, getBoardSize());
     player->attach(textDisplay);
     player->attach(shared_from_this());
+    player->notifyObservers();
     return player;
 }
 
