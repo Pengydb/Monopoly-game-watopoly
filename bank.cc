@@ -252,7 +252,7 @@ void Bank::printAssets(const std::string& playerName) const {
     }
 
     std::shared_ptr<Player> player = players.find(playerName)->second;
-    std::cout << playerName << "cash: $" << player->getWallet() << "tims cups: " << player->getTimsCups() << std::endl;
+    std::cout << playerName << " cash: $" << player->getWallet() << " tims cups: " << player->getTimsCups() << std::endl;
     for (const auto& [propetyName, ownerName] : propertyOwnership) {
         if (ownerName == playerName) {
             std::shared_ptr<OwnableProperty> property = properties.find(propetyName)->second;
