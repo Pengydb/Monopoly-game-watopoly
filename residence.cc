@@ -18,12 +18,12 @@ void Residence::performAction(Player &p, Bank &b)
         std::cout << "This property is owned by " << ownerName << std::endl;
 
         if (p.getName() == ownerName) {
-            std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
+            std::cout << p.getName() <<  ", you do not need to pay any fees as you are the owner." << std::endl;
             return;
         }
 
         if (this->isMortgaged()) {
-            std::cout << "The property is currently mortgaged. No tuition fees will be charged." << std::endl;
+            std::cout << "The property is currently mortgaged. No fees will be charged." << std::endl;
             return;
         }  
 

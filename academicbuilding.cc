@@ -19,12 +19,12 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
         std::cout << "This property is owned by " << owner << std::endl;
 
         if (p.getName() == owner) {
-            std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
+            std::cout << p.getName() <<  ", you do not need to pay any fees as you are the owner." << std::endl;
             return;
         }
 
         if (this->isMortgaged()) {
-            std::cout << "The property is currently mortgaged. No tuition fees will be charged." << std::endl;
+            std::cout << "The property is currently mortgaged. No fees will be charged." << std::endl;
             return;
         }  
 
@@ -32,7 +32,7 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
 
         if (getMonopoly() && getImpCount() < 1) fee *= monopolyMultiplier;
         
-        std::cout << "You are being charged with a tuition fee of $" << fee << std::endl;
+        std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);
         p.setFeeOwner(owner);
