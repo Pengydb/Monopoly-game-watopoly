@@ -222,8 +222,7 @@ void Bank::seizeAssets(const std::string& debtor, const std::string& creditor) {
 
     transferFunds(debtor, creditor, cashSeized);
 
-    creditorIt->second->addTimsCups(debtorIt->second->getTimsCups());
-    debtorIt->second->addTimsCups(-debtorIt->second->getTimsCups());
+
 
     for (auto& [propertyName, owner] : propertyOwnership) {
         if (owner == debtor) {
@@ -240,9 +239,12 @@ void Bank::seizeAssets(const std::string& debtor, const std::string& creditor) {
                 property->toggleOwnership();
                 propertyOwnership[propertyName] = "BANK";
                 holdAuction(propertyName);
+                transferProperty(creditor, propertyName);
             }
             else {
-            transferProperty(creditor, propertyName);
+                creditorIt->second->addTimsCups(debtorIt->second->getTimsCups());
+                debtorIt->second->addTimsCups(-debtorIt->second->getTimsCups());
+                transferProperty(creditor, propertyName);
             }
         }
     }
