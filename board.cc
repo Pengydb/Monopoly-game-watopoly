@@ -27,13 +27,15 @@ void Board::saveGame() {
 
     file <<  players.size() << std::endl;
 
-    for (const auto &player : players) {
+    for (size_t i = playerTurn; i < playerTurn + players.size(); ++i) {
+        int index = i % players.size();
+        const auto &player = players[index];
         file << player->getName() << ","
              << player->getPiece() << ","
              << player->getTimsCups() << ","
              << player->getWallet() << ","
              << player->getPosition() << ","
-             << !player->isVisitingTims() << "," 
+             << !player->isVisitingTims() << ","
              << player->getTimsLine() << std::endl;
     }
 
@@ -73,13 +75,8 @@ void Board::saveGame() {
                 }
             }
         }
-        else {
-            throw std::invalid_argument("Unknown tile type.");
-            return;
-        }
-        
     }
-    
+    file << playerTurn << std::endl;
     file.close();
     std::cout << "Game saved to " << filename << std::endl;
 }
