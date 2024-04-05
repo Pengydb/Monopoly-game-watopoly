@@ -327,6 +327,8 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     const int wallet = 1500;
     
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, getBoardSize());
+    player->attach(textDisplay);
+    player->attach(shared_from_this());
     return player;
 }
 
@@ -338,11 +340,10 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         std::cin.ignore();
 
         std::map<std::string, char> nameToPiece;
-        std::shared_ptr<TextDisplay> textDisplay = std::make_shared<TextDisplay>(*this);
         for (int i = 0; i < numPlayers; ++i)
         {
             std::shared_ptr<Player> player = setPlayer(nameToPiece);
-            player->attach(textDisplay);
+         
             nameToPiece[player->getName()] = player->getPiece();
             players.push_back(player);
         }

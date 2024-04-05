@@ -13,7 +13,7 @@
 #include "bank.h"
 #include "textdisplay.h"
 
-class Board : public Observer {
+class Board : public Observer, public std::enable_shared_from_this<Board> {
     // Stores pointers to all tiles on the board
     std::vector<std::shared_ptr<Tile>> buildings;
     // Stores pointers to players on the board
