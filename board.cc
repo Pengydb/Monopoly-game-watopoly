@@ -328,7 +328,8 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         int numPlayers = 0;
         std::cout << "Enter the number of players: " << std::endl;
         while (true) {
-            std::getline(std::cin, numPlayersStr);
+            std::cin >> numPlayersStr;
+            std::cin.ignore();
             std::istringstream iss(numPlayersStr);
             if (!(iss >> numPlayers)){
                 std::cout << "Please enter a valid limit" << std::endl;
