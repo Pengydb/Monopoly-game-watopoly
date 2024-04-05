@@ -113,25 +113,27 @@ void TextDisplay::cleanPos(const int pos, const char piece) {
 
     std::vector<char> pOnTile;
     for (int i = 0; i < 8; ++i) {
-        if (i <= 4) {
-            if (display[r][c+i] != ' ') {
-                pOnTile.emplace_back(display[r][c+i]);
-                display[r][c+i] = ' ';
+        if (i < 4) {
+            if (display[r][c+2*i] != ' ') {
+                if (display[r][c+2*i] == piece) continue;
+                pOnTile.emplace_back(display[r][c+2*i]);
+                display[r][c+2*i] = ' ';
             } 
         } else {
-            if (display[r+1][c+(i-4)] != ' ') {
-                pOnTile.emplace_back(display[r+1][c+(i-4)]);
-                display[r+1][c+(i-4)] = ' ';
+            if (display[r+1][c+(2*(i-4))] != ' ') {
+                if (display[r+1][c+2*(i-4)] == piece) continue;
+                pOnTile.emplace_back(display[r+1][c+2*(i-4)]);
+                display[r+1][c+(2*(i-4))] = ' ';
             }
         }
     }
 
     int numP = pOnTile.size();
     for (int i = 0; i < numP; ++i) {
-        if (i <= 4) {
-            if (!(pOnTile[i] == piece)) display[r][c+i] = pOnTile[i]; 
+        if (i < 4) {
+            display[r][c+2*i] = pOnTile[i]; 
         } else {
-            if (!(pOnTile[i] == piece)) display[r+1][c+(i-4)] = pOnTile[i]; 
+            display[r+1][c+(2*(i-4))] = pOnTile[i]; 
         }
     }
 }

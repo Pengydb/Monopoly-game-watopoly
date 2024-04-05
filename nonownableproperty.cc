@@ -104,7 +104,7 @@ int genRandNum(std::vector<int>& vec) {
 }
 
 void SLC::performAction(Player &p, Bank &b) {
-    std::cout << "You have landed on SCL" << std::endl;
+    std::cout << "You have landed on SLC" << std::endl;
     int n;
 
     if (b.getDCTimsCups() < 4) { // Checks if amount of tim cups that all players have is < 4
@@ -113,6 +113,7 @@ void SLC::performAction(Player &p, Bank &b) {
         n = genRandNum(timCupProb);
 
         if (n == 1) { // Wins a get out of DCTims line
+            std::cout << "You won a DC Tims cup!" << std::endl;
             p.addTimsCups(1);
             b.addDCTimsCups(1);
             return;
@@ -123,15 +124,29 @@ void SLC::performAction(Player &p, Bank &b) {
     std::vector<int> slcProbs{1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 
                                5, 5, 5, 5, 6, 6, 6, 6, 7, 8};
     n = genRandNum(slcProbs);
-    switch (n) { // switch case that matches SCL prob. table given in Watopoly.pdf
-        case 1: p.movePosition(-3); 
-        case 2: p.movePosition(-2);
-        case 3: p.movePosition(-1);
-        case 4: p.movePosition(1);
-        case 5: p.movePosition(2);
-        case 6: p.movePosition(3);
-        case 7: p.setPosition(0);
-        case 8: p.setPosition(10); p.toggleVisiting();
+    int pos;
+    switch (n) { // switch case that matches SLC prob. table given in Watopoly.pdf
+        case 1: pos = -3; 
+        case 2: pos = -2;
+        case 3: pos = -1;
+        case 4: pos = 1;
+        case 5: pos = 2;
+        case 6: pos = 3;
+        case 7: pos = 0;
+        case 8: pos = 10; 
+    }
+
+    if (pos == 10) {
+        std::cout << "You go to the DC Tims line" << std::endl;
+        p.toggleVisiting();
+        p.setPosition(pos);
+    } else if (pos == 0) {
+        std::cout << "You move to Collect Osap" << std::endl;
+        p.setPosition(pos);
+    } else {
+        if (pos < 0) std::cout << "You move back " << -(pos) << " tiles" << std::endl;
+        else std::cout << "You move forward " << pos << " tiles" << std::endl;
+        p.movePosition(pos);
     }
 
 }
@@ -148,6 +163,7 @@ void NH::performAction(Player &p, Bank &b) {
         timCupProb[0] = 1;
         n = genRandNum(timCupProb);
         if (n == 1) { // Wins a get out of DCTims line
+            std::cout << "You won a DC Tims cup!" << std::endl;
             p.addTimsCups(1);
             b.addDCTimsCups(1);
             return;

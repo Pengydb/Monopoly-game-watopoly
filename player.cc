@@ -23,7 +23,10 @@ void Player::addWallet(const int amount) { wallet += amount; }
 
 char Player::getPiece() const { return piece; }
 
-void Player::setPosition(const int pos) { position = pos; }
+void Player::setPosition(const int pos) { 
+    position = pos;
+    this->notifyObservers(); 
+}
 
 int Player::getPosition() const { return position; }
 
