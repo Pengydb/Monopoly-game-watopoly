@@ -75,11 +75,11 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
             
         } else if (11 <= loc && loc <= 19) { // Left Side
             r = 61 - (loc-10)*6;
-            c = 2;
+            c = 1;
 
         } else if (20 <= loc && loc <= 30) { // Top Row
             r = 1;
-            c = 2 + (loc-20)*9;
+            c = 1 + (loc-20)*9;
 
         } else { // Right Side
             r = 1 + (loc-30)*6;
