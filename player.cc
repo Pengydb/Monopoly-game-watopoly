@@ -9,9 +9,9 @@
 #include <random>
 
 Player::Player(char piece, const std::string &name, int wallet, int boardSize, int position, bool visitingTims,
-               int timsLine, int timsCups,  int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner) : piece(piece), name(name), wallet(wallet), boardSize(boardSize), position(position), visitingTims(visitingTims),
-                                                                                                                                  timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res),
-                                                                                                                                  buy(buy), pay(pay), fee(fee), feeOwner(feeOwner) {}
+               int timsLine, int timsCups,  int gyms, int res, bool buy, bool pay, int fee, std::string feeOwner) : 
+               piece(piece), name(name), wallet(wallet), boardSize(boardSize), position(position), visitingTims(visitingTims),
+               timsLine(timsLine), timsCups(timsCups), gyms(gyms), res(res), buy(buy), pay(pay), fee(fee), feeOwner(feeOwner) {}
 
 int Player::getWallet() const { return wallet; }
 

@@ -24,6 +24,7 @@ private:
     int DCTimsCups; 
     
 public:
+    // Constructor that adds the bank as one of the players
     Bank();
     
     // Default destructor 

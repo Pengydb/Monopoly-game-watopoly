@@ -28,6 +28,7 @@ class Board : public Observer, public std::enable_shared_from_this<Board> {
     std::shared_ptr<TextDisplay> textDisplay;
 
     public:
+        // Constructor that initializes the references to the bank and textDisplay
         Board(int boardSize = 40);
         // Returns the size of the board
         int getBoardSize() const;

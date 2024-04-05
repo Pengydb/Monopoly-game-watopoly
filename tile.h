@@ -8,15 +8,22 @@ class Player;
 class Bank;
 
 class Tile : public Subject {
-    std::string name;  // Name of the tile
-    int location; // location of the tile
+  // Name of the tile
+  std::string name;
+  // location of the tile
+  int location; 
 
-  public:
-    Tile(std::string name, int loc); // Constructor for Tile
-    virtual ~Tile() = default; // Default destructor
-    std::string getName() const;   // returns name field of Tile
-    int getLocation() const;
-    virtual void performAction(Player &p, Bank &b) = 0;
+public:
+  // Constructor to initialize all necessary fields
+  Tile(std::string name, int loc);
+  // Default destructor
+  virtual ~Tile() = default;
+  // returns name field of Tile
+  std::string getName() const;
+  // returns the location field of Tile
+  int getLocation() const;
+  // This is a pure virtual method that must be implemented by derived classes.
+  virtual void performAction(Player &p, Bank &b) = 0;
    
 };
 
