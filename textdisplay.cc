@@ -59,6 +59,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         }
 
         display[r][c] = p->getPiece();
+        printBoard();
         return;
     }
 
@@ -88,6 +89,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
             if (i < imps) display[r][c+i] = 'I';
             else display[r][c+i] = ' ';
         }
+        printBoard();
     }
 
 }

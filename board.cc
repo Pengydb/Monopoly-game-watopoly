@@ -391,6 +391,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     bool hasRolled = false; // Bool to track whether the current player has rolled or not
     int doubCount = 0; // Counts the number of doubles the current player has rolled
     std::shared_ptr<Player> curPlayer = players[playerTurn]; // Current player
+    print();
     while (true) {
         if (players.size() == 1)
         {
@@ -398,7 +399,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
             break;
         }
-        print();
+        
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
 
