@@ -740,8 +740,10 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 continue;
             }
             bank->seizeAssets(curPlayer->getName(), curPlayer->getFeeOwner());
+            textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece());
             bank->removePlayer(curPlayer->getName());
             this->removePlayer(*curPlayer);
+            print();
             if (players.size() == 1) {
                 std::cout << "The game is over!" << std::endl;
                 std::cout << players[0]->getName() << " wins!" << std::endl;
