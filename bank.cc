@@ -568,16 +568,16 @@ void Bank::holdAuction(const std::string &propertyName){
     std::string highestBidder = ""; // To store the winning bidder
     while(true){
         if (names.size() == 1){
-            highestBidder = names[0];
-            bool check = checkSufficientFunds(highestBidder, highestBid);
-            if (check){
-                std::cout << "Congratulations! " << highestBidder << " has won the auction for $" << highestBid << std::endl;
-                transferFunds(highestBidder, "BANK", highestBid);
-                transferProperty(highestBidder, propertyName);
-                std::cout << "The transfer has been complete" << std::endl;
-                break;
-            }
-            else {
+            if (highestBidder == names[0]) {
+                bool check = checkSufficientFunds(highestBidder, highestBid);
+                if (check){
+                    std::cout << "Congratulations! " << highestBidder << " has won the auction for $" << highestBid << std::endl;
+                    transferFunds(highestBidder, "BANK", highestBid);
+                    transferProperty(highestBidder, propertyName);
+                    std::cout << "The transfer has been complete" << std::endl;
+                    break;
+                }
+            } else {
                 std::cout << "No one has won the auction so the property will remain with the Bank" << std::endl;
                 break;
             }
@@ -640,8 +640,6 @@ void Bank::holdAuction(const std::string &propertyName){
             }
             std::cout << "Please enter a valid bid greater than $" << highestBid << " or withdraw" << std::endl;
         }
-        
-        
     }
 }
 
