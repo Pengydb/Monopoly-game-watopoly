@@ -16,6 +16,11 @@ void Gym::performAction(Player &p, Bank &b) {
         std::string owner = b.getPropertyOwner(this->getName());
         std::cout << "This property is owned by " << owner << std::endl;
         
+        if (p.getName() == owner) {
+            std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
+            return;
+        }     
+           
         std::string cmd;
         int sum;
         while (true) {

@@ -483,7 +483,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         } else if (cmd == "next") {
             // Moves to the next player's turn. Requires the current player to roll before calling
             if (curPlayer->hasToPay()) { // Blocks player from ending turn if they have to pay a fee
-                std::cout << "You must pay a fee of $" << curPlayer->getFee() << " before ending your turn" << std::endl;
+                std::cout << "You must pay a fee of $" << curPlayer->getFee() << " before ending your turn. Enter pay to pay the fee." << std::endl;
                 continue;
             } else if (curPlayer->canBuy()) {
                 std::cout << "You must choose to buy or not to buy the property before ending your turn" << std::endl;

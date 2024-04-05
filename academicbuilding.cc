@@ -17,11 +17,17 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
     if (this->isOwned()) {
         std::string owner = b.getPropertyOwner(this->getName());
         std::cout << "This property is owned by " << owner << std::endl;
+
+        if (p.getName() == owner) {
+            std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
+            return;
+        }
+
         int fee = config->getFee(this->getImpCount());
 
         if (getMonopoly() && getImpCount() < 1) fee *= monopolyMultiplier;
         
-        std::cout << "You are being charged with a fee of $" << fee << std::endl;
+        std::cout << "You are being charged with a tuition fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);
         p.setFeeOwner(owner);
