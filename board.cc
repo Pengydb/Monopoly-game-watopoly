@@ -206,12 +206,10 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
         else if (buildingType == "R") {
             std::shared_ptr<Residence> tile = std::make_shared<Residence>(buildingName, count);
             buildings.push_back(tile);
-            tile->attach(textDisplay);
         }
         else if (buildingType == "GYM") {
             std::shared_ptr<Gym> tile = std::make_shared<Gym>(buildingName, count);
             buildings.push_back(tile);
-            tile->attach(textDisplay);
         }
         else if (buildingType == "NOP") {
             if (buildingName == "Collect OSAP") {
@@ -321,6 +319,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
             }
             else {
                 std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
+                pieceMap.erase(playerPiece);
                 break;
             }
         };
@@ -337,10 +336,28 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 
 void Board::playGame(const bool addPlayers, const bool isTesting) {
     if (addPlayers) {
-        std::cout << "Enter the number of players: " << std::endl;
-        int numPlayers;
-        std::cin >> numPlayers;
-        std::cin.ignore();
+        int numPlayers = 0;
+        while (true) {
+            std::cout << "Enter the number of players: " << std::endl;
+            if (!(std::cin >> numPlayers)){
+                std::cout << "Please enter a valid limit" << std::endl;
+                std::cin.clear();
+                std::cin.ignore();
+                continue;
+            }
+            else {
+                if (numPlayers > 8) {
+                    std::cout << "The maximum number of players is 8" << std::endl;
+                    continue;
+                }
+                else if (numPlayers < 1) {
+                    std::cout << "Please enter a valid limit" << std::endl;
+                    continue;
+                }
+            }
+                std::cin.ignore();
+                break;
+        }
 
         std::map<std::string, char> nameToPiece;
         for (int i = 0; i < numPlayers; ++i)
@@ -413,7 +430,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
 
             std::cout << "You rolled a " << d1 << " and a " << d2 << '!' << std::endl;
             if (d1 == d2) { // rolled doubles
-                if (curPlayer->isVisitingTims())  {
+                if (!curPlayer->isVisitingTims())  {
                     std::cout << "You rolled doubles and successfully escaped the DCTims line!" << std::endl;
                     std::cout << "Move " << sum << " squares" << std::endl;
                     curPlayer->toggleVisiting();
