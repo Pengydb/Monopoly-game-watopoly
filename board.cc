@@ -576,6 +576,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                                 std::string response;
                                 while (true) {
                                     std::cout << name << ", do you want to trade? Type Y or N" << std::endl;
+                                    std::getline(std::cin, response);
                                     if (response == "Y") {
                                         std::cout << "You are now the owner of " << prop2 << std::endl;
                                         bank->transferFunds(curPlayer->getName(), name, cash1);
