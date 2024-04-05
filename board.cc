@@ -201,14 +201,17 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
         if (buildingType == "AB") {
             std::shared_ptr<AcademicBuilding> tile = std::make_shared<AcademicBuilding>(buildingName, count);
             buildings.push_back(tile);
+            tile->attach(textDisplay);
         }
         else if (buildingType == "R") {
             std::shared_ptr<Residence> tile = std::make_shared<Residence>(buildingName, count);
             buildings.push_back(tile);
+            tile->attach(textDisplay);
         }
         else if (buildingType == "GYM") {
             std::shared_ptr<Gym> tile = std::make_shared<Gym>(buildingName, count);
             buildings.push_back(tile);
+            tile->attach(textDisplay);
         }
         else if (buildingType == "NOP") {
             if (buildingName == "Collect OSAP") {
