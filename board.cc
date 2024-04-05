@@ -442,6 +442,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                         curPlayer->toggleVisiting();
                         doubCount = 0;
                         hasRolled = true;
+                        continue;
                     }
 
                     std::cout << "You rolled doubles! You get to roll again!" << std::endl;
@@ -475,6 +476,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             // Ends current player's turn, moves to the next player
             doubCount = 0;
             hasRolled = false;
+            if (curPlayer->canBuy()) curPlayer->toggleCanBuy(); // sets can buy to false if it was true
             this->nextTurn();
             curPlayer = players[playerTurn]; // Updates current player
 
