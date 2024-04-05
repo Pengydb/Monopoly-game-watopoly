@@ -362,7 +362,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             nameToPiece[player->getName()] = player->getPiece();
             players.push_back(player);
         }
-
         std::cout << "Game started with " << numPlayers << " players." << std::endl;
         bank->initBank(players);
     }
