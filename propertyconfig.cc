@@ -114,7 +114,7 @@ int PropertyConfig::getImpCost() const {
 
 // Get the rent at a specific improvement stage
 int PropertyConfig::getFee(int stage) const {
-    if (stage < 0 || stage >= fees.size()) {
+    if (stage < 0 || static_cast<int>(fees.size())) {
         throw std::out_of_range("Invalid stage for retrieval");
     }
     return fees[stage];
