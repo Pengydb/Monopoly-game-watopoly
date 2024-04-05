@@ -32,7 +32,7 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
 
         if (getMonopoly() && getImpCount() < 1) fee *= monopolyMultiplier;
         
-        std::cout << "You are being charged with a tuition fee of $" << fee << std::endl;
+        std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);
         p.setFeeOwner(owner);
