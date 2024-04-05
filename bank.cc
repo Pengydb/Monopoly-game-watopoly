@@ -119,9 +119,9 @@ bool Bank::transferProperty(const std::string& toPlayerName, const std::string& 
                 } else {
                     std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
                 }
-            }
-            if (!property->isOwned()) property->toggleOwnership();
+            }     
         }
+        if (!property->isOwned()) property->toggleOwnership();
     }
 
     if (propertyConfig->getGroup() == "Gym") {
