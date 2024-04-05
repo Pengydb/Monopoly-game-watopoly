@@ -51,7 +51,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
 
         } else if (20 <= pos && pos <= 30) { // Top Row
             r = 4 + rinc;
-            c = 1 + (pos-19)*9 + cinc;
+            c = 1 + (pos-20)*9 + cinc;
 
         } else { // Right Side
             r = 4 + (pos-30)*6 + rinc;
@@ -76,7 +76,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
 
         } else if (20 <= loc && loc <= 30) { // Top Row
             r = 1;
-            c = 2 + (loc-19)*10 + (imps - 1);
+            c = 2 + (loc-20)*10 + (imps - 1);
 
         } else { // Right Side
             r = 1 + (loc-30)*6;
@@ -84,9 +84,56 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
 
         }
 
-        for (int i = 0; i < imps; i++) display[r][c+i] = 'I';
+        for (int i = 0; i < 5; i++) {
+            if (i < imps) display[r][c+i] = 'I';
+            else display[r][c+i] = ' ';
+        }
     }
 
+}
+
+void TextDisplay::cleanPos(const int pos, const char piece) {
+    int r, c;
+    if (0 <= pos && pos <= 10) { // Bottom Row
+        r = 64;
+        c = 91 - pos*9;
+            
+    } else if (11 <= pos && pos <= 19) { // Left Side
+        r = 64 - (pos-10)*6;
+        c = 1;
+
+    } else if (20 <= pos && pos <= 30) { // Top Row
+        r = 4;
+        c = 1 + (pos-20)*9;
+
+    } else { // Right Side
+        r = 4 + (pos-30)*6;
+        c = 91;
+    }
+
+    std::vector<char> pOnTile;
+    for (int i = 0; i < 8; ++i) {
+        if (i <= 4) {
+            if (display[r][c+i] != ' ') {
+                pOnTile.emplace_back(display[r][c+i]);
+                display[r][c+i] = ' ';
+            } 
+        } else {
+            if (display[r+1][c+(i-4)] != ' ') {
+                pOnTile.emplace_back(display[r+1][c+(i-4)]);
+                display[r+1][c+(i-4)] = ' ';
+            }
+        }
+    }
+
+    int numP = pOnTile.size();
+    for (int i = 0; i < numP; ++i) {
+        if (i <= 4) {
+            if (!(pOnTile[i] == piece)) display[r][c+i] = pOnTile[i]; 
+        } else {
+            if (!(pOnTile[i] == piece)) display[r+1][c+(i-4)] = pOnTile[i]; 
+        }
+    }
 }
 
 void TextDisplay::printBoard() const {

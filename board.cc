@@ -458,7 +458,9 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             } else {
                 std::cout << "You move " << sum << " squares" << std::endl;
                 if (curPlayer->getPosition() + sum > 40) buildings[0]->performAction(*curPlayer, *bank); // Passes Collect Osap 
+                textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Clears previous position
                 curPlayer->movePosition(sum);
+                if (curPlayer->getPosition() == 30) textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Landed on go to jail, clears last positiong
             }
             
 

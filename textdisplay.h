@@ -18,8 +18,11 @@ private:
 
 public:
     TextDisplay(Board& board, std::string fname = "default_board.txt");
-    // Notify for when a player moves
+    // Notify for when a player moves or when an improvement is added to an ownable property
     void notify(std::shared_ptr<Subject> s) override;
+    // Updates the display, setting the position (corresponds to tile position)
+    // to whitespace
+    void cleanPos(const int pos, const char piece);
     // Prints the board
     void printBoard() const;
 };
