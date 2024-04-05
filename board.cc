@@ -435,7 +435,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                     doubCount++;
                     if (doubCount == 3) {
                         std::cout << "You rolled so many doubles you decide to take a break in the DCTims line" << std::endl;
-                        textDisplay->cleanPos(10, curPlayer->getPiece());
+                        textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece());
                         curPlayer->setPosition(10);
                         curPlayer->toggleVisiting();
                         doubCount = 0;
@@ -460,7 +460,10 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 if (curPlayer->getPosition() + sum > 40) buildings[0]->performAction(*curPlayer, *bank); // Passes Collect Osap 
                 textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Clears previous position
                 curPlayer->movePosition(sum);
-                if (tname == "SLC" || ppos == 30) textDisplay->cleanPos(ppos, curPlayer->getPiece()); // Landed on go to jail, clears last positiong
+                if (tname == "SLC" || tname == "Go To Tims") {
+                    textDisplay->cleanPos(ppos, curPlayer->getPiece());
+                    print();
+                } // Landed on go to jail, clears last positiong
             }
             
 

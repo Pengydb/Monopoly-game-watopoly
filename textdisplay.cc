@@ -115,32 +115,16 @@ void TextDisplay::cleanPos(const int pos, const char piece) {
         c = 91;
     }
 
-    std::vector<char> pOnTile;
-    for (int i = 0; i < 8; ++i) {
-        if (i < 4) {
-            if (display[r][c+2*i] != ' ') {
-                if (display[r][c+2*i] == piece) continue;
-                pOnTile.emplace_back(display[r][c+2*i]);
-                display[r][c+2*i] = ' ';
-            } 
-        } else {
-            if (display[r+1][c+(2*(i-4))] != ' ') {
-                if (display[r+1][c+2*(i-4)] == piece) continue;
-                pOnTile.emplace_back(display[r+1][c+2*(i-4)]);
-                display[r+1][c+(2*(i-4))] = ' ';
+     for (int i = r; i < r + 2; ++i) {
+        for (int j = c; j < c + 8; j += 2) {
+            if (display[i][j] == piece) {
+                display[i][j] = ' ';
+                return; 
             }
         }
     }
+}   
 
-    int numP = pOnTile.size();
-    for (int i = 0; i < numP; ++i) {
-        if (i < 4) {
-            display[r][c+2*i] = pOnTile[i]; 
-        } else {
-            display[r+1][c+(2*(i-4))] = pOnTile[i]; 
-        }
-    }
-}
 
 void TextDisplay::printBoard() const {
     for (auto r : display) {
