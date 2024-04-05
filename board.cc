@@ -272,7 +272,6 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     while(true) {
         std::cout << "Enter player's name: " << std::endl;
         std::getline(std::cin, name);
-
         std::string check = name;
         std::transform(check.begin(), check.end(), check.begin(), ::tolower);
         if (check == "bank") {
