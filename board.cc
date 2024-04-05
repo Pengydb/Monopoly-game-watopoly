@@ -401,7 +401,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
-        print();
         if (cmd == "roll") {
             // Player rolls the dice and moves
             if (hasRolled) {
