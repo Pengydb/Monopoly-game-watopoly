@@ -23,6 +23,11 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
             return;
         }
 
+        if (this->isMortgaged()) {
+            std::cout << "The property is currently mortgaged. No tuition fees will be charged." << std::endl;
+            return;
+        }  
+
         int fee = config->getFee(this->getImpCount());
 
         if (getMonopoly() && getImpCount() < 1) fee *= monopolyMultiplier;

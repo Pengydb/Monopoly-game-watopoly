@@ -19,7 +19,11 @@ void Gym::performAction(Player &p, Bank &b) {
         if (p.getName() == ownerName) {
             std::cout << p.getName() <<  ", you do not need to pay tuition as you are the owner." << std::endl;
             return;
-        }     
+        }  
+        if (this->isMortgaged()) {
+            std::cout << "The property is currently mortgaged. No tuition fees will be charged." << std::endl;
+            return;
+        }  
            
         std::string cmd;
         int sum;

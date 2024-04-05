@@ -22,6 +22,11 @@ void Residence::performAction(Player &p, Bank &b)
             return;
         }
 
+        if (this->isMortgaged()) {
+            std::cout << "The property is currently mortgaged. No tuition fees will be charged." << std::endl;
+            return;
+        }  
+
         std::shared_ptr<Player> owner = b.getPlayer(ownerName);
         std::cout << ownerName << " has " << owner->getRes() << " residences." << std::endl;
         int fee = config->getFee(std::max(owner->getRes() - 1, 0));
