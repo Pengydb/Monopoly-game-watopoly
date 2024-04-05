@@ -516,7 +516,7 @@ void Bank::unmortgageProperty(const std::string& propertyName, const std::string
 void Bank::removePlayer(const std::string& playerName) {
     auto it = players.find(playerName); // Checks if player is in map, if not it == player.end()
     if (it != players.end()) {
-        std::cout << playerName << " is not a player" << std::endl;
+        return;
     } else {
         this->addDCTimsCups( -(players[playerName]->getTimsCups()) ); // Updates total owned Tims Cups 
         players.erase(playerName);

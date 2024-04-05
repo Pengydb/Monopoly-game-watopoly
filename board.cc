@@ -804,7 +804,6 @@ void Board::removePlayer(Player &player) {
             break;
         }
     }
-    bank->removePlayer(player.getName());
 }
 
 void Board::nextTurn() {
