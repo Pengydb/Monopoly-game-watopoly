@@ -118,7 +118,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
         std::getline(iss, TimsLineStr, ',');
         TimsLine = std::stoi(TimsLineStr);
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, *bank, position, isVisitingTims, TimsLine, TimsCups);
+        std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, *bank, boardSize, position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
 
         --numPlayers;
@@ -322,7 +322,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     }
 
     const int wallet = 1500;
-    const int boardSize = 40;
+    
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
     return player;
 }
