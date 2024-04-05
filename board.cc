@@ -73,11 +73,6 @@ void Board::saveGame() {
                 }
             }
         }
-        else {
-            throw std::invalid_argument("Unknown tile type.");
-            return;
-        }
-        
     }
     
     file.close();
