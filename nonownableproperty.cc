@@ -75,7 +75,7 @@ void Tuition::performAction(Player &p, Bank &b) {
             fee = TUITION;
             break;
         } else if (opt == "p") {
-            fee = (TUITION_PER/100)*p.getWallet();
+            fee = static_cast<float>(TUITION_PER) / 100 * p.getWallet();
             break;
         } else {
             std::cout << "Please enter either t or p" << std::endl;
