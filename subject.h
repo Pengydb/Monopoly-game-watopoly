@@ -7,14 +7,16 @@
 
 class Subject : public std::enable_shared_from_this<Subject> {
 private:
+    // Stores smart pointers to all observers
     std::vector<std::shared_ptr<Observer>> observers;
-    // other fields if necessary
 
 public:
+    // Ensures proper destruction of derived classes
     virtual ~Subject() {}
-    virtual void attach(std::shared_ptr<Observer> o); 
-    virtual void notifyObservers(); // notify all Observers
-    // add more methods if necessary
+    // Attaches an Observer to the Subject
+    virtual void attach(std::shared_ptr<Observer> o);
+    // notify all Observers
+    virtual void notifyObservers(); 
 
 };
 

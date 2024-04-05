@@ -6,13 +6,17 @@
 #include <string>
 
 class OwnableProperty : public Tile {
-    bool owned;      // True if property is owned, false otherwise
-    bool mortgaged;  // True if property is mortgaged, false otherwise
-  protected:
+  // True if property is owned, false otherwise
+  bool owned;
+  bool mortgaged;
+  // True if property is mortgaged, false otherwise
+protected:
+  // An instance of the property configurations
   std::shared_ptr<PropertyConfig> config;
   
 
   public:
+    // Constructor to initialize all necessary fields
     OwnableProperty(std::string name, int loc, std::shared_ptr<PropertyConfig> = nullptr, bool owned = false, bool mortgaged = false);
     // Performs action when player lands on an ownable property 
     // 1) Prompts player to buy if unowned.

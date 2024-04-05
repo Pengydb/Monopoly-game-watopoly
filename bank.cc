@@ -575,6 +575,7 @@ void Bank::holdAuction(const std::string &propertyName) {
     int highestBid = 1; // Starting bid
     std::string highestBidder = ""; // To store the winning bidder
 
+    std::cout << "The Auction for " << propertyName << " has started" << std::endl;
     while(true){
 
         if (names.size() == 0) {

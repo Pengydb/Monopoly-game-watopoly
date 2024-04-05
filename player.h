@@ -8,21 +8,36 @@ class Bank;
 
 class Player: public Subject {
 private:
+    // Stores the player's piece
     char piece;
+    // Stores the name of the player
     std::string name;
+    // Stores the amount of money they have
     int wallet;
+    // Stores the number of tiles of the board
     int boardSize;
+    // Stores the player's current position
     int position;
-    bool visitingTims;  // true when visting false when in line
-    int timsLine; // number of turns in line
+    // true when visting false when in line
+    bool visitingTims;
+    // number of turns in line
+    int timsLine; 
+    // Stores the number of Roll up the Rim cups
     int timsCups;
-    int gyms; // Number of gyms the player owns
-    int res; // Number of residences the player owns
-    bool buy; // True if player has landed on an unowned property, registers that the player has the ability to buy this property
-    bool pay; // True if the player has to pay a fee before ending their turn
-    int fee; // The fee the player must pay before ending thier turn
-    std::string feeOwner; // Who the player pays the fee to (BANK if not ownable property fee)
+    // Number of gyms the player owns
+    int gyms;
+    // Number of residences the player owns
+    int res;
+    // True if player has landed on an unowned property, registers that the player has the ability to buy this property
+    bool buy;
+    // True if the player has to pay a fee before ending their turn
+    bool pay;
+    // The fee the player must pay before ending thier turn
+    int fee;
+    // Who the player pays the fee to (BANK if not ownable property fee)
+    std::string feeOwner; 
 public:
+    // Constructor to initialize all necessary fields
     Player(char piece, const std::string &name, int wallet, int boardSize = 40, int position = 0, bool visitingTims = true,
            int timsLine = 0, int timsCups = 0, int gyms = 0, int res = 0, bool buy = false, bool pay = false, int fee = 0, std::string feeOwner = "");
 

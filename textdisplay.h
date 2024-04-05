@@ -12,11 +12,15 @@ class Board;
 class Player;
 class TextDisplay: public Observer {
 private:
-    Board &board;      // refrence to game board
-    std::string fname; // board text file name
-    std::vector<std::vector<char>> display; // 2d array for textDisplay
+    // refrence to game board
+    Board &board;
+    // name of board text file
+    std::string fname;
+    // second array for textDisplay
+    std::vector<std::vector<char>> display; 
 
 public:
+    // Constructor to read the text file containing the display of the board
     TextDisplay(Board& board, std::string fname = "default_board.txt");
     // Notify for when a player moves or when an improvement is added to an ownable property
     void notify(std::shared_ptr<Subject> s) override;
