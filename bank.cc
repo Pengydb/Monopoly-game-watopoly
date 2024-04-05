@@ -241,8 +241,9 @@ void Bank::seizeAssets(const std::string& debtor, const std::string& creditor) {
                 propertyOwnership[propertyName] = "BANK";
                 holdAuction(propertyName);
             }
-        } else {
+            else {
             transferProperty(creditor, propertyName);
+            }
         }
     }
 
