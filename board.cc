@@ -534,8 +534,9 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             int pcost = bank->getPropertyConfig(pName)->getCost();
 
             if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
-                std::cout << "You have successfully bought " << pName << std::endl;
                 bank->transferProperty(curPlayer->getName(), pName);
+                std::cout << "You have successfully bought " << pName << std::endl;
+                curPlayer->toggleCanBuy();
             } else {
                 std::cout << "You have insufficient funds to buy this property" << std::endl;
                 std::cout << "Cash in your wallet: $" << curPlayer->getWallet() << std::endl;

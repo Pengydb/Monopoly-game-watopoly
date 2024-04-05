@@ -331,11 +331,13 @@ void Bank::buyImprovement(const std::string& propertyName, const std::string& pl
     auto playerIt = players.find(playerName);
     if (playerIt == players.end()) {
        std::cout << "Target player does not exist: " + playerName << "." << std::endl;
+       return;
     }
 
     auto propertyIt = properties.find(propertyName);
      if (propertyIt == properties.end()) {
         std::cout << "Property does not exist: " + propertyName << "." << std::endl;
+        return;
     }
 
     std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(propertyIt->second);
