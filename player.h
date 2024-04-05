@@ -24,8 +24,8 @@ private:
     int fee; // The fee the player must pay before ending thier turn
     std::string feeOwner; // Who the player pays the fee to (BANK if not ownable property fee)
 public:
-    Player(char piece, const std::string &name, int wallet, Bank &bank, int position = 0, bool visitingTims = true,
-           int timsLine = 0, int timsCups = 0, int boardSize = 40, int gyms = 0, int re = 0, bool buy = false, bool pay = false, int fee = 0, std::string feeOwner = "");
+    Player(char piece, const std::string &name, int wallet, Bank &bank, int boardSize = 40, int position = 0, bool visitingTims = true,
+           int timsLine = 0, int timsCups = 0, int gyms = 0, int res = 0, bool buy = false, bool pay = false, int fee = 0, std::string feeOwner = "");
 
     // returns buy field
     bool canBuy() const; 
