@@ -256,18 +256,9 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
     bank->initConfigs(propertyConfig);
 }
 
-std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
+std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece, std::map<char, std::string> &pieceMap) {
     std::string name;
     char playerPiece;
-    std::map<char, std::string> pieceMap = {
-        {'G', "Goose"},
-        {'B', "GRTBus"},
-        {'D', "TimHortonsDoughnut"},
-        {'P', "Professor"},
-        {'S', "Student"},
-        {'$', "Money"},
-        {'L', "Laptop"},
-        {'T', "PinkTie"}};
 
     while(true) {
         std::cout << "Enter player's name: " << std::endl;
@@ -288,37 +279,34 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
             std::cout << "Duplicate name. Player not added." << std::endl;
             continue;
         }
-        while (true)
-        {
+        while (true) {
             std::cout << "Enter player's piece out of:" << std::endl;
-            for (const auto &pair : pieceMap)
-            {
+            for (const auto &pair : pieceMap) {
                 std::cout << pair.first << " : " << pair.second << std::endl;
             }
 
             std::cin >> playerPiece;
             std::cin.ignore();
 
+            auto it = pieceMap.find(playerPiece);
             bool found = false;
-            for (const auto &pair : nameToPiece)
-            {
-                if (pair.second == playerPiece)
-                {
+            for (const auto &pair : nameToPiece) {
+                if (pair.second == playerPiece) {
                     found = true;
                     break;
                 }
             }
-            if (found){
+            if (found) {
                 std::cout << "This choice has already been taken. Please try again" << std::endl;
                 continue;
             }
-            else if (pieceMap.find(playerPiece) == pieceMap.end()){
+            else if (it == pieceMap.end()) {
                 std::cout << "This is an invalid piece. Please try again" << std::endl;
                 continue;
             }
             else {
                 std::cout << "You chose the " << pieceMap[playerPiece] << " piece." << std::endl;
-                pieceMap.erase(playerPiece);
+                pieceMap.erase(it);
                 break;
             }
         };
@@ -358,11 +346,20 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 std::cin.ignore();
                 break;
         }
+        std::map<char, std::string> pieceMap = {
+            {'G', "Goose"},
+            {'B', "GRTBus"},
+            {'D', "TimHortonsDoughnut"},
+            {'P', "Professor"},
+            {'S', "Student"},
+            {'$', "Money"},
+            {'L', "Laptop"},
+            {'T', "PinkTie"}};
 
         std::map<std::string, char> nameToPiece;
         for (int i = 0; i < numPlayers; ++i)
         {
-            std::shared_ptr<Player> player = setPlayer(nameToPiece);
+            std::shared_ptr<Player> player = setPlayer(nameToPiece, pieceMap);
          
             nameToPiece[player->getName()] = player->getPiece();
             players.push_back(player);
