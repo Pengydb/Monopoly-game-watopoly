@@ -37,7 +37,7 @@ void DCTims::performAction(Player &p, Bank &b) {
         return;
     } 
 
-    p.incTimsLine();
+    
 
     std::cout << "You are in the DCTims line, roll doubles, pay $" << JAIL_FEE;
     std::cout << ", or use a Roll up the Rim cup to exit the DCTims line" << std::endl;
@@ -49,6 +49,7 @@ void DCTims::performAction(Player &p, Bank &b) {
             std::cout << "Use a Roll up the Rim cup or pay the fee of $" << JAIL_FEE << std::endl;
             p.toggleHasToPay();
         }
+    p.incTimsLine();
 }
 
 void GoToTims::performAction(Player &p, Bank &b) {
