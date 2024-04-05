@@ -34,11 +34,12 @@ void Gym::performAction(Player &p, Bank &b) {
 
         
         std::shared_ptr<Player> owner = b.getPlayer(ownerName);
+        int base = config->getFee(std::max(owner->getGyms() - 1, 0));
         std::cout << ownerName << " has " << owner->getGyms() << " gyms." << std::endl;
-        std::cout << "Base fee $ " << config->getFee(owner->getGyms()) << std::endl;
+        std::cout << "Base fee $ " << base << std::endl;
         std::cout << "Multiplier from roll " << sum << std::endl;
     
-        int fee = config->getFee(std::max(owner->getGyms() - 1, 0)) * sum;
+        int fee = base * sum;
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);

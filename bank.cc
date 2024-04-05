@@ -43,7 +43,7 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
     auto playerIt = players.find(playerName);
     if (playerIt == players.end()) {
         std::cout << "Target player does not exist: " + playerName << "." << std::endl;
-        return;
+        return nullptr;
     }
     return playerIt->second;
   }
