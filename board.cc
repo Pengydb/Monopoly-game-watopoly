@@ -453,9 +453,15 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             } else {
                 std::cout << "You move " << sum << " squares" << std::endl;
                 if (curPlayer->getPosition() + sum > 40) buildings[0]->performAction(*curPlayer, *bank); // Passes Collect Osap 
-                if (tname == "SLC" || ppos == 30) textDisplay->cleanPos(ppos, curPlayer->getPiece()); // Landed on go to jail, clears last positiong
+                
                 textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Clears previous position
                 curPlayer->movePosition(sum);
+
+                if (tname == "SLC" || tname == "Go To Tims") {
+                    textDisplay->cleanPos(ppos, curPlayer->getPiece());
+                    print();
+                } 
+                
                 if (curPlayer->canBuy()) {
                     std::string willBuy;
                     std::cout << "Do you want to buy the property?" << std::endl;
