@@ -34,10 +34,10 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         int numP = board.playersAtPos(pos); // number of players at this tile
 
         if (numP > 4) {
-            cinc = (numP-4)*2;
+            cinc = (numP-5)*2;
             rinc = 1;
         } else {
-            cinc = numP*2;
+            cinc = (numP-1)*2;
             rinc = 0;
         }
         
@@ -59,6 +59,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         }
 
         display[r][c] = p->getPiece();
+        return;
     }
 
     std::shared_ptr<AcademicBuilding> ab = std::dynamic_pointer_cast<AcademicBuilding>(s);
@@ -83,7 +84,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
 
         }
 
-        display[r][c] = 'I';
+        for (int i = 0; i < imps; i++) display[r][c+i] = 'I';
     }
 
 }
