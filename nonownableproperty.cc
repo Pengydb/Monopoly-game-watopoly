@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 const int OSAP = 200;
 const int TUITION = 300;
@@ -100,8 +101,8 @@ void CoopFee::performAction(Player &p, Bank &b) {
 // Simulates generating a random number in the set of integers in the vector passed
 // Helper method for SCL::performAction and NH::performAction
 int genRandNum(std::vector<int>& vec) {
-    std::random_device rd;
-    std::mt19937 seed(rd()); // Seeds random num generator with random device
+    unsigned int currentTime = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 seed(currentTime); // Seeds random num generator with 
     std::shuffle(vec.begin(), vec.end(), seed); // Shuffles elements in vec
     return vec[0]; // returns first element of vec
 }
@@ -129,14 +130,14 @@ void SLC::performAction(Player &p, Bank &b) {
     n = genRandNum(slcProbs);
     int pos;
     switch (n) { // switch case that matches SLC prob. table given in Watopoly.pdf
-        case 1: pos = -3; 
-        case 2: pos = -2;
-        case 3: pos = -1;
-        case 4: pos = 1;
-        case 5: pos = 2;
-        case 6: pos = 3;
-        case 7: pos = 0;
-        case 8: pos = 10; 
+        case 1: pos = -3; break;
+        case 2: pos = -2; break;
+        case 3: pos = -1; break;
+        case 4: pos = 1; break;
+        case 5: pos = 2; break;
+        case 6: pos = 3; break;
+        case 7: pos = 0; break;
+        case 8: pos = 10; break;
     }
 
     if (pos == 10) {
@@ -180,13 +181,13 @@ void NH::performAction(Player &p, Bank &b) {
     int reward = 0;
     // May have to sell/mortgage assests, or declare bankrupcy if p.wallet goes less than 0
     switch(n) { // switch case that matches NH prob. table given in Watopoly.pdf
-        case 1: fee = 200;
-        case 2: fee = 100;
-        case 3: fee = 50;
-        case 4: reward = 25;
-        case 5: reward = 50;
-        case 6: reward = 100;
-        case 7: reward = 200;
+        case 1: fee = 200; break;
+        case 2: fee = 100; break;
+        case 3: fee = 50; break;
+        case 4: reward = 25; break;
+        case 5: reward = 50; break;
+        case 6: reward = 100; break;
+        case 7: reward = 200; break;
     }
 
     if (fee != 0) {
