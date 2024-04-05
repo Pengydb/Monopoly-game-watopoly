@@ -85,31 +85,42 @@ bool Bank::transferProperty(const std::string& toPlayerName, const std::string& 
     propertyOwnership[propertyName] = toPlayerName;
     std::shared_ptr<OwnableProperty> property = properties[propertyName];
 
-    if (property->isMortgaged()) {
-        int mortgageTransferFee = property->getCost() * 0.1;
-        std::cout << toPlayerName <<" you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be"
-                                                                             " chared a fee of $" << mortgageTransferFee << "." << std::endl;
-        transferFunds(toPlayerName, "BANK", mortgageTransferFee);
-        std::cout << toPlayerName << " do you wish to unmortgage " << propertyName << " now? (Enter: (yes/no)" << std::endl;
+    if (toPlayerName == "BANK") {
+        if (property->isMortgaged()) property->toggleMortgage();
+        std::shared_ptr<AcademicBuilding> academicBuilding = std::dynamic_pointer_cast<AcademicBuilding>(property);
+        if (academicBuilding) {
+            academicBuilding->addImps(-academicBuilding->getImpCount());
+        }
+        property->toggleOwnership();
 
-        std::string response;
-        while (true) {
-            std::cin >> response;
-            std::transform(response.begin(), response.end(), response.begin(), [](unsigned char c){ return std::tolower(c); });
-            if (response == "yes") {
-            int unmortgageCost = property->getCost() * 0.5;
-            std::cout << "Unmortgaging " << propertyName << " will cost $" << unmortgageCost << "." << std::endl;
-            transferFunds(toPlayerName, "BANK", unmortgageCost);
-            property->toggleMortgage();
-            std::cout << propertyName << " has been unmortgaged." << std::endl;
-            break; 
-            } else if (response == "no") {
-                std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost"
-                                                                                                       " 60% of the original cost." << std::endl;
-                break; 
-            } else {
-                std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
+    } else {
+        if (property->isMortgaged()) {
+            int mortgageTransferFee = property->getCost() * 0.1;
+            std::cout << toPlayerName <<" you are receiving " << propertyName << " which is currently a mortgaged property, as a result you will be"
+                                                                                " chared a fee of $" << mortgageTransferFee << "." << std::endl;
+            transferFunds(toPlayerName, "BANK", mortgageTransferFee);
+            std::cout << toPlayerName << " do you wish to unmortgage " << propertyName << " now? (Enter: (yes/no)" << std::endl;
+
+            std::string response;
+            while (true) {
+                std::cin >> response;
+                std::transform(response.begin(), response.end(), response.begin(), [](unsigned char c){ return std::tolower(c); });
+                if (response == "yes") {
+                    int unmortgageCost = property->getCost() * 0.5;
+                    std::cout << "Unmortgaging " << propertyName << " will cost $" << unmortgageCost << "." << std::endl;
+                    transferFunds(toPlayerName, "BANK", unmortgageCost);
+                    property->toggleMortgage();
+                    std::cout << propertyName << " has been unmortgaged." << std::endl;
+                    break; 
+                } else if (response == "no") {
+                    std::cout << toPlayerName << ", you have chosen not to unmortgage " << propertyName << " now. Remember, unmortgaging later will cost"
+                                                                                                        " 60% of the original cost." << std::endl;
+                    break; 
+                } else {
+                    std::cout << "Invalid response. Please answer 'yes' or 'no':" << std::endl;
+                }
             }
+            if (!property->isOwned()) property->toggleOwnership();
         }
     }
 
