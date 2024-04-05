@@ -18,6 +18,7 @@ class AcademicBuilding : public OwnableProperty {
     // Increments impCount by n (DO NOT CHARGE PLAYER)
     void addImps(int n); 
     int getImpCost() const;
+    // returns whether this is currently a monopoly or not
     bool getMonopoly() const;
     void toggleMonopoly();
     void setMonopoly(bool status);

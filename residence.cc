@@ -2,6 +2,7 @@
 #include "bank.h"
 #include "player.h"
 #include <iostream>
+#include <algorithm>
 #include <string>
 
 Residence::Residence(std::string name, int loc, std::shared_ptr<PropertyConfig> config, bool owned, bool mortgaged) : 
@@ -15,7 +16,7 @@ void Residence::performAction(Player &p, Bank &b)
     {
         std::string owner = b.getPropertyOwner(this->getName());
         std::cout << "This property is owned by " << owner << std::endl;
-        int fee = config->getFee(p.getRes() - 1);
+        int fee = config->getFee(std::max(p.getRes() - 1, 0));
 
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();

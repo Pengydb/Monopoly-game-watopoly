@@ -9,7 +9,7 @@ AcademicBuilding::AcademicBuilding(std::string name, int loc, std::shared_ptr<Pr
                                    int impCount):
                     OwnableProperty{name, loc, config, owned, mortgaged}, impCount{impCount}{}
 
-
+const int monopolyMultiplier = 2;
 
 void AcademicBuilding::performAction(Player &p, Bank &b) {
     std::cout << "You have landed on " << this->getName() << std::endl;
@@ -17,7 +17,10 @@ void AcademicBuilding::performAction(Player &p, Bank &b) {
     if (this->isOwned()) {
         std::string owner = b.getPropertyOwner(this->getName());
         std::cout << "This property is owned by " << owner << std::endl;
-        int fee = config->getFee(impCount);
+        int fee = config->getFee(this->getImpCount());
+
+        if (getMonopoly() && getImpCount() < 1) fee *= monopolyMultiplier;
+        
         std::cout << "You are being charged with a fee of $" << fee << std::endl;
         p.toggleHasToPay();
         p.setFee(fee);
