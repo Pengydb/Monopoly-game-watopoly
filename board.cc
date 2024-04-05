@@ -41,14 +41,11 @@ void Board::saveGame() {
 
     for (const auto &tile : buildings) {
         if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile)) {
-            if (ab->isOwned()) {
                 file << ab->getName() << ","
                      << bank->getPropertyOwner(ab->getName()) << ","
                      << ab->getImpCount() << "," << std::endl;
-            }
         }
         else if (auto r = std::dynamic_pointer_cast<Residence>(tile)) {
-            if (r->isOwned()){
                 if (r->isMortgaged()) {
                     file << r->getName() << ","
                          << bank->getPropertyOwner(r->getName()) << ","
@@ -59,10 +56,8 @@ void Board::saveGame() {
                          << bank->getPropertyOwner(r->getName()) << ","
                          << 0 << std::endl;
                 }
-            }
         }
         else if (auto g = std::dynamic_pointer_cast<Gym>(tile)) {
-            if (g->isOwned()) {
                 if (g->isMortgaged()){
                     file << g->getName() << ","
                          << bank->getPropertyOwner(g->getName()) << ","
@@ -73,7 +68,6 @@ void Board::saveGame() {
                          << bank->getPropertyOwner(g->getName()) << ","
                          << 0 << std::endl;
                 }
-            }
         }
     }
     file.close();
