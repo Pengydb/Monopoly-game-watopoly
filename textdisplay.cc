@@ -32,7 +32,6 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
     if (p) {
         int pos = p->getPosition();
         int numP = board.playersAtPos(pos); // number of players at this tile
-        return;
 
         if (numP > 4) {
             cinc = (numP-4)*2;
@@ -43,20 +42,20 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         }
         
         if (0 <= pos && pos <= 10) { // Bottom Row
-            r = 65 + rinc;
-            c = 92 - pos*10 + cinc;
+            r = 64 + rinc;
+            c = 91 - pos*9 + cinc;
             
         } else if (11 <= pos && pos <= 19) { // Left Side
-            r = 65 - (pos-10)*6 + rinc;
-            c = 2 + cinc;
+            r = 64 - (pos-10)*6 + rinc;
+            c = 1 + cinc;
 
         } else if (20 <= pos && pos <= 30) { // Top Row
-            r = 5 + rinc;
-            c = 2 + (pos-19)*10 + cinc;
+            r = 4 + rinc;
+            c = 1 + (pos-19)*9 + cinc;
 
         } else { // Right Side
-            r = 5 + (pos-30)*6 + rinc;
-            c = 92 + cinc;
+            r = 4 + (pos-30)*6 + rinc;
+            c = 91 + cinc;
         }
 
         display[r][c] = p->getPiece();
@@ -67,22 +66,24 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         int loc = ab->getLocation();
         int imps = ab->getImpCount();
         if (0 <= loc && loc <= 10) { // Bottom Row
-            r = 62;
+            r = 61;
             c = 92 - loc*10 + (imps - 1);
             
         } else if (11 <= loc && loc <= 19) { // Left Side
-            r = 62 - (loc-10)*6;
+            r = 61 - (loc-10)*6;
             c = 2 + (imps - 1);
 
         } else if (20 <= loc && loc <= 30) { // Top Row
-            r = 2;
+            r = 1;
             c = 2 + (loc-19)*10 + (imps - 1);
 
         } else { // Right Side
-            r = 2 + (loc-30)*6;
+            r = 1 + (loc-30)*6;
             c = 92 + (imps - 1);
 
         }
+
+        display[r][c] = 'I';
     }
 
 }
