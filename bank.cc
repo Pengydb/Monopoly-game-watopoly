@@ -535,7 +535,6 @@ void Bank::initConfigs(const std::string& configFile) {
         } else {
             std::cout << "Warning: No configuration found for property " << propertyName << "." << std::endl;
         }
-
     }
 
     file.close();
