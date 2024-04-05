@@ -120,9 +120,9 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
 
         std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, getBoardSize(), position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
-        player->attach(shared_from_this());
         player->attach(textDisplay);
         player->notifyObservers();
+        player->attach(shared_from_this());
 
         --numPlayers;
     }
@@ -325,8 +325,8 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, getBoardSize());
     player->attach(textDisplay);
-    player->attach(shared_from_this());
     player->notifyObservers();
+    player->attach(shared_from_this());
     return player;
 }
 
@@ -391,6 +391,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     bool hasRolled = false; // Bool to track whether the current player has rolled or not
     int doubCount = 0; // Counts the number of doubles the current player has rolled
     std::shared_ptr<Player> curPlayer = players[playerTurn]; // Current player
+    print();
     while (true) {
         if (players.size() == 1)
         {
@@ -398,7 +399,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
             break;
         }
-        print();
+        
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
 
