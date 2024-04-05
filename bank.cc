@@ -67,6 +67,8 @@ void Bank::addPropertyOwner(const std::string& propertyName, const std::string& 
         return;
     }
     propertyOwnership[propertyName] = playerName;
+    std::string group = propertyConfigs[propertyName]->getGroup();
+    updateMonopoly(group);
 }
 
 void Bank::addPropertyConfig(std::shared_ptr<PropertyConfig> config) {
