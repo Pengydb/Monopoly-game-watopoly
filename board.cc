@@ -573,9 +573,25 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                                 std::cout << "Properties in a monopoly that has improvements on it can't be traded" << std::endl;
                                 continue;
                             } else { // Transfers property from curplayer to name
-                                std::cout << "You are now the owner of " << prop2 << std::endl;
-                                bank->transferFunds(curPlayer->getName(), name, cash1);
-                                bank->transferProperty(curPlayer->getName(), prop2);
+                                std::string response;
+                                while (true) {
+                                    std::cout << name << ", do you want to trade? Type Y or N" << std::endl;
+                                    if (response == "Y") {
+                                        std::cout << "You are now the owner of " << prop2 << std::endl;
+                                        bank->transferFunds(curPlayer->getName(), name, cash1);
+                                        bank->transferProperty(curPlayer->getName(), prop2);
+                                        break;
+                                    }
+                                    else if (response == "N") {
+                                        std::cout << name << " does not want to trade, so the trade is cancelled." << std::endl;
+                                        break;
+                                    }
+                                    else {
+                                        std::cout << "Please type either Y or N" << std::endl;
+                                    }
+                                }
+                                continue;
+
                             }
                         }
                     }
