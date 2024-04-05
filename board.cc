@@ -84,54 +84,62 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
     playerTurn = 0;
     std::string line;
     std::getline(file, line);
+    if (line == "") {
+        std::getline(file, line);
+    }
     int numPlayers = std::stoi(line);
 
     while (numPlayers != 0) {
         getline(file, line);
+        if (line == "")
+        {
+            std::getline(file, line);
+        }
         std::istringstream iss(line);
         std::string name, piece, TimsCupsStr, moneyStr, positionStr, isVisitingTimsStr, TimsLineStr;
         int TimsCups, money, position, TimsLine;
         bool isVisitingTims;
-        std::getline(iss, name, ',');
-        std::getline(iss, piece, ',');
-      
+        std::getline(iss, name, ' ');
+        std::getline(iss, piece, ' ');
 
-        std::getline(iss, TimsCupsStr, ',');
+        std::getline(iss, TimsCupsStr, ' ');
         TimsCups = std::stoi(TimsCupsStr);
-
-        std::getline(iss, moneyStr, ',');
+        std::getline(iss, moneyStr, ' ');
         money = std::stoi(moneyStr);
-
-        std::getline(iss, positionStr, ',');
+        std::getline(iss, positionStr, ' ');
         position = std::stoi(positionStr);
 
-        std::getline(iss, isVisitingTimsStr, ',');
-        isVisitingTims = (isVisitingTimsStr == "0");
-
-        std::getline(iss, TimsLineStr, ',');
-        TimsLine = std::stoi(TimsLineStr);
-
+        if (position == 10) {
+            std::getline(iss, isVisitingTimsStr, ' ');
+            isVisitingTims = (isVisitingTimsStr == "0");
+            if (isVisitingTimsStr == "0") {
+                std::getline(iss, TimsLineStr, ' ');
+                TimsLine = std::stoi(TimsLineStr);
+            }
+        }
         std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, getBoardSize(), position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
         player->attach(textDisplay);
         player->notifyObservers();
         player->attach(shared_from_this());
-
         --numPlayers;
     }
     bank->initBank(players);
     int count = 0;
     while (std::getline(file, line)) {
-
+        if (line == "")
+        {
+            std::getline(file, line);
+        }
             std::stringstream ss(line);
             std::string name, ownerStr, impCountStr;
             int impCount;
             bool isMortgaged, isOwned;
 
-            std::getline(ss, name, ',');
-            std::getline(ss, ownerStr, ',');
+            std::getline(ss, name, ' ');
+            std::getline(ss, ownerStr, ' ');
             bank->addPropertyOwner(name, ownerStr);
-            std::getline(ss, impCountStr, ',');
+            std::getline(ss, impCountStr, ' ');
             impCount = std::stoi(impCountStr);
 
             isMortgaged = (impCount == -1);
