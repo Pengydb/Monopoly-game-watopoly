@@ -564,6 +564,7 @@ void Bank::holdAuction(const std::string &propertyName){
     {
         names.push_back(pair.first); // To construct the names vector to store the names of the players
     }
+    names.erase(names.begin());
     int highestBid = 1; // Starting bid
     std::string highestBidder = ""; // To store the winning bidder
     while(true){
@@ -573,15 +574,17 @@ void Bank::holdAuction(const std::string &propertyName){
             if (check){
                 std::cout << "Congratulations! " << highestBidder << " has won the auction for $" << highestBid << std::endl;
                 transferFunds(highestBidder, "BANK", highestBid);
-                transferProperty("BANK", highestBidder);
+                transferProperty(highestBidder, propertyName);
                 std::cout << "The transfer has been complete" << std::endl;
+                break;
             }
             else {
                 std::cout << "No one has won the auction so the property will remain with the Bank" << std::endl;
+                break;
             }
             
         }
-        std::string bidder = ""; // Current bidder
+        std::string bidder; // Current bidder
         std::cout << "Players: ";
         for (const auto& name : names){
             std::cout << name << " ";
@@ -599,7 +602,7 @@ void Bank::holdAuction(const std::string &propertyName){
             }
         }
         if (!match){ // If not the prompted to enter the name again
-            throw std::invalid_argument("Please enter a valid player");
+            std::cout << "Please enter a valid player" << std::endl;
             continue;
         }
         while (true){
@@ -610,11 +613,11 @@ void Bank::holdAuction(const std::string &propertyName){
             std::istringstream iss(input);
             if (iss >> tempBid){ // Checks whether the input entered is a number or a string
                 if (tempBid > highestBid){ // If it is a number then checking if it is a valid bid
-                    bool check = checkSufficientFunds(highestBidder, highestBid); // Checking if the player can pay the bid
+                    bool check = checkSufficientFunds(bidder, tempBid); // Checking if the player can pay the bid
                     if (check){
                         highestBid = tempBid;
                         highestBidder = bidder; // If yes then it is the current winning bid and bidder
-                        std::cout << "The current highest bidder is " << highestBidder << "for $" << highestBid << std::endl;
+                        std::cout << "The current highest bidder is " << highestBidder << " for $" << highestBid << std::endl;
                         break;
                     }
                     else {

@@ -260,8 +260,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 {
     std::string name;
     char playerPiece;
-    
-    while(true) {
+    while (true) {
         std::cout << "Enter player's name: " << std::endl;
         std::getline(std::cin, name);
         std::string check = name;
@@ -315,7 +314,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
     }
 
     const int wallet = 1500;
-    
+
     std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, getBoardSize());
     player->attach(textDisplay);
     player->notifyObservers();
@@ -325,29 +324,26 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 
 void Board::playGame(const bool addPlayers, const bool isTesting) {
     if (addPlayers) {
+        std::string numPlayersStr;
         int numPlayers = 0;
+        std::cout << "Enter the number of players: " << std::endl;
         while (true) {
-            std::cout << "Enter the number of players: " << std::endl;
-            if (!(std::cin >> numPlayers)){
+            std::getline(std::cin, numPlayersStr);
+            std::istringstream iss(numPlayersStr);
+            if (!(iss >> numPlayers)){
                 std::cout << "Please enter a valid limit" << std::endl;
-                std::cin.clear();
-                std::cin.ignore();
                 continue;
             }
-            else {
-                if (numPlayers > 8) {
-                    std::cout << "The maximum number of players is 8" << std::endl;
+            else if (numPlayers > 8 || numPlayers < 1) {
+                    std::cout << "Please enter a valid limit between 1 and 8 inclusive" << std::endl;
                     continue;
-                }
-                else if (numPlayers < 1) {
-                    std::cout << "Please enter a valid limit" << std::endl;
-                    continue;
-                }
             }
-                std::cin.ignore();
+            else if (numPlayersStr.empty()) {
+                std::cout << "Please enter a valid number" << std::endl;
+                continue;
+            }
                 break;
         }
-
         std::map<char, std::string> pieceMap = {
             {'G', "Goose"},
             {'B', "GRTBus"},
@@ -361,7 +357,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         for (int i = 0; i < numPlayers; ++i)
         {
             std::shared_ptr<Player> player = setPlayer(nameToPiece, pieceMap);
-         
+
             nameToPiece[player->getName()] = player->getPiece();
             players.push_back(player);
         }
@@ -371,7 +367,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     }
     playerTurn = 0;
     
-
     std::string cmd, name, prop1, prop2; // initial command : player name that may follow : 1st property name that may follow : 2nd property name that may follow
     std::vector<std::string> commands = {"roll : player rolls the dice twice and moves the sum of the two dice"
                                         ,"next : gives control to the next player"
@@ -458,12 +453,16 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             } else {
                 std::cout << "You move " << sum << " squares" << std::endl;
                 if (curPlayer->getPosition() + sum > 40) buildings[0]->performAction(*curPlayer, *bank); // Passes Collect Osap 
+                if (tname == "SLC" || ppos == 30) textDisplay->cleanPos(ppos, curPlayer->getPiece()); // Landed on go to jail, clears last positiong
                 textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Clears previous position
                 curPlayer->movePosition(sum);
-                if (tname == "SLC" || tname == "Go To Tims") {
-                    textDisplay->cleanPos(ppos, curPlayer->getPiece());
-                    print();
-                } // Landed on go to jail, clears last positiong
+                if (curPlayer->canBuy()) {
+                    std::string willBuy;
+                    std::cout << "Do you want to buy the property?" << std::endl;
+                    std::cout << "Enter buy <response> where the response will be yes or no" << std::endl;
+                    continue;
+                }
+                
             }
             
 
@@ -528,22 +527,32 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         } else if (cmd == "buy" ) {
             // Can only be called if player is on an unowned property
             // The property will go up for auction if "next" is entered without the player buying
+            std::string cmd2;
+            std::cin >> cmd2;
+            std::cin.ignore();
+            std::string pName = this->getTileName(curPlayer->getPosition());
             if (!curPlayer->canBuy()) { // Player has the option of buying an unowned property
                 std::cout << "You can't buy the property you are currently on" << std::endl;
                 continue;
             }
-
-            std::string pName = this->getTileName(curPlayer->getPosition());
-            int pcost = bank->getPropertyConfig(pName)->getCost();
-
-            if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
-                bank->transferProperty(curPlayer->getName(), pName);
-                std::cout << "You have successfully bought " << pName << std::endl;
-                curPlayer->toggleCanBuy();
-            } else {
-                std::cout << "You have insufficient funds to buy this property" << std::endl;
-                std::cout << "Cash in your wallet: $" << curPlayer->getWallet() << std::endl;
-                std::cout << "Cost of " << pName << ": $" << pcost << std::endl;
+            else if(cmd2 == "yes") {
+                
+                int pcost = bank->getPropertyConfig(pName)->getCost();
+                if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
+                    std::cout << "You have successfully bought " << pName << std::endl;
+                    bank->transferProperty(curPlayer->getName(), pName);
+                } else {
+                    std::cout << "You have insufficient funds to buy this property" << std::endl;
+                    std::cout << "Cash in your wallet: $" << curPlayer->getWallet() << std::endl;
+                    std::cout << "Cost of " << pName << ": $" << pcost << std::endl;
+                }
+            }
+            else if(cmd2 == "no") {
+                bank->holdAuction(pName);
+            }
+            else {
+                std::cout << "Please enter a valid response either yes or no" << std::endl;
+                continue;
             }
 
         } else if (cmd == "trade") {
