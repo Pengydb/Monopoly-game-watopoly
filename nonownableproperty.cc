@@ -128,7 +128,7 @@ void SLC::performAction(Player &p, Bank &b) {
     std::vector<int> slcProbs{1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 
                                5, 5, 5, 5, 6, 6, 6, 6, 7, 8};
     n = genRandNum(slcProbs);
-    int pos;
+    int pos = 0;
     switch (n) { // switch case that matches SLC prob. table given in Watopoly.pdf
         case 1: pos = -3; break;
         case 2: pos = -2; break;
