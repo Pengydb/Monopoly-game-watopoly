@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
             } 
         } else if (arg == "-testing") {
                 isTesting = true;
+                std::cout << "Testing mode has been selected" << std::endl;
         }
     }
         
@@ -36,7 +37,6 @@ int main(int argc, char *argv[]) {
         board->loadGame(filename, "TileOrder.csv", "propertyconfig.csv");
         board->playGame(false, isTesting);
     }
-        
     else {
         std::cout << "Watopoly: The Univeristy of Waterloo Monopoly!" << std::endl;
         std::cout << "Enter one of the following commands to start playing: \n"

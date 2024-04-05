@@ -256,18 +256,11 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
     bank->initConfigs(propertyConfig);
 }
 
-std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece) {
+std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiece, std::map<char, std::string> &pieceMap)
+{
     std::string name;
     char playerPiece;
-    std::map<char, std::string> pieceMap = {
-        {'G', "Goose"},
-        {'B', "GRTBus"},
-        {'D', "TimHortonsDoughnut"},
-        {'P', "Professor"},
-        {'S', "Student"},
-        {'$', "Money"},
-        {'L', "Laptop"},
-        {'T', "PinkTie"}};
+    
     while(true) {
         std::cout << "Enter player's name: " << std::endl;
         std::getline(std::cin, name);
@@ -354,12 +347,20 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 std::cin.ignore();
                 break;
         }
-        
 
+        std::map<char, std::string> pieceMap = {
+            {'G', "Goose"},
+            {'B', "GRTBus"},
+            {'D', "TimHortonsDoughnut"},
+            {'P', "Professor"},
+            {'S', "Student"},
+            {'$', "Money"},
+            {'L', "Laptop"},
+            {'T', "PinkTie"}};
         std::map<std::string, char> nameToPiece;
         for (int i = 0; i < numPlayers; ++i)
         {
-            std::shared_ptr<Player> player = setPlayer(nameToPiece);
+            std::shared_ptr<Player> player = setPlayer(nameToPiece, pieceMap);
          
             nameToPiece[player->getName()] = player->getPiece();
             players.push_back(player);
@@ -402,7 +403,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         
         std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
-
+        print();
         if (cmd == "roll") {
             // Player rolls the dice and moves
             if (hasRolled) {
@@ -427,7 +428,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             int sum = d1 + d2;
             int ppos = (curPlayer->getPosition() + sum + boardSize) % boardSize;
             std::string tname = this->getTileName(ppos);
-
             std::cout << "You rolled a " << d1 << " and a " << d2 << '!' << std::endl;
             if (d1 == d2) { // rolled doubles
                 if (!curPlayer->isVisitingTims())  {

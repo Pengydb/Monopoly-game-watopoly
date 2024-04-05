@@ -42,7 +42,7 @@ class Board : public Observer, public std::enable_shared_from_this<Board> {
         void playGame(const bool addPlayers, const bool isTesting);
 
         // Creates a player
-        std::shared_ptr<Player> setPlayer(std::map<std::string, char> &nameToPiece);
+        std::shared_ptr<Player> setPlayer(std::map<std::string, char> &nameToPiece, std::map<char, std::string> &pieceMap);
         // Moves a player to the target tile
         void movePlayer(Player & p, int roll);
         // removes a player from the board

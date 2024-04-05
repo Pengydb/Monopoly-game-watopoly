@@ -77,6 +77,8 @@ void Tuition::performAction(Player &p, Bank &b) {
         } else if (opt == "p") {
             fee = (TUITION_PER/100)*p.getWallet();
             break;
+        } else {
+            std::cout << "Please enter either t or p" << std::endl;
         }
     }
 
