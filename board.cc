@@ -8,11 +8,14 @@
 #include <string>
 #include <sstream>
 
-Board::Board():
-    playerTurn(0) {
+Board::Board(int boardSize): playerTurn(0), boardSize(boardSize) {
         bank = std::make_shared<Bank>();
         textDisplay = std::make_shared<TextDisplay>(*this);
     }
+
+int Board::getBoardSize() const {
+    return boardSize;
+}
 
 void Board::saveGame() {
     std::string filename = "savegame.txt";
@@ -118,7 +121,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
         std::getline(iss, TimsLineStr, ',');
         TimsLine = std::stoi(TimsLineStr);
 
-        std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, *bank, boardSize, position, isVisitingTims, TimsLine, TimsCups);
+        std::shared_ptr<Player> player = std::make_shared<Player>(piece[0], name, money, *bank, getBoardSize(), position, isVisitingTims, TimsLine, TimsCups);
         players.push_back(player);
 
         --numPlayers;
@@ -323,7 +326,7 @@ std::shared_ptr<Player> Board::setPlayer(std::map<std::string, char> &nameToPiec
 
     const int wallet = 1500;
     
-    std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, boardSize);
+    std::shared_ptr<Player> player = std::make_shared<Player>(playerPiece, name, wallet, *bank, getBoardSize());
     return player;
 }
 
@@ -689,8 +692,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
 
 void Board::movePlayer(Player &p, int roll) {
     int index = p.getPosition();
-    const int boardSize = 40;
-    index = (index + roll) % boardSize;
+    index = (index + roll) % getBoardSize();
     p.setPosition(index);
 }
 

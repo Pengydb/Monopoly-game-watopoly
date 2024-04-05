@@ -23,11 +23,14 @@ class Board : public Observer {
     // Stores the current player's turn
     int playerTurn;
 
+    int boardSize;
+
     std::shared_ptr<TextDisplay> textDisplay;
 
     public:
-        Board();
+        Board(int boardSize = 40);
         // Saves the current game
+        int getBoardSize() const;
         void saveGame();
         // Loads the game
         void loadGame(const std::string &filename, const std::string &TileOrder, const std::string &propertyConfig);
