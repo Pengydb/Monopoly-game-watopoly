@@ -367,19 +367,22 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     playerTurn = 0;
     
     std::string cmd, name, prop1, prop2; // initial command : player name that may follow : 1st property name that may follow : 2nd property name that may follow
-    std::vector<std::string> commands = {"roll : player rolls the dice twice and moves the sum of the two dice"
-                                        ,"next : gives control to the next player"
-                                        ,"trade <name> <give> <recieve> : offers a trade to <name> with the current player offering <give> and requesting <receive>"
-                                        ,"improve <property> buy/sell : attemps to buy or sell an improvement for <property>"
-                                        ,"mortgage <property> : attempts to mortgage <property>"
-                                        ,"unmortgage <property> : attempts to unmortgage <property>"
-                                        ,"bankrupt : current player declares bankrupcy"
-                                        ,"assets : displays the assets of the current player"
-                                        ,"all : displays the assests of every player"
-                                        ,"save <filename> : saves the current game into a save file"
-                                        ,"DCcup : uses a Roll up the Rim cup to get out of the DCTims line (must be in the DCTims line)"
-                                        ,"print : prints the game board"
-                                        ,"help : lists all the available commands" };
+    std::vector<std::string> commands = {
+        "roll : player rolls the dice twice and moves the sum of the two dice"
+        ,"next : gives control to the next player"
+        ,"buy <response> : used to buy property (can only be used when player lands on an unowned property) <response> is either yes or no"
+        ,"pay : used to pay a fee when a fee is owed (cannot end turn until fee is payed)"
+        ,"trade <name> <give> <recieve> : offers a trade to <name> with the current player offering <give> and requesting <receive>"
+        ,"improve <property> buy/sell : attemps to buy or sell an improvement for <property>"
+        ,"mortgage <property> : attempts to mortgage <property>"
+        ,"unmortgage <property> : attempts to unmortgage <property>"
+        ,"bankrupt : current player declares bankrupcy"
+        ,"assets : displays the assets of the current player"
+        ,"all : displays the assests of every player"
+        ,"save <filename> : saves the current game into a save file"
+        ,"DCcup : uses a Roll up the Rim cup to get out of the DCTims line (must be in the DCTims line)"
+        ,"print : prints the game board"
+        ,"help : lists all the available commands" };
 
     bool hasRolled = false; // Bool to track whether the current player has rolled or not
     int doubCount = 0; // Counts the number of doubles the current player has rolled
@@ -394,7 +397,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             break;
         }
         
-        std::cout << "It is currently " << curPlayer->getName() << "'s turn" << std::endl;
+        std::cout << "\nIt is currently " << curPlayer->getName() << "'s turn" << std::endl;
         std::cin >> cmd;
         if (cmd == "roll") {
             // Player rolls the dice and moves
@@ -406,6 +409,9 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             // Blocks player from rolling if they have to pay a fee (this is if player rolls doubles and can roll again)
             if (curPlayer->hasToPay()) {
                 std::cout << "You must pay a fee of $" << curPlayer->getFee() << " before ending your turn" << std::endl;
+                continue;
+            } else if (curPlayer->canBuy()) {
+                std::cout << "You must choose to buy or not to buy the property before ending your turn" << std::endl;
                 continue;
             }
 
@@ -430,6 +436,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                     doubCount++;
                     if (doubCount == 3) {
                         std::cout << "You rolled so many doubles you decide to take a break in the DCTims line" << std::endl;
+                        std::cout << "Your turn is over" << std::endl;
                         textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece());
                         curPlayer->setPosition(10);
                         curPlayer->toggleVisiting();
@@ -478,9 +485,10 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             if (curPlayer->hasToPay()) { // Blocks player from ending turn if they have to pay a fee
                 std::cout << "You must pay a fee of $" << curPlayer->getFee() << " before ending your turn" << std::endl;
                 continue;
-            }
-
-            if (!hasRolled) {
+            } else if (curPlayer->canBuy()) {
+                std::cout << "You must choose to buy or not to buy the property before ending your turn" << std::endl;
+                continue;
+            } else if (!hasRolled) {
                 std::cout << "You cannot end your turn without rollling" << std::endl;
                 continue;
             }
@@ -542,7 +550,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             std::cin >> cmd2;
             std::cin.ignore();
             std::string pName = this->getTileName(curPlayer->getPosition());
-            if (!curPlayer->canBuy()) { // Player has the option of buying an unowned property
+            if (!curPlayer->canBuy()) { 
                 std::cout << "You can't buy the property you are currently on" << std::endl;
                 continue;
             }
@@ -552,6 +560,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 if (bank->transferFunds(curPlayer->getName(), "BANK", pcost)) {
                     std::cout << "You have successfully bought " << pName << std::endl;
                     bank->transferProperty(curPlayer->getName(), pName);
+                    curPlayer->toggleCanBuy();
                 } else {
                     std::cout << "You have insufficient funds to buy this property" << std::endl;
                     std::cout << "Cash in your wallet: $" << curPlayer->getWallet() << std::endl;
@@ -560,6 +569,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             }
             else if(cmd2 == "no") {
                 bank->holdAuction(pName);
+                curPlayer->toggleCanBuy();
             }
             else {
                 std::cout << "Please enter a valid response either yes or no" << std::endl;
