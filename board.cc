@@ -76,7 +76,6 @@ void Board::saveGame() {
             }
         }
     }
-    file << playerTurn << std::endl;
     file.close();
     std::cout << "Game saved to " << filename << std::endl;
 }
@@ -387,6 +386,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
     std::shared_ptr<Player> curPlayer = players[playerTurn]; // Current player
     print();
     while (true) {
+        curPlayer = players[playerTurn]; // Updates current player
         if (players.size() == 1)
         {
             std::shared_ptr<Player> player = players[0];
@@ -435,6 +435,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                         curPlayer->toggleVisiting();
                         doubCount = 0;
                         hasRolled = true;
+                        this->nextTurn();
                         continue;
                     }
 
@@ -489,7 +490,6 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             hasRolled = false;
             if (curPlayer->canBuy()) curPlayer->toggleCanBuy(); // sets can buy to false if it was true
             this->nextTurn();
-            curPlayer = players[playerTurn]; // Updates current player
 
         } else if (cmd == "pay") {
             // If player is in Jail or landed on a tile which requires them to pay a fee then they call this to pay
