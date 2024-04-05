@@ -499,7 +499,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 }
                 
             }
-            
+            print();
 
         } else if (cmd == "next") {
             // Moves to the next player's turn. Requires the current player to roll before calling
