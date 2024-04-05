@@ -11,6 +11,7 @@ private:
     char piece;
     std::string name;
     int wallet;
+    Bank &bank;
     int boardSize;
     int position;
     bool visitingTims;  // true when visting false when in line
@@ -18,7 +19,6 @@ private:
     int timsCups;
     int gyms; // Number of gyms the player owns
     int res; // Number of residences the player owns
-    Bank& bank;
     bool buy; // True if player has landed on an unowned property, registers that the player has the ability to buy this property
     bool pay; // True if the player has to pay a fee before ending their turn
     int fee; // The fee the player must pay before ending thier turn
