@@ -49,7 +49,6 @@ std::string Bank::getPropertyOwner(const std::string& propertyName) const {
   }
 
 std::shared_ptr<PropertyConfig> Bank::getPropertyConfig(const std::string& propertyName) {
-    // Implementation here
     return propertyConfigs[propertyName];
 }
 

@@ -30,42 +30,61 @@ void Board::saveGame() {
     for (size_t i = playerTurn; i < playerTurn + players.size(); ++i) {
         int index = i % players.size();
         const auto &player = players[index];
-        file << player->getName() << ","
-             << player->getPiece() << ","
-             << player->getTimsCups() << ","
-             << player->getWallet() << ","
-             << player->getPosition() << ","
-             << !player->isVisitingTims() << ","
-             << player->getTimsLine() << std::endl;
+        if (player->getPosition() == 10) {
+            if (!player->isVisitingTims()){
+                file << player->getName() << " "
+                     << player->getPiece() << " "
+                     << player->getTimsCups() << " "
+                     << player->getWallet() << " "
+                     << player->getPosition() << " "
+                     << !player->isVisitingTims() << " "
+                     << player->getTimsLine() << std::endl;
+            }
+            else {
+                file << player->getName() << " "
+                     << player->getPiece() << " "
+                     << player->getTimsCups() << " "
+                     << player->getWallet() << " "
+                     << player->getPosition() << " "
+                     << !player->isVisitingTims() << std::endl;
+            }
+        }
+        else {
+            file << player->getName() << " "
+                 << player->getPiece() << " "
+                 << player->getTimsCups() << " "
+                 << player->getWallet() << " "
+                 << player->getPosition() << std::endl;
+        }
     }
 
     for (const auto &tile : buildings) {
         if (auto ab = std::dynamic_pointer_cast<AcademicBuilding>(tile)) {
-                file << ab->getName() << ","
-                     << bank->getPropertyOwner(ab->getName()) << ","
-                     << ab->getImpCount() << "," << std::endl;
+                file << ab->getName() << " "
+                     << bank->getPropertyOwner(ab->getName()) << " "
+                     << ab->getImpCount() << " " << std::endl;
         }
         else if (auto r = std::dynamic_pointer_cast<Residence>(tile)) {
                 if (r->isMortgaged()) {
-                    file << r->getName() << ","
-                         << bank->getPropertyOwner(r->getName()) << ","
+                    file << r->getName() << " "
+                         << bank->getPropertyOwner(r->getName()) << " "
                          << -1 << std::endl;
                 }
                 else {
-                    file << r->getName() << ","
-                         << bank->getPropertyOwner(r->getName()) << ","
+                    file << r->getName() << " "
+                         << bank->getPropertyOwner(r->getName()) << " "
                          << 0 << std::endl;
                 }
         }
         else if (auto g = std::dynamic_pointer_cast<Gym>(tile)) {
                 if (g->isMortgaged()){
-                    file << g->getName() << ","
-                         << bank->getPropertyOwner(g->getName()) << ","
+                    file << g->getName() << " "
+                         << bank->getPropertyOwner(g->getName()) << " "
                          << -1 << std::endl;
                 }
                 else {
-                    file << g->getName() << ","
-                         << bank->getPropertyOwner(g->getName()) << ","
+                    file << g->getName() << " "
+                         << bank->getPropertyOwner(g->getName()) << " "
                          << 0 << std::endl;
                 }
         }
@@ -98,7 +117,7 @@ void Board::loadGame(const std::string &filename, const std::string &TileOrder, 
         std::istringstream iss(line);
         std::string name, piece, TimsCupsStr, moneyStr, positionStr, isVisitingTimsStr, TimsLineStr;
         int TimsCups, money, position, TimsLine;
-        bool isVisitingTims;
+        bool isVisitingTims = true;
         std::getline(iss, name, ' ');
         std::getline(iss, piece, ' ');
 
@@ -213,27 +232,27 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
             buildings.push_back(tile);
         }
         else if (buildingType == "NOP") {
-            if (buildingName == "Collect OSAP") {
+            if (buildingName == "COLLECT OSAP") {
                 std::shared_ptr<CollectOsap> tile = std::make_shared<CollectOsap>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "DC Tims Line") {
+            else if (buildingName == "DC TIMS LINE") {
                 std::shared_ptr<DCTims> tile = std::make_shared<DCTims>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "Go To Tims") {
+            else if (buildingName == "GO TO TIMS") {
                 std::shared_ptr<GoToTims> tile = std::make_shared<GoToTims>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "Goose Nesting") {
+            else if (buildingName == "GOOSE NESTING") {
                 std::shared_ptr<GooseNesting> tile = std::make_shared<GooseNesting>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "Tuition") {
+            else if (buildingName == "TUITION") {
                 std::shared_ptr<Tuition> tile = std::make_shared<Tuition>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "COOP Fee") {
+            else if (buildingName == "COOP FEE") {
                 std::shared_ptr<CoopFee> tile = std::make_shared<CoopFee>(buildingName, count);
                 buildings.push_back(tile);
             }
@@ -241,13 +260,13 @@ void Board::setupBoard(const std::string &TileOrder, const std::string &property
                 std::shared_ptr<SLC> tile = std::make_shared<SLC>(buildingName, count);
                 buildings.push_back(tile);
             }
-            else if (buildingName == "Needles Hall") {
+            else if (buildingName == "NEEDLES HALL") {
                 std::shared_ptr<NH> tile = std::make_shared<NH>(buildingName, count);
                 buildings.push_back(tile);
             }
         }
         else {
-            throw std::invalid_argument("Unknown building type: {" + buildingType + "}");
+            throw std::invalid_argument("Unknown building type: " + buildingType);
             return;
         }
         ++count;
@@ -467,7 +486,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 textDisplay->cleanPos(curPlayer->getPosition(), curPlayer->getPiece()); // Clears previous position
                 curPlayer->movePosition(sum);
 
-                if (tname == "SLC" || tname == "Go To Tims") {
+                if (tname == "SLC" || tname == "GO TO TIMS") {
                     textDisplay->cleanPos(ppos, curPlayer->getPiece());
                     print();
                 } 
