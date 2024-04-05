@@ -71,19 +71,19 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
         int imps = ab->getImpCount();
         if (0 <= loc && loc <= 10) { // Bottom Row
             r = 61;
-            c = 92 - loc*10 + (imps - 1);
+            c = 91 - loc*9;
             
         } else if (11 <= loc && loc <= 19) { // Left Side
             r = 61 - (loc-10)*6;
-            c = 2 + (imps - 1);
+            c = 2;
 
         } else if (20 <= loc && loc <= 30) { // Top Row
             r = 1;
-            c = 2 + (loc-20)*10 + (imps - 1);
+            c = 2 + (loc-20)*9;
 
         } else { // Right Side
             r = 1 + (loc-30)*6;
-            c = 92 + (imps - 1);
+            c = 91;
 
         }
 

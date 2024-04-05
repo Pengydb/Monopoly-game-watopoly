@@ -10,7 +10,6 @@ bool OwnableProperty::isMortgaged() const { return mortgaged; }
 
 int OwnableProperty::getCost() const { return config->getCost(); }
 
-int OwnableProperty::getFee() const { return config->getFee(0); }
 
 std::string OwnableProperty::getGroup() const { return config->getGroup(); }
 

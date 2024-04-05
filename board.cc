@@ -650,6 +650,7 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         } 
         else if (cmd == "improve") {
             // Lets the player add/sell improvements on their property
+            std::cout << "Enter the property name followed by buy/sell in this format: <property> buy/sell" << std::endl;
             std::string action;
             std::cin >> prop1 >> action;
 
@@ -680,12 +681,17 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
                 std::cout << "There is no fee that you are required to pay. You cannot declare bankrupcy" << std::endl;
                 continue;
             }
+            else if (curPlayer->getFee() < curPlayer->getWallet()) {
+                std::cout << "You cannot declare bankrupcy since you don't owe more money than you possess" << std::endl;
+                continue;
+            }
             bank->seizeAssets(curPlayer->getName(), curPlayer->getFeeOwner());
             bank->removePlayer(curPlayer->getName());
             this->removePlayer(*curPlayer);
             if (players.size() == 1) {
                 std::cout << "The game is over!" << std::endl;
                 std::cout << players[0]->getName() << " wins!" << std::endl;
+                break;
             }
 
         } else if (cmd == "assets") {

@@ -28,8 +28,6 @@ class OwnableProperty : public Tile {
     bool isMortgaged() const; 
     // Returns cost field from config
     int getCost() const;
-    // Returns tuition fee for this property
-    virtual int getFee() const; 
     // Returns which monopoly this property belongs to
     std::string getGroup() const;
     // Toggles mortgaged field to opposite of what it was
