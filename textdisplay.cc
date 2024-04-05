@@ -32,6 +32,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
     if (p) {
         int pos = p->getPosition();
         int numP = board.playersAtPos(pos); // number of players at this tile
+        if (numP == 0) numP++;
 
         if (numP > 4) {
             cinc = (numP-5)*2;
@@ -58,6 +59,7 @@ void TextDisplay::notify(std::shared_ptr<Subject> s) {
             c = 91 + cinc;
         }
 
+        if(display[r][c] != ' ') c += 2;
         display[r][c] = p->getPiece();
         printBoard();
         return;
