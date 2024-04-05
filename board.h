@@ -22,21 +22,22 @@ class Board : public Observer, public std::enable_shared_from_this<Board> {
     std::shared_ptr<Bank> bank;
     // Stores the current player's turn
     int playerTurn;
-
+    // Stores the number of tiles in the board
     int boardSize;
-
+    // Stores an instance of the text display
     std::shared_ptr<TextDisplay> textDisplay;
 
     public:
         Board(int boardSize = 40);
-        // Saves the current game
+        // Returns the size of the board
         int getBoardSize() const;
+        // Saves the current game
         void saveGame();
         // Loads the game
         void loadGame(const std::string &filename, const std::string &TileOrder, const std::string &propertyConfig);
         // Gets the current player's turn
         int getTurn();
-        // Starts the game
+        // initializes the board
         void setupBoard(const std::string &TileOrder, const std::string &propertyConfig);
         // Plays the game
         void playGame(const bool addPlayers, const bool isTesting);

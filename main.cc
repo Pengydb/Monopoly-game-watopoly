@@ -41,7 +41,6 @@ int main(int argc, char *argv[]) {
         std::cout << "Watopoly: The Univeristy of Waterloo Monopoly!" << std::endl;
         std::cout << "Enter one of the following commands to start playing: \n"
                   << "start - starts a new game \n"
-                //  << "load <file.txt> - loads a saved game from file.txt \n"
                   << "exit - to exit the program \n"
                   << std::endl;
 
@@ -52,13 +51,6 @@ int main(int argc, char *argv[]) {
             board->setupBoard("TileOrder.csv", "propertyconfig.csv");
             board->playGame(true, isTesting);
         }
-        /*else if (cmd == "load") {
-            std::cout << "Please enter the name of the file to be loaded including its extension" << std::endl;
-            std::string loadFile;
-            std::getline(std::cin, loadFile);
-            board->loadGame(loadFile, "TileOrder.csv", "propertyconfig.csv");
-        }*/
-
         else if (cmd == "exit") {
             return 0;
         }

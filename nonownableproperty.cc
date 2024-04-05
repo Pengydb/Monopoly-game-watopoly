@@ -37,9 +37,6 @@ void DCTims::performAction(Player &p, Bank &b) {
         std::cout << "You are vising " << this->getName() << std::endl;
         return;
     } 
-
-    
-
     std::cout << "You are in the DCTims line, roll doubles, pay $" << JAIL_FEE;
     std::cout << ", or use a Roll up the Rim cup to exit the DCTims line" << std::endl;
     std::cout << "If you are in the line for 3 turns you fill be forced to use a Roll up the Rim cup or pay the fee" << std::endl;

@@ -12,7 +12,7 @@ class Player;
 class OwnableProperty;
 class Bank {
 private:
-    // Property configs
+    // Maps property name to Property configs
     std::map<std::string, std::shared_ptr<PropertyConfig>> propertyConfigs; 
     // Maps player name to player
     std::map<std::string, std::shared_ptr<Player>> players; 
@@ -42,17 +42,18 @@ public:
     
     // Hold the auction process
     void holdAuction(const std::string& propertyName);
-
+    // Returns the owner of the property
     std::string getPropertyOwner(const std::string& propertyName) const;
+    // Changes the owner of the property
     void addPropertyOwner(const std::string& propertyName, const std::string& playerName);
 
     // Initilizes and updates ownable property config map in bank from filename csv, subsequently updates each property's config pointer
     void initConfigs(const std::string &configFile);
-
+    // Returns the smart pointer to the property, given its name
     std::shared_ptr<OwnableProperty> getProperty(const std::string& propertyName);
-
+    // Returns the smart pointer to the property's configuration, given its name
     std::shared_ptr<PropertyConfig> getPropertyConfig(const std::string& propertyName);
-    
+    // Adds a configuration to the propertyConfigs map
     void addPropertyConfig(std::shared_ptr<PropertyConfig> config);
 
     /* Transfers property from one player to another returns true if successfull, charges receiver a fee if the property is mortgaged and gives 
@@ -79,12 +80,13 @@ public:
 
     // Checks if player has solvency to pay amount
     bool checkSufficientFunds(const std::string& playerName, int amount) const;
-
+    // Purchases an improvement for the player
     void buyImprovement(const std::string& propertyName, const std::string& playerName);
-    
+    // Sells an improvement for the player
     void sellImprovement(const std::string& propertyName, const std::string& playerName);
-
+    // Mortgages the property for the player
     void mortgageProperty(const std::string& propertyName, const std::string& playerName);
+    // Unmortgages the property for the player
     void unmortgageProperty(const std::string& propertyName, const std::string& playerName);
 
     // Removes player from bank's tracking, to be used after a player has declared bankruptcy and all their assets have been transferred
