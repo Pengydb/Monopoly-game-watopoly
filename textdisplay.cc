@@ -21,6 +21,7 @@ TextDisplay::TextDisplay(Board& board, std::string fname):
         display.emplace_back(row);
         row.clear();
     }
+    file.close();
 }
 
 

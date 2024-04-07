@@ -5,8 +5,13 @@ void Subject::attach(std::shared_ptr<Observer> o) {
 }
 
 void Subject::notifyObservers() {
-    for(auto o : observers) {
-        std::shared_ptr<Subject> sp = shared_from_this();
-        if (o) o->notify(sp);
+    for (auto it = observers.begin(); it != observers.end();) {
+        if (auto observer = it->lock()) {
+            observer->notify(shared_from_this());
+            ++it;
+        } else {
+            it = observers.erase(it);
+        }
     }
 }
+

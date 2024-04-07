@@ -8,7 +8,7 @@
 class Subject : public std::enable_shared_from_this<Subject> {
 private:
     // Stores smart pointers to all observers
-    std::vector<std::shared_ptr<Observer>> observers;
+    std::vector<std::weak_ptr<Observer>> observers;
 
 public:
     // Ensures proper destruction of derived classes
