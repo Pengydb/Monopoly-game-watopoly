@@ -415,6 +415,8 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
         {
             std::shared_ptr<Player> player = players[0];
             std::cout << "Congratulations! " << player->getName() << " has won the game" << std::endl;
+            removePlayer(*player);
+            bank->removePlayer(player->getName());
             break;
         }
         
@@ -744,11 +746,15 @@ void Board::playGame(const bool addPlayers, const bool isTesting) {
             bank->removePlayer(curPlayer->getName());
             this->removePlayer(*curPlayer);
             print();
+      
             if (players.size() == 1) {
                 std::cout << "The game is over!" << std::endl;
                 std::cout << players[0]->getName() << " wins!" << std::endl;
                 break;
             }
+            hasRolled = false;
+            doubCount = 0;
+            this->nextTurn();
 
         } else if (cmd == "assets") {
             // Prints out the current player's assets
